@@ -48,6 +48,10 @@ The B adds acceleration; it does not add RAM or a faster main CPU. CPU-based mod
 
 These are SoC resources, not a promise that every board exposes every signal. ADC rate/resolution combinations are alternatives, not 14-bit conversion at 2 MS/s. Source: [LM20A/B peripheral specifications](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/keyfeatures_html5.html).
 
+### Audio acquisition
+
+Audio acquisition follow-up checked **2026-10-10**: the [LM20A/B PDM peripheral](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/pdm.html) documents one/two microphone inputs, hardware decimation to **16-bit PCM**, nominal 8/16/32/48 kHz output and EasyDMA. The [register table](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/pdm.html-topic) lists high-pass pole/disable controls; no configured cutoff/default or SDK driver exposure was established here. The [TDM peripheral](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/tdm.html) supports mono/stereo I²S, EasyDMA, 8/16/24/32-bit sample widths and controller/target clocks. These are hardware capabilities, not a built sample or a promise every microphone clock/rate/format works. Exact wiring, driver, filter and resource compatibility need verification. [Chest wearable assessment](Research/Opportunity%20Assessment.md#lm20b-chest-body-sensing-pdm-versus-i2s--2026-10-10) owns the application tradeoff. This targeted follow-up does not refresh the full catalog.
+
 ### USB
 
 USBHS is a USB 2.0 **device** peripheral: documented modes include 480 Mbps high speed, 12 Mbps full speed and 1.5 Mbps low speed; up to 16 bidirectional endpoints and DMA access. OTG is not supported. These are bus rates, not guaranteed application transfer rates. A board's USB-C connector does not by itself establish which SoC signals it exposes. Source: [USBHS specification](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/usbhs.html).
@@ -101,6 +105,8 @@ For performance context only, Nordic reports keyword-spotting inference at **4.5
 
 ### Nordic nRF54LM20 DK
 
+DK-specific hardware/software follow-up checked **2026-10-10**; the rest of this catalog retains its original verification date. Proposed application utilization is in [Opportunity assessment](Research/Opportunity%20Assessment.md#development-kit-utilization-for-ideas-25--2026-10-10).
+
 Nordic's feature list specifies **LM20B silicon**, with **LM20A as an emulated target**. It also lists:
 
 - SEGGER J-Link onboard programmer/debugger.
@@ -111,6 +117,18 @@ Nordic's feature list specifies **LM20B silicon**, with **LM20A as an emulated t
 - Pins for external current measurement; this is not an integrated power profiler.
 
 The page has a conflicting lower heading describing an A-equipped kit. The explicit feature list and Axon sample target support the B-equipped interpretation; the physical kit revision is still unverified. Sources: [DK features](https://www.nordicsemi.com/Products/Development-hardware/nRF54LM20-DK), [Hello Axon target `nrf54lm20dk/nrf54lm20b/cpuapp`](https://nrfconnectdocs.nordicsemi.com/addons/addon-edge-ai/latest/samples/axon/hello_axon/README.html).
+
+The [hardware guide](https://docs.nordicsemi.com/r/bundle/ug_nrf54lm20_dk/) additionally documents:
+
+- [GPIO headers](https://docs.nordicsemi.com/r/bundle/ug_nrf54lm20_dk/page/ug/nrf54lm20_dk/hw_desription/connector_if.html?contentId=zyFFD8xtqL5Vn0qxo~wahw) for external devices. Pins share board functions; 5 V peripheral supply headers do not establish 5 V GPIO tolerance. Sensors and signal conditioning must match the actual pin map and electrical limits.
+- [USB-powered nPM1300 supply](https://docs.nordicsemi.com/r/bundle/ug_nrf54lm20_dk/page/ug/nrf54lm20_dk/hw_desription/power_supply.html?contentId=QDRMnZ3ju3EJ8KL_fVGSGA), with programmable SoC supply from 1.8 to 3.3 V. This is not evidence of an included battery or verified battery-powered application.
+- [Current measurement](https://docs.nordicsemi.com/r/bundle/ug_nrf54lm20_dk/page/ug/nrf54lm20_dk/measurements/current_measurements.html?contentId=mS~9Ba84N4rF3YfFGU~60A) requires an external PPK2, ammeter, oscilloscope or analyzer. P14 normally measures the application SoC domain, not total kit-plus-sensor consumption. [Flash supply configuration](https://docs.nordicsemi.com/r/bundle/ug_nrf54lm20_dk/page/ug/nrf54lm20_dk/hw_desription/external_memory.html?contentId=p6nFIm58HZYRdP~TunphSA) determines whether external-memory consumption enters that measurement.
+- [Stand-alone external-supply mode](https://docs.nordicsemi.com/r/bundle/ug_nrf54lm20_dk/page/ug/nrf54lm20_dk/hw_desription/stand_alone_supply.html?contentId=rmwHy59aIfbEZRVmbgK3jQ) makes the debugger, virtual serial ports, external flash and LEDs unavailable. Normal USB-supported kit operation and this manually configured mode must not be treated as interchangeable.
+- [Debug-out](https://docs.nordicsemi.com/r/bundle/ug_nrf54lm20_dk/page/ug/nrf54lm20_dk/program_debug/debug_out_ext_board.html?contentId=p8_VHkie_oOrQDPF1vnIcg) can program/debug supported external Nordic boards; external power, voltage and connector requirements apply. This is not a universal programmer for arbitrary boards.
+
+The documented kit has no onboard IMU, microphone, calibrated environmental probe, water flow/pressure/level sensor or GNSS receiver. A die-temperature sensor is not a calibrated grain/ambient probe. Wi-Fi/cellular backhaul and measurement instruments are external additions. The kit is a development platform, not an established animal wearable or weatherproof field instrument.
+
+The current [Channel Sounding reflector sample](https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrf/samples/bluetooth/channel_sounding/ras_reflector/README.html) lists LM20 DK A/B targets and requires a compatible initiator peer. Its reviewed `latest` page identifies NCS 3.4.99; this is a moving development reference, not verification of our installed or chosen stable release. The Axon sample requires the Edge AI Add-on and compatible compiled model. Neither sample has been built or tested locally.
 
 ### Seeed XIAO nRF54LM20A Sense
 
@@ -129,6 +147,10 @@ Seeed reports BAT-powered System OFF at **4.76 µA**, **4.92 µA with GRTC wake*
 ### Sense sensors
 
 Seeed identifies **LSM6DS3TR-C** for motion and **MSM261DGT006** for audio. Its examples use I²C for the IMU and PDM for the microphone, and demonstrate interrupt wake-up. These components are board additions, not integrated LM20A sensors. [Seeed onboard-sensor guide](https://wiki.seeedstudio.com/xiao_nrf54lm20a_with_onboard/).
+
+Microphone follow-up checked **2026-10-10**: the [MEMSensing manufacturer catalog](https://www.memsensing.com/product/176.html) lists the exact **MSM261DGT006** as PDM, top port, size 4.0 × 2.0 × 1.1, sensitivity −26, SNR 65 and AOP 120. The catalog headers do not state units, reference conditions, weighting or tolerances; do not promote these summary values to a complete calibrated specification. Full exact-part frequency response, low-frequency noise, clock/power modes and current were not verified. Specifications for similarly named DGT003 parts are not substituted.
+
+Seeed's [recorder source](https://files.seeedstudio.com/wiki/XIAO_nRF54LM20A/main.c) uses **16 kHz, 16-bit mono**, external-flash capture and subsequent BLE NUS/WAV upload. Its guide describes a maximum ten-second recording followed by transfer to a Windows receiver. This is vendor code/documentation, not a local build, live phone stream or measured body-sound capability. PDM output and configured sample rate do not establish acoustic bandwidth. Application/coupling and phone feasibility are assessed in [Opportunity assessment](Research/Opportunity%20Assessment.md#phone-connected-stethoscope-feasibility--2026-10-10).
 
 | LSM6DS3TR-C function | Component capability |
 | --- | --- |

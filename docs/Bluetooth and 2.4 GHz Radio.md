@@ -115,6 +115,27 @@ The official [Ranging Requestor sample](https://nrfconnectdocs.nordicsemi.com/nc
 
 It connects to a reflector/responder, obtains ranging data and prints estimates. This verifies a documented software path, not measured accuracy on our boards. RSSI, Channel Sounding and Direction Finding/AoA/AoD are separate capabilities; no board-specific direction-finding claim is made here.
 
+### Localization geometry discussed on 2026-10-04
+
+The user confirmed that the main device will move and wants three fixed bases for the initial 2D POC. If received, the DK will be the moving main device. Lower-cost custom PCBs for the bases are a later intended direction; savings, board design and radio performance are unverified. A later 3D POC remains conditional on another fixed base or an independent spatial constraint. This selects the initial geometry, not a complete application architecture or verified prototype.
+
+- Three non-collinear anchors can determine a tag's 2D position from three ranges when its plane/height is known. Account for vertical separation when converting slant ranges to planar distances.
+- Three anchors leave a mirror ambiguity across their plane in unrestricted 3D. Four suitably placed non-coplanar anchors plus a tag (five devices total) support general 3D localization; independent height/side information can instead constrain a three-anchor system.
+- A possible role assignment is an initiator on the tag and reflectors on the anchors. Firmware must schedule separate ranging exchanges, associate timestamps/results with anchors and calculate position; sequential measurements can introduce motion error. The official pairwise demo is not a complete three-anchor positioning application.
+- Range errors, reflected paths, orientation and anchor geometry influence position errors. No measured accuracy or update-rate claim is established. The position calculation does not inherently require an NPU.
+
+Nordic explicitly discusses application-level trilateration and its [initiator roles](https://www.nordicsemi.com/Products/Wireless/Bluetooth-Low-Energy/Channel-Sounding). Its [latest initiator sample](https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrf/samples/bluetooth/channel_sounding/ras_initiator/README.html) lists LM20A/B DK targets, checked 2026-10-04. This supports the technical basis, not untested XIAO builds or a particular multipeer schedule. A fourth device that remains a fixed controller does not by itself provide localization of an untagged moving object.
+
+The clarified topology is three fixed bases plus a moving DK, four ranging devices total. For general 3D, add a fourth fixed base outside the plane of the other three, keeping the DK moving: five ranging devices total. Using the DK as the moving device does not by itself add an anchor range. A custom anchor PCB will need suitable RF layout and board-specific ranging calibration; development-board offsets cannot be assumed to transfer unchanged.
+
+### Phone participation checked on 2026-10-04
+
+The user's phone is a **CMF Phone 1**. Nothing's [published specification](https://my.nothing.tech/pages/cmf-phone-1) lists Bluetooth 5.3; no manufacturer-confirmed Channel Sounding support was found. Do not count this phone as a Channel Sounding anchor or moving ranging tag. Its installed OS version is unknown. Ordinary BLE can instead carry the LM20-computed ranges/positions to a phone app for display, controls and logging. An Android update alone is not evidence of Channel Sounding hardware/controller support.
+
+For comparison, Nordic's [phone demonstration](https://devzone.nordicsemi.com/nordic/nordic-blog/b/blog/posts/evaluating-bluetooth-channel-sounding-with-our-open_2d00_source-android-app-on-google-pixel-10) documents Pixel 9/10 with Android 16 QPR2 or later, a phone initiator and nRF54L15 reflector. The current [reflector sample](https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrf/samples/bluetooth/channel_sounding/ras_reflector/README.html) lists LM20 DK targets and an Android configuration fragment, but local LM20/XIAO-phone interoperability remains untested. A compatible phone used as a fixed anchor must have known coordinates and share its measured distance with the position solver; the documented phone-initiator path may require revising the tag's roles and scheduling. It is not a demonstrated drop-in fourth reflector.
+
+Android's [Ranging module](https://developer.android.com/develop/connectivity/ranging) exposes runtime technology capabilities. Android 16 alone does not establish Channel Sounding availability. Its documented third-party Bluetooth ranging is foreground-only, and non-UWB ranging results are delivered to the initiator rather than automatically to the peer. These constraints matter for an integrated phone-anchor POC.
+
 ## 6. Bluetooth Mesh, Thread, Zigbee and Matter
 
 | Technology | Where it fits |
@@ -193,6 +214,8 @@ The reviewed latest NCS/nrfxlib pages display **3.4.99**, a moving development d
 For a concrete implementation, the remaining facts to establish are the exact SDK release, controller library/configuration, board and silicon revisions, peer support and applicable errata. No universal connection-count limit or guaranteed feature combination is asserted.
 
 ## Official documentation map
+
+For current application examples and original papers, see [Bluetooth industry and academic frontiers](Research/Bluetooth%20Industry%20and%20Academic%20Frontiers.md), checked 2026-10-04. That research distinguishes adopted Core 6.3 features from upcoming HDT work; it does not establish support in this note's previously reviewed SDK or the local firmware.
 
 | Need | Reference |
 | --- | --- |

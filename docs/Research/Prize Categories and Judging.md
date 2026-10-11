@@ -1,6 +1,6 @@
 # Prize categories and judging
 
-Checked: 2026-09-25. [Research overview](Contest%20Landscape.md) · [Application inventory](Application%20Inventory.md).
+Checked: 2026-10-05. [Research overview](Contest%20Landscape.md) · [Application inventory](Application%20Inventory.md).
 
 ## Official award structure
 
@@ -31,7 +31,7 @@ The [rules](https://www.hackster.io/contests/sustain-the-system/rules) assign 10
 | User experience and design | 10 |
 | Creativity | 20 |
 
-The build must use the nRF54LM20 DK and address sustainability, predictive maintenance, and Bluetooth. English project documentation must include a name, description, cover, BOM, instructions, images, and relevant design/code files. Hardware applications close **2026-10-25, 11:59 PM Pacific**; completed projects close **2027-04-23, 5:00 PM Pacific**. The rules limit awards to one per person/team. Recheck the official page before applying or submitting; this note is not a complete eligibility checklist. [Official rules](https://www.hackster.io/contests/sustain-the-system/rules).
+The build must use the nRF54LM20 DK and address sustainability, predictive maintenance, and Bluetooth. English project documentation must include a name, description, cover, BOM, instructions, images, and relevant design/code files. Hardware applications close **2026-10-25, 11:59 PM Pacific**; completed projects close **2027-04-25, 11:59 PM Pacific**. The rules limit awards to one per person/team. Recheck the official page before applying or submitting; this note is not a complete eligibility checklist. [Official rules](https://www.hackster.io/contests/sustain-the-system/rules).
 
 The FAQ distinguishes hardware recipients, due **2026-11-20**, from contest winners, due **2027-05-21**. No winners are established by the application headings in this September snapshot. [Official FAQ](https://www.hackster.io/contests/sustain-the-system/faq).
 
@@ -50,5 +50,8 @@ The following is our analysis, not an additional official rubric or forecast.
 
 Documentation, impact, and creativity together account for 60 of the 100 published points. That argues for a complete, understandable maintenance story alongside technical performance. The published rubric does not establish separate category-specific point weights or provide winning probabilities.
 
-Our current adaptive-network direction has a plausible **Bluetooth-first** story and a conditional **Edge AI** story. This is a recommendation for evidence planning, not a category commitment. The physical asset will determine whether equipment, infrastructure, or natural-resource positioning is convincing. Broad eligibility across categories should not be described as an expectation of multiple prizes.
+The current [problem-first direction](../Project.md) requires an actionable need and minimum useful evidence before choosing a network or model. Bluetooth and Edge AI award positioning follows the selected solution. This is a recommendation for evidence planning, not a category commitment. The physical asset will determine whether equipment, infrastructure, or natural-resource positioning is convincing. Broad eligibility across categories should not be described as an expectation of multiple prizes.
 
+## Check history
+
+- 2026-10-05: Official overview and rules now agree on 2027-04-25 at 11:59 PM Pacific for completed projects. This replaces the earlier recorded 2027-04-23 deadline. Required DK/Bluetooth, award amounts and 100-point rubric rechecked; no application or submission made.

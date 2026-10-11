@@ -1,0 +1,45 @@
+/* For more help, browse the devicetree documentation at https://docs.zephyrproject.org/latest/build/dts/index.html
+ * You can also visit the nRF DeviceTree extension documentation at https://docs.nordicsemi.com/bundle/nrf-connect-vscode/page/guides/ncs_configure_app.html#devicetree-support-in-the-extension
+ */
+
+ /*
+ * Device tree overlay for XIAO nRF54LM20A RGB LED PWM demo.
+ *
+ * PWM20 peripheral is used for RGB LED control:
+ *   - Channel 0: P1.22 (Red LED)   -> pwm_led0
+ *   - Channel 1: P1.23 (Blue LED)  -> pwm_led1
+ *   - Channel 2: P1.24 (Green LED) -> pwm_led2
+ */
+
+&pwm20 {
+	status = "okay";
+};
+
+/ {
+	pwmleds {
+		compatible = "pwm-leds";
+
+		pwm_led0: pwm_led_0 {
+			pwms = <&pwm20 0 PWM_MSEC(20) PWM_POLARITY_INVERTED>;
+			label = "Red LED";
+		};
+
+		pwm_led1: pwm_led_1 {
+			pwms = <&pwm20 1 PWM_MSEC(20) PWM_POLARITY_INVERTED>;
+			label = "Blue LED";
+		};
+
+		pwm_led2: pwm_led_2 {
+			pwms = <&pwm20 2 PWM_MSEC(20) PWM_POLARITY_INVERTED>;
+			label = "Green LED";
+		};
+	};
+};
+
+/ {
+	aliases {
+		pwm-led0 = &pwm_led0;
+		pwm-led1 = &pwm_led1;
+		pwm-led2 = &pwm_led2;
+	};
+};

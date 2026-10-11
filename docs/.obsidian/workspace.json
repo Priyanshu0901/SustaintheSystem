@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "MCU and Board Capabilities.md",
+                "file": "Research/Prize Categories and Judging.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "MCU and Board Capabilities"
+              "title": "Prize Categories and Judging"
             }
           }
         ]
@@ -83,7 +83,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "a470f5f908a29cd7",
@@ -190,13 +191,19 @@
   },
   "active": "e6b6a613867ed5c5",
   "lastOpenFiles": [
-    "Bluetooth and 2.4 GHz Radio.md",
-    "MCU and Board Capabilities.md",
     "Research/Opportunity Assessment.md",
-    "Research/Prize Categories and Judging.md",
-    "Sources/Competition Overview.md",
-    "Overview.md",
     "Project.md",
+    "Sources/Competition Overview.md",
+    "Research/Animal Tags Sensors and Impact.md",
+    "Research/Sparse Herd Telemetry and Recovery.md",
+    "Research/Pet Products and Household Validation.md",
+    "Research/Animal Tag GNSS Comparison.md",
+    "Research/Animal and Wildlife Health Concepts.md",
+    "Research/Bluetooth Industry and Academic Frontiers.md",
+    "MCU and Board Capabilities.md",
+    "Bluetooth and 2.4 GHz Radio.md",
+    "Research/Prize Categories and Judging.md",
+    "Overview.md",
     "Research/Contest Landscape.md",
     "Research/Application Inventory.md",
     "Research/Application Update 2026-09-26.md",

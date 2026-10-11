@@ -1,5 +1,6 @@
 {
   "nrf-connect.applications": [
     "${workspaceFolder}\\firmware\\xiao_source"
-  ]
+  ],
+  "cmake.sourceDirectory": "D:/Sustain_the_System/firmware/xiao_source"
 }
