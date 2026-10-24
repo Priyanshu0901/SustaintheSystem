@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Overview.md",
-                "mode": "source",
+                "file": "Hackster/Story.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Overview"
+              "title": "Story"
             }
           }
         ]
@@ -190,29 +190,41 @@
   },
   "active": "9d516d7817936874",
   "lastOpenFiles": [
+    "Hackster/Things.md",
+    "Hackster/Story.md",
+    "Hackster/Hardware Application Questions.md",
+    "Hackster/assets/low-power-operation.png",
+    "Hackster/assets/low-power-operation.drawio",
+    "Hackster/assets/audio-axon-pipeline.png",
+    "Hackster/assets/audio-axon-pipeline.drawio",
+    "Hackster/assets/network-topology.png",
+    "Hackster/assets/network-topology.drawio",
+    "Hackster/assets/r6_plus_1_microphone_positions.png",
+    "Hackster/assets/system-flow.png",
+    "Hackster/assets/maintenance-workflow.png",
+    "Hackster/assets/maintenance-workflow.drawio",
+    "Hackster/assets/maintenance-workflow.svg",
+    "Hackster/assets/system-flow.drawio.png",
+    "Hackster/Basics.md",
+    "Hackster/assets/system-flow.svg",
+    "Hackster/assets/title_palceholder_image_pexels-mumtaz-niazi-18390768-35645885.jpg",
+    "Overview.md",
     "Sources/References.md",
     "Hardware/MCU and Board Capabilities.md",
     "Hardware/Bluetooth and 2.4 GHz Radio.md",
-    "Hackster/Hardware Application Questions.md",
     "Sources/History.md",
     "Archive/Index.md",
     "Archive/2026-10-25-before-cleanup.zip",
     "Archive",
-    "Hackster/Things.md",
-    "Hackster/Story.md",
-    "Hackster/Basics.md",
-    "Hackster/assets/system-flow.svg",
     "Hackster/assets/system-flow.drawio",
     "Hackster/assets",
     "Sources/2026-10-22 - Hiking Trail Riding Battery and GNSS Direction.md",
     "Sources/2026-10-24 - Refined Hackster Draft before Split.md",
     "Sources/2026-10-21 - Product Thinking Input.md",
-    "Hackster/images/system-flow.svg",
     "Hackster/images",
     "Sources/2026-10-21 - Radio Ecosystem Direction.md",
     "Sources/2026-10-22 - Acoustic Fault Detection and Localization.md",
     "Views/Untitled.base",
-    "Views/Untitled 1.base",
     "Project.md",
     "Research/Animal and Wildlife Health Concepts.md",
     "Sources/2026-10-22 - Infrastructure and Transmission ML Correction.md",
@@ -222,10 +234,6 @@
     "Research/Radio Ecosystem POC/Use Case Map.md",
     "Research/Radio Ecosystem POC/Product Positioning.md",
     "Research/Radio Ecosystem POC/Overview.md",
-    "Research/Radio Ecosystem POC/Network and ML Plan.md",
-    "Research/Radio Ecosystem POC/Hackathon Recommendation.md",
-    "Research/Radio Ecosystem POC/Evidence Register.md",
-    "Research/Radio Ecosystem POC",
-    "Research"
+    "Research/Radio Ecosystem POC/Network and ML Plan.md"
   ]
 }

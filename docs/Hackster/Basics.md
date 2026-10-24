@@ -1,6 +1,6 @@
 ---
 status: draft
-updated: 2026-10-24
+updated: 2026-10-25
 ---
 
 # Basics
@@ -14,3 +14,23 @@ Acoustic Fault Detection and Localization
 ## Elevator pitch
 
 Non-contact acoustic monitoring with Edge AI for anomaly detection and source direction, Zigbee reporting, and Bluetooth diagnostics.
+
+## Link an existing repository
+
+Repository URL:
+
+```text
+https://github.com/Priyanshu0901/SustaintheSystem
+```
+
+Title:
+
+```text
+Source and Documentation
+```
+
+Comment:
+
+```text
+Project documentation, editable diagrams and firmware development for the acoustic monitoring system.
+```

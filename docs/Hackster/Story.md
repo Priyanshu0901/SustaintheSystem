@@ -25,13 +25,13 @@ The monitoring node is built around the Nordic nRF54LM20 DK, targeting the nRF54
 
 Each node will store event times, anomaly scores, operating-state information and direction estimates. Sending those observations instead of a continuous audio stream keeps the network traffic small and leaves the acoustic processing independent of the monitoring application. If the application disconnects, the node will continue collecting observations for later retrieval.
 
-I already have XIAO nRF54LM20A Sense boards, so I’ll start microphone capture, feature extraction and CPU-based inference on those while the DKs arrive. Their built-in microphones also give me a single-microphone baseline and a way to test lower-cost monitoring nodes. The A-series boards will run their own resource-limited workload; the nRF54LM20B remains the target for NPU-accelerated inference and the array-based system.
-
 ## Microphone Array and Audio Capture
 
 I’m using the Sipeed MAIX R6+1 seven-microphone array to capture the same acoustic scene from different positions. The relative timing between those channels is essential: direction estimation depends on differences in the signals, not just seven recordings of roughly the same moment.
 
-The acquisition path will capture the channels together and preserve their alignment as samples move into the Nordic processing pipeline. I’ll check channel timing and sustained throughput before using the recordings for spatial analysis. A direction estimate is not useful if the capture system has introduced the delay it is trying to measure.
+I’m testing the microphone capture interface on the Seeed Studio XIAO nRF54LM20A Sense while the DKs arrive. These tests will check channel alignment, sustained throughput and sample loss before I use the recordings for spatial analysis. A direction estimate is not useful if the capture system has introduced the delay it is trying to measure.
+
+The XIAO’s built-in microphone also gives me a single-microphone baseline for feature extraction and CPU-based inference, and a way to evaluate a lower-cost monitoring node. The nRF54LM20B remains the target for Axon inference and the array-based system.
 
 ![Sipeed MAIX R6+1](assets/r6_plus_1_microphone_positions.png)
 
@@ -55,7 +55,7 @@ The NPU will receive a quantized feature tensor, not raw microphone samples. Fir
 
 ![Audio processing and Axon inference](assets/audio-axon-pipeline.png)
 
-For detection-first processing, I’ll use a reference microphone for the model and retain the aligned multichannel window for source-direction analysis. I’ll compare this with beamforming before detection under the same recording conditions.
+For detection-first processing, I’ll use a reference microphone for the model and retain the aligned multichannel window for source-direction analysis.
 
 An anomaly score is a reason to inspect, not a diagnosis of bearing damage. Changes in speed, load and background noise also change the recording. Those normal variations will be included in testing so that a different operating condition does not automatically become a maintenance alert.
 
@@ -71,13 +71,11 @@ The Nordic nodes will operate as Zigbee Sleepy End Devices. They will send perio
 
 The application will maintain a node registry, cache reports and display their age. Timestamps, sequence numbers and timeouts will identify stale information without querying every node whenever the display refreshes. If reporting stops, the application will mark the node unavailable. A missing packet does not tell us whether the battery, hardware or radio link is responsible.
 
-For on-site diagnostics, the nRF node will expose its identity and Bluetooth commissioning information as an NFC tag. I’ll connect the ACS ACR1552U reader to the Android device over USB. The companion application will read the node’s tag through that reader, use the returned details to identify the correct Bluetooth device, and establish an authenticated BLE connection to retrieve its history.
+For on-site diagnostics, the nRF node exposes its identity and Bluetooth commissioning information as an NFC tag. The ACS ACR1552U reader connects to the Android device over USB. The companion application reads the tag through the reader, identifies the node and authenticates the BLE connection before retrieving its history. This maintenance path operates independently of Zigbee and does not require built-in NFC on Android.
 
-The nRF is the tag, the ACS unit is the reader, and Android handles the Bluetooth connection. The reader is part of the maintenance interface in the final product, not just a bench-testing tool. This workflow will work independently of the Zigbee network and will not require built-in NFC on the Android device. Reading the tag supplies commissioning data; the BLE connection and authorization are handled by the application.
+The node will retain detailed event records and acoustic features for direct retrieval. I’ll test tag reading, device identification and BLE retrieval while acoustic processing and Zigbee reporting are active to check how they share processing and radio resources.
 
-The node will retain detailed records and acoustic features for direct retrieval instead of adding them to every network report. I’ll test tag reading through the USB reader, device identification, authorized BLE access and transfer while acoustic processing is active. Zigbee and BLE share radio resources, so connecting to an otherwise idle board will not establish that the complete system works.
-
-![On-site diagnostics (illustration only)](assets/maintenance-workflow.png)
+![On-site diagnostics](assets/maintenance-workflow.png)
 
 ## Power Management
 
@@ -99,7 +97,7 @@ Each session will include the operating speed, source positions and background n
 
 The same recordings and conditions will be evaluated with one microphone and the array. The array adds capture, memory, processing and energy costs, so I’ll measure whether it improves association with the abnormal source enough to justify them. Results will include detection performance, false alarms, direction error and correct-machine association.
 
-I’ll validate synchronization, sample throughput and sample loss before interpreting direction results. Embedded measurements will cover model size, RAM, feature-extraction time, inference latency and total processing time per audio window.
+Embedded measurements will cover model size, RAM, feature-extraction time, inference latency and total processing time per audio window.
 
 Wireless commissioning and reporting will first use clearly labelled simulated measurements. After those paths work, I’ll connect real acoustic observations and test the complete sequence: a change at the machine, detection and source estimation at the node, a report in the monitoring application, and diagnostic retrieval beside the equipment. Delivery, request latency, stale-node detection and reconnection will be measured separately so that network failures do not get confused with detector failures.
 
@@ -109,7 +107,7 @@ Power testing will separate acquisition, feature extraction, inference, Zigbee, 
 
 A future version will extend the same monitoring approach to irrigation pumps, farm motors and equipment spread across larger outdoor sites. That version will use LoRa for reports between field nodes and a gateway in place of the local Zigbee network. Acoustic processing will remain on each node, and BLE will remain the direct maintenance interface.
 
-The field deployment will need its own enclosure, power budget and communication tests. The data sent over the radio will still be compact condition observations and alerts, keeping the machine-monitoring function separate from the choice of network.
+The field deployment will need its own enclosure, power budget and communication tests.
 
 ## References
 
@@ -123,5 +121,12 @@ The field deployment will need its own enclosure, power budget and communication
 - [Axon supported operators](https://nrfconnectdocs.nordicsemi.com/addons/addon-edge-ai/latest/axon_compiler/supported_operators.html) — model compatibility and quantization guidance.
 - [Axon low-power sample](https://nrfconnectdocs.nordicsemi.com/addons/addon-edge-ai/latest/samples/axon/axon_low_power/README.html) — inference scheduling and power profiling.
 - [MIMII dataset](https://zenodo.org/records/3384388) and [DCASE 2025 Task 2](https://dcase.community/challenge2025/task-first-shot-unsupervised-anomalous-sound-detection-for-machine-condition-monitoring) — machinery-sound data and evaluation references.
+
+## Photo Credits
+
+Photographs used under the [Pexels License](https://www.pexels.com/license/):
+
+- Cover: [Industrial Pumps at Dubai Power Plant](https://www.pexels.com/photo/industrial-pumps-at-dubai-power-plant-35645884/) by Mumtaz Niazi.
+- Industrial motor room: [Gray and Red Industrial Machine](https://www.pexels.com/photo/gray-and-red-industrial-machine-2569839/) by Magda Ehlers.
 
 <!-- END HACKSTER ARTICLE -->
