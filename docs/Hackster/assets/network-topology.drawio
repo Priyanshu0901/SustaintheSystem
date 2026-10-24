@@ -1,0 +1,79 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="network-topology" name="Monitoring network and maintenance access">
+    <mxGraphModel page="1" pageWidth="1600" pageHeight="1030" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c2" value="" style="rounded=1;arcSize=15;fillColor=#f5f7fb;strokeColor=#dbe4ee;" vertex="1" parent="1">
+          <mxGeometry x="30" y="145" width="950" height="790" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" value="ZIGBEE MONITORING" style="text;html=0;align=left;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#52677b;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="165" width="1530" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="" style="rounded=1;arcSize=15;fillColor=#f5f7fb;strokeColor=#dbe4ee;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="145" width="550" height="790" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="DIRECT ACCESS TO A SELECTED NODE" style="text;html=0;align=left;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#52677b;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="165" width="540" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="main" value="&lt;b&gt;Array monitoring node&lt;/b&gt;&lt;br&gt;nRF54LM20 DK / nRF54LM20B&lt;br&gt;Seven-channel audio + Axon inference&lt;br&gt;Zigbee sleepy end device" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="225" width="390" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="xiao" value="&lt;b&gt;Microphone POC nodes&lt;/b&gt;&lt;br&gt;XIAO nRF54LM20A Sense&lt;br&gt;Onboard mic + CPU inference&lt;br&gt;Zigbee end devices" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="550" y="225" width="390" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="coord" value="&lt;b&gt;XIAO ESP32C6&lt;/b&gt;&lt;br&gt;Zigbee coordinator&lt;br&gt;Commissioning + compact reports" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="310" y="475" width="390" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="app" value="&lt;b&gt;Local monitoring application&lt;/b&gt;&lt;br&gt;Node registry · events · report age&lt;br&gt;Computer connected over USB" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="310" y="720" width="390" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="selected" value="&lt;b&gt;Selected monitoring node&lt;/b&gt;&lt;br&gt;NFC tag: identity + BLE setup data" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="225" width="350" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="reader" value="&lt;b&gt;ACS ACR1552U&lt;/b&gt;&lt;br&gt;External USB NFC reader" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#fff2dc;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="465" width="350" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="android" value="&lt;b&gt;Android device&lt;/b&gt;&lt;br&gt;Companion application&lt;br&gt;BLE authentication + event history" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="710" width="350" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="Zigbee reports / requests" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="main" target="coord">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="265" y="420" />
+              <mxPoint x="505" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge7" value="Zigbee reports / requests" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.59;entryY=0;" edge="1" parent="1" source="xiao" target="coord">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="745" y="445" />
+              <mxPoint x="540" y="445" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" value="USB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="coord" target="app">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge9" value="NFC tag read" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;dashed=1;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="selected" target="reader">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge10" value="USB reader data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="reader" target="android">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge11" value="BLE" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="selected" target="android">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1525" y="280" />
+              <mxPoint x="1525" y="770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

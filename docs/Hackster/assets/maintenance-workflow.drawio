@@ -1,0 +1,280 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.16 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36" version="26.0.16">
+  <diagram id="maintenance-ui" name="Maintenance UI">
+    <mxGraphModel dx="3151" dy="1858" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1040" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="s5" value="" style="rounded=1;absoluteArcSize=1;arcSize=44;fillColor=#ffffff;strokeColor=#dce5ef;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="155" width="560" height="793" as="geometry" />
+        </mxCell>
+        <mxCell id="s6" value="" style="rounded=1;absoluteArcSize=1;arcSize=20;fillColor=#eff5ff;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="68" y="182" width="48" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="s7" value="01" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=18;fontColor=#2563eb;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="80" y="189" width="80" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="s8" value="Read the NFC tag" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=30;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="68" y="226" width="230.4" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="s9" value="USB reader sends tag data to Android." style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=19;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="68" y="272" width="437.76" height="28.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s10" value="" style="rounded=1;absoluteArcSize=1;arcSize=70;fillColor=#172b46;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="140" y="323" width="360" height="588" as="geometry" />
+        </mxCell>
+        <mxCell id="s11" value="" style="rounded=1;absoluteArcSize=1;arcSize=56;fillColor=#f8fafc;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="149" y="332" width="342" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="s12" value="" style="rounded=1;absoluteArcSize=1;arcSize=8;fillColor=#172b46;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="277" y="341" width="86" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="s13" value="10:42" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=14;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="167" y="366" width="80" height="21" as="geometry" />
+        </mxCell>
+        <mxCell id="s14" value="BLE" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=13;fontColor=#62738b;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="416" y="367" width="80" height="19.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s15" style="endArrow=none;strokeColor=#e7edf5;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="159" y="399" as="sourcePoint" />
+            <mxPoint x="481" y="399" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s16" value="Acoustic Monitor" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=20;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="165" y="413" width="204.8" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s17" style="endArrow=none;strokeColor=#b9c4d2;strokeWidth=4;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="272" y="886" as="sourcePoint" />
+            <mxPoint x="368" y="886" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s18" value="" style="rounded=1;absoluteArcSize=1;arcSize=44;fillColor=#ffffff;strokeColor=#dce5ef;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="620" y="155" width="560" height="793" as="geometry" />
+        </mxCell>
+        <mxCell id="s19" value="" style="rounded=1;absoluteArcSize=1;arcSize=20;fillColor=#eff5ff;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="648" y="182" width="48" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="s20" value="02" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=18;fontColor=#2563eb;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="660" y="189" width="80" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="s21" value="Connect over BLE" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=30;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="648" y="226" width="307.2" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="s22" value="Authorize access to the nearby monitor." style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=19;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="648" y="272" width="474.24" height="28.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s23" value="" style="rounded=1;absoluteArcSize=1;arcSize=70;fillColor=#172b46;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="720" y="323" width="360" height="588" as="geometry" />
+        </mxCell>
+        <mxCell id="s24" value="" style="rounded=1;absoluteArcSize=1;arcSize=56;fillColor=#f8fafc;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="729" y="332" width="342" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="s25" value="" style="rounded=1;absoluteArcSize=1;arcSize=8;fillColor=#172b46;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="857" y="341" width="86" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="s26" value="10:42" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=14;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="747" y="366" width="80" height="21" as="geometry" />
+        </mxCell>
+        <mxCell id="s27" value="BLE" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=13;fontColor=#62738b;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="996" y="367" width="80" height="19.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s28" style="endArrow=none;strokeColor=#e7edf5;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="739" y="399" as="sourcePoint" />
+            <mxPoint x="1061" y="399" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s29" value="Acoustic Monitor" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=20;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="745" y="413" width="204.8" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s30" style="endArrow=none;strokeColor=#b9c4d2;strokeWidth=4;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="852" y="886" as="sourcePoint" />
+            <mxPoint x="948" y="886" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s31" value="" style="rounded=1;absoluteArcSize=1;arcSize=44;fillColor=#ffffff;strokeColor=#dce5ef;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1200" y="155" width="560" height="793" as="geometry" />
+        </mxCell>
+        <mxCell id="s32" value="" style="rounded=1;absoluteArcSize=1;arcSize=20;fillColor=#eff5ff;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1228" y="182" width="48" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="s33" value="03" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=18;fontColor=#2563eb;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1240" y="189" width="80" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="s34" value="Open event history" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=30;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1228" y="226" width="345.6" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="s35" value="Review the event and its likely source." style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=19;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="1228" y="272" width="474.24" height="28.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s36" value="" style="rounded=1;absoluteArcSize=1;arcSize=70;fillColor=#172b46;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1300" y="323" width="360" height="588" as="geometry" />
+        </mxCell>
+        <mxCell id="s37" value="" style="rounded=1;absoluteArcSize=1;arcSize=56;fillColor=#f8fafc;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1309" y="332" width="342" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="s38" value="" style="rounded=1;absoluteArcSize=1;arcSize=8;fillColor=#172b46;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1437" y="341" width="86" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="s39" value="10:42" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=14;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1327" y="366" width="80" height="21" as="geometry" />
+        </mxCell>
+        <mxCell id="s40" value="BLE" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=13;fontColor=#62738b;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1576" y="367" width="80" height="19.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s41" style="endArrow=none;strokeColor=#e7edf5;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1319" y="399" as="sourcePoint" />
+            <mxPoint x="1641" y="399" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s42" value="Acoustic Monitor" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=20;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1325" y="413" width="204.8" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s43" style="endArrow=none;strokeColor=#b9c4d2;strokeWidth=4;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1432" y="886" as="sourcePoint" />
+            <mxPoint x="1528" y="886" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s44" value="USB NFC reader ready" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="165" y="451" width="204.8" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="s45" value="" style="ellipse;fillColor=#eff5ff;strokeColor=none;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="244" y="502" width="152" height="152" as="geometry" />
+        </mxCell>
+        <mxCell id="s46" value="" style="ellipse;fillColor=none;strokeColor=#b9cfff;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="265" y="523" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="s47" value="" style="ellipse;fillColor=none;strokeColor=#83aafa;strokeWidth=3;" parent="1" vertex="1">
+          <mxGeometry x="284" y="542" width="72" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="s48" value="" style="rounded=1;absoluteArcSize=1;arcSize=14;fillColor=#ffffff;strokeColor=#2563eb;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="287" y="557" width="66" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="s49" style="endArrow=none;strokeColor=#2563eb;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="312" y="599" as="sourcePoint" />
+            <mxPoint x="312" y="631" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s50" value="Hold the reader near the node" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=18;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="188" y="668" width="334.08" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="s51" value="Android reads BLE setup details." style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="180" y="699" width="272" height="25.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s52" value="" style="rounded=1;absoluteArcSize=1;arcSize=28;fillColor=#ffffff;strokeColor=#dce5ef;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="165" y="758" width="310" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="s53" value="" style="rounded=1;absoluteArcSize=1;arcSize=20;fillColor=#eff5ff;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="182" y="778" width="42" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="s54" value="USB" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=13;fontColor=#2563eb;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="190" y="793" width="80" height="19.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s55" value="ACS ACR1552U" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=18;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="239" y="771" width="210" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="s56" value="Connected to Android" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=15;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="239" y="799" width="192" height="22.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s57" value="Node identified from NFC" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="745" y="451" width="143.36" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="s58" value="" style="rounded=1;absoluteArcSize=1;arcSize=28;fillColor=#ffffff;strokeColor=#dce5ef;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="745" y="500" width="310" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="s59" value="" style="rounded=1;absoluteArcSize=1;arcSize=24;fillColor=#eff5ff;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="763" y="518" width="46" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="s60" value="M" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=20;fontColor=#2563eb;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="776" y="528" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s61" value="Monitor 01" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=20;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="824" y="517" width="128" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s62" value="Workshop · Fan group" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=15;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="824" y="549" width="192" height="22.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s63" value="" style="ellipse;fillColor=#128461;strokeColor=none;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="765" y="594" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="s64" value="BLE available" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=15;fontColor=#128461;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="783" y="589" width="124.8" height="22.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s65" value="" style="rounded=1;absoluteArcSize=1;arcSize=28;fillColor=#eff5ff;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="745" y="647" width="310" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="s66" value="Authenticated access" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=17;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="763" y="661" width="217.6" height="25.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s67" value="Diagnostic history stays on the node." style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=14;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="763" y="693" width="331.52" height="21" as="geometry" />
+        </mxCell>
+        <mxCell id="s68" value="No Zigbee connection required." style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=14;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="763" y="714" width="268.8" height="21" as="geometry" />
+        </mxCell>
+        <mxCell id="s69" value="" style="rounded=1;absoluteArcSize=1;arcSize=26;fillColor=#2563eb;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="745" y="778" width="310" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="s70" value="Connect securely" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=18;fontColor=#ffffff;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="827" y="794" width="184.32" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="s71" value="BLE details read from the node tag" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=15;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="783" y="849" width="288" height="22.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s72" value="Monitor 01" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="1325" y="451" width="102.4" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="s73" value="" style="ellipse;fillColor=#128461;strokeColor=none;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="1547" y="457" width="8" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="s74" value="Connected" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=12;fontColor=#128461;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1563" y="455" width="80" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="s75" value="Event history" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=24;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1325" y="484" width="199.68" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="s76" value="" style="rounded=1;absoluteArcSize=1;arcSize=28;fillColor=#ffffff;strokeColor=#dce5ef;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1325" y="530" width="310" height="253" as="geometry" />
+        </mxCell>
+        <mxCell id="s77" value="" style="rounded=1;absoluteArcSize=1;arcSize=16;fillColor=#fff2df;strokeColor=none;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1342" y="547" width="124" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="s78" value="Acoustic anomaly" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=12;fontColor=#95600b;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1352" y="554" width="122.88" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="s79" value="25 Oct 2026 · 10:42:18" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=17;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1343" y="588" width="239.36" height="25.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s80" style="endArrow=none;strokeColor=#e7edf5;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1343" y="626" as="sourcePoint" />
+            <mxPoint x="1617" y="626" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s81" value="Anomaly score" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=15;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="1343" y="643" width="124.8" height="22.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s82" value="0.82" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=21;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1560" y="637" width="80" height="31.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s83" value="Source direction" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=15;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="1343" y="686" width="153.6" height="22.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s84" value="35°" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=21;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1557" y="680" width="80" height="31.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s85" value="Likely source" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=15;fontColor=#62738b;fontStyle=0;" parent="1" vertex="1">
+          <mxGeometry x="1343" y="727" width="124.8" height="22.5" as="geometry" />
+        </mxCell>
+        <mxCell id="s86" value="Fan B" style="text;html=0;whiteSpace=nowrap;align=left;verticalAlign=middle;spacing=0;fontFamily=Segoe UI;fontSize=18;fontColor=#172b46;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1557" y="724" width="80" height="27" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

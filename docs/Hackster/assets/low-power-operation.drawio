@@ -1,0 +1,94 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.16 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36" version="26.0.16">
+  <diagram id="low-power-operation" name="Capture and reporting cycle">
+    <mxGraphModel dx="3545" dy="2090" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1160" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c2" value="" style="rounded=1;arcSize=15;fillColor=#f5f7fb;strokeColor=#dbe4ee;" parent="1" vertex="1">
+          <mxGeometry x="30" y="145" width="970" height="915" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" value="MONITORING CYCLE" style="text;html=0;align=left;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#52677b;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="145" y="165" width="400" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="" style="rounded=1;arcSize=15;fillColor=#f5f7fb;strokeColor=#dbe4ee;" parent="1" vertex="1">
+          <mxGeometry x="1030" y="145" width="540" height="915" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="MAINTENANCE SESSION" style="text;html=0;align=left;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#52677b;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1120" y="165" width="370" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="init" value="&lt;b&gt;Initialize once&lt;/b&gt;&lt;br&gt;Load model and allocate buffers" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="80" y="210" width="350" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="wait" value="&lt;b&gt;Wait for scheduled work&lt;/b&gt;&lt;br&gt;Next capture timer&lt;br&gt;Service scheduled radio events" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="80" y="375" width="350" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="acq" value="&lt;b&gt;Capture an audio window&lt;/b&gt;&lt;br&gt;Start acquisition&lt;br&gt;Fill aligned sample buffers" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="80" y="555" width="350" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="infer" value="&lt;b&gt;Process the window&lt;/b&gt;&lt;br&gt;Stop capture after the window&lt;br&gt;Extract features and run Axon&lt;br&gt;Calculate anomaly score" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#eee9fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="80" y="735" width="350" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="decision" value="&lt;b&gt;Send report?&lt;/b&gt;&lt;br&gt;Anomaly / status interval" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2dc;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="545" y="715" width="230" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="send" value="&lt;b&gt;Transmit report&lt;/b&gt;&lt;br&gt;Queued event or periodic status" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="545" y="920" width="330" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="nfc" value="&lt;b&gt;Read commissioning tag&lt;/b&gt;&lt;br&gt;ACS USB reader → Android&lt;br&gt;Get BLE device details" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#fff2dc;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="1120" y="225" width="360" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="ble" value="&lt;b&gt;Connect over BLE&lt;/b&gt;&lt;br&gt;Discover selected node&lt;br&gt;Establish BLE connection" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="1120" y="425" width="360" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="get" value="&lt;b&gt;Authorize and retrieve&lt;/b&gt;&lt;br&gt;Authenticate app access&lt;br&gt;Read stored event history" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="1120" y="625" width="360" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="end" value="&lt;b&gt;Close the session&lt;/b&gt;&lt;br&gt;Disconnect or session timeout&lt;br&gt;Return to usual radio schedule" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" parent="1" vertex="1">
+          <mxGeometry x="1120" y="825" width="360" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="init" target="wait" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" value="Sampling timer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="wait" target="acq" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge8" value="Window ready" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="acq" target="infer" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge9" value="Score / record" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="infer" target="decision" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge10" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.35;entryY=0;" parent="1" source="decision" target="send" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge11" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" parent="1" source="decision" target="wait" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="793" />
+              <mxPoint x="900" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge12" value="Return to wait" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" parent="1" source="send" target="wait" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="965" />
+              <mxPoint x="950" y="350" />
+              <mxPoint x="480" y="350" />
+              <mxPoint x="480" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge13" value="App uses tag data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="nfc" target="ble" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge14" value="BLE connected" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="ble" target="get" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge15" value="Complete / timeout" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="get" target="end" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

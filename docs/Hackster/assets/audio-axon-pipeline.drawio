@@ -1,0 +1,118 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="audio-axon-pipeline" name="Audio processing and Axon inference">
+    <mxGraphModel page="1" pageWidth="1600" pageHeight="1130" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c2" value="" style="rounded=1;arcSize=15;fillColor=#f5f7fb;strokeColor=#dbe4ee;" vertex="1" parent="1">
+          <mxGeometry x="30" y="145" width="1540" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" value="ON THE MONITORING NODE" style="text;html=0;align=left;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#52677b;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="165" width="1530" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="" style="rounded=1;arcSize=15;fillColor=#f5f7fb;strokeColor=#dbe4ee;" vertex="1" parent="1">
+          <mxGeometry x="30" y="755" width="1540" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="ON THE TRAINING COMPUTER" style="text;html=0;align=left;spacing=0;fontFamily=Segoe UI;fontSize=16;fontColor=#52677b;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="775" width="1530" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="capture" value="&lt;b&gt;Synchronized capture&lt;/b&gt;&lt;br&gt;Aligned microphone channels&lt;br&gt;Audio samples → PCM buffers" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="220" width="300" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="buffer" value="&lt;b&gt;PCM window buffers&lt;/b&gt;&lt;br&gt;Retain aligned channels&lt;br&gt;Release after processing" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="430" y="220" width="300" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="features" value="&lt;b&gt;CPU preprocessing&lt;/b&gt;&lt;br&gt;Select reference channel&lt;br&gt;Window → FFT/STFT → log-mel&lt;br&gt;Match training normalization" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="800" y="220" width="300" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pack" value="&lt;b&gt;Quantize + pack input&lt;/b&gt;&lt;br&gt;int8 scale + zero point&lt;br&gt;Channel-first layout from model" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="220" width="300" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="npu" value="&lt;b&gt;Axon NPU inference&lt;/b&gt;&lt;br&gt;Driver submits compiled model&lt;br&gt;Input / output / workspace" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#eee9fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="445" width="300" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="score" value="&lt;b&gt;CPU anomaly score&lt;/b&gt;&lt;br&gt;Reconstruction error&lt;br&gt;Apply threshold" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="800" y="445" width="300" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="spatial" value="&lt;b&gt;CPU spatial analysis&lt;/b&gt;&lt;br&gt;Run on an anomaly&lt;br&gt;TDOA / GCC-PHAT → direction" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="430" y="445" width="300" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="event" value="&lt;b&gt;Store observation&lt;/b&gt;&lt;br&gt;Score + time + direction&lt;br&gt;Queue event or periodic summary" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="445" width="300" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="data" value="&lt;b&gt;Recordings + data splits&lt;/b&gt;&lt;br&gt;Normal-operation training data&lt;br&gt;Separate validation / test sessions" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="825" width="300" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="train" value="&lt;b&gt;Train the autoencoder&lt;/b&gt;&lt;br&gt;Use the same feature pipeline&lt;br&gt;Choose threshold on validation" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="430" y="825" width="300" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="compile" value="&lt;b&gt;Quantize + compile&lt;/b&gt;&lt;br&gt;Check Axon operator support&lt;br&gt;Compare quantized accuracy" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#eee9fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="800" y="825" width="300" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="model" value="&lt;b&gt;Compiled model package&lt;/b&gt;&lt;br&gt;Weights + compiled commands&lt;br&gt;Shapes + buffer requirements" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#eee9fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="825" width="300" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="PCM" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="capture" target="buffer">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge7" value="Audio window" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="buffer" target="features">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" value="Features" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="features" target="pack">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge9" value="Packed feature tensor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="pack" target="npu">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge10" value="Model output" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="npu" target="score">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge11" value="Anomaly" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="score" target="spatial">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge12" value="Direction" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="spatial" target="event">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge13" value="Aligned raw window" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="buffer" target="spatial">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge14" value="Normal: update summary" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=1;" edge="1" parent="1" source="score" target="event">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="630" />
+              <mxPoint x="210" y="630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="data" target="train">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="train" target="compile">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="compile" target="model">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge18" value="Deploy with firmware" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#61798f;fontSize=16;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="model" target="npu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1530" y="882" />
+              <mxPoint x="1530" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

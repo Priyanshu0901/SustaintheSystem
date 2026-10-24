@@ -18,7 +18,7 @@ Acoustic Fault Detection and Localization
 ```text
 I’m building a non-contact condition-monitoring system for motors, pumps and fans using the Nordic nRF54LM20 DK and a Sipeed MAIX R6+1 seven-microphone array.
 
-The monitoring node will process audio locally, detect departures from normal operating sound and estimate the direction of the abnormal source. Zigbee will carry compact status reports and maintenance alerts through a XIAO ESP32C6 coordinator to a local monitoring application. NFC-assisted Bluetooth Low Energy access will let a technician retrieve diagnostic history directly from a node.
+The monitoring node will process audio locally, detect departures from normal operating sound and estimate the direction of the abnormal source. Zigbee will carry compact status reports and maintenance alerts through a XIAO ESP32C6 coordinator to a local monitoring application. An ACS ACR1552U USB reader connected to Android will read the NFC tag for Bluetooth commissioning details, and the Android application will retrieve diagnostic history over BLE.
 
 The first demonstration will use two low-voltage fans or motors running together. I’ll compare one microphone with the array to measure whether spatial processing helps identify which machine needs inspection. A later field version will use LoRa reporting for farm motors and irrigation pumps spread across larger sites.
 ```
@@ -53,7 +53,7 @@ The seven-channel microphone array will supply spatial information. I’ll compa
 
 Zigbee Sleepy End Device operation will carry summaries, anomaly scores, timestamps and direction estimates to the XIAO ESP32C6 coordinator. The local monitoring application will retain reports, display their age and flag nodes that stop reporting. It will also send small diagnostic requests through the network.
 
-Bluetooth will provide direct maintenance access. An NFC tap will enable a temporary BLE advertising window, and an authenticated companion application will retrieve the node’s event history and diagnostic information independently of Zigbee. I’ll test this interaction while acquisition and inference are active.
+Bluetooth will provide direct maintenance access. The nRF node will act as an NFC tag carrying its identity and BLE commissioning information. An ACS ACR1552U reader connected to Android over USB will read that information; the companion application will then identify the node, establish an authenticated BLE connection and retrieve its history independently of Zigbee. The reader is part of the final maintenance interface. I’ll test tag reading and BLE retrieval while acquisition and inference are active.
 
 Physical validation will use two simultaneous low-voltage fans or motors, with a worn fan or a repeatable mounting change providing the abnormal test case. Measurements will cover detection, correct-machine association, direction error, report delivery, diagnostic latency and reconnection. Power testing will separate sensing, processing, inference, radio and idle consumption, and compare continuous monitoring with periodic sampling and event-driven inference.
 ```
