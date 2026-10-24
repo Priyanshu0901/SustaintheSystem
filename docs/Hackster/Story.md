@@ -35,9 +35,9 @@ The XIAO’s built-in microphone also gives me a single-microphone baseline for 
 
 ![Sipeed MAIX R6+1](assets/r6_plus_1_microphone_positions.png)
 
-For spatial processing, I’ll use delay-and-sum beamforming to emphasize sound from a selected direction and evaluate time-difference-of-arrival estimates using GCC-PHAT to calculate delays between channels.
+The array will also help isolate a machine’s sound from the surrounding noise. I’ll use delay-and-sum beamforming to compensate for the arrival-time differences between microphones for a selected direction, then combine the channels. Sound from that direction adds together coherently, while interference from other directions can be reduced. This directional noise suppression will give the anomaly model a clearer view of the selected machine. I’ll use GCC-PHAT to estimate the time differences between channels for source-direction analysis.
 
-Reflections complicate this because the same sound reaches the array along more than one path. Nearby machines also share parts of the frequency spectrum. The output will therefore identify a likely direction or associate the event with a known machine position; the first implementation will not attempt precise room coordinates.
+Reflections complicate this because the same sound reaches the array along more than one path. Nearby machines also share parts of the frequency spectrum, and machines in similar directions will be harder to separate. The output will therefore identify a likely direction or associate the event with a known machine position; the first implementation will not attempt precise room coordinates.
 
 ## Acoustic Anomaly Detection
 
@@ -47,7 +47,7 @@ I’ll begin with spectral analysis and log-mel spectrograms, using FFT and shor
 
 MIMII and DCASE machinery recordings will provide the first offline training and evaluation data. I’ll keep recordings for training, threshold selection and testing separate, and record the dataset version and operating conditions with the results. Physical recordings from the test setup will then show how the model behaves with this array and these machines.
 
-To combine detection with direction estimation, I’ll compare two processing arrangements. The first forms directional audio before running the anomaly model. The second runs the model on a reference microphone and retains the aligned multichannel window to estimate the source direction when a change is detected. The comparison will use correct-machine association and processing cost as well as angular error. Finding the loudest fan is not necessarily finding the abnormal one.
+To combine detection with direction estimation, I’ll compare two processing arrangements. The first uses the beamformed audio for anomaly detection, applying the same spatial processing to normal training recordings and evaluation recordings. The second runs the model on a reference microphone and retains the aligned multichannel window to estimate the source direction when a change is detected. The comparison will use correct-machine association and processing cost as well as angular error. Finding the loudest fan is not necessarily finding the abnormal one.
 
 Training and quantization will run on a computer. I’ll deploy the quantized model to the Nordic device and check operator support, model size, RAM and inference time alongside its detection performance. Acquisition, feature extraction, storage and communication must all fit around that workload.
 
@@ -89,6 +89,8 @@ I’ll use two low-voltage fans or motors running together for the first physica
 
 Each session will include the operating speed, source positions and background noise. I’ll move the sources and vary the noise so that the comparison does not depend on one convenient arrangement.
 
+I’ll also record each machine separately as a reference, then compare the mixed and beamformed recordings with both machines running. Their spectra will help show whether the filtering reduces interference while preserving the changes associated with the abnormal condition. I’ll check whether that translates into fewer false alarms and better detection of the quieter abnormal source when the other machine is louder.
+
 The same recordings and conditions will be evaluated with one microphone and the array. The array adds capture, memory, processing and energy costs, so I’ll measure whether it improves association with the abnormal source enough to justify them. Results will include detection performance, false alarms, direction error and correct-machine association.
 
 Embedded measurements will cover model size, RAM, feature-extraction time, inference latency and total processing time per audio window.
@@ -113,6 +115,7 @@ The field deployment will need its own enclosure, power budget and communication
 - [XIAO nRF54LM20A Sense documentation](https://github.com/Seeed-Studio/wiki-documents/blob/docusaurus-version/sites/en/docs/Sensor/SeeedStudio_XIAO/SeeedStudio_XIAO_nRF54LM20A-Sense/XIAO_nRF54LM20A-Sense_Getting_Started.md) — onboard microphone and board peripherals.
 - [Nordic Zigbee R23 architectures](https://nrfconnectdocs.nordicsemi.com/addons/zigbee-r23/latest/architectures.html) and [router template](https://nrfconnectdocs.nordicsemi.com/addons/ncs-zigbee/latest/samples/template/README.html) — end-device/router designs and the starting point for router test firmware; XIAO board integration will be checked during development.
 - [Sipeed R6+1 microphone-array datasheet](https://dl.sipeed.com/MAIX/HDK/Sipeed-R6%2B1_MicArray/Specifications/Sipeed%20R6%2B1%20Microphone%20Array%20Datasheet%20V1.0.pdf) — array hardware reference.
+- [Acoustic beamforming using a microphone array](https://www.mathworks.com/help/audio/ug/acoustic-beamforming-using-a-microphone-array.html) — delay compensation, directional interference suppression and beamformer evaluation; the example uses speech, while this build will evaluate machinery sounds.
 - [ACS ACR1552U technical specification](https://www.acs.com.hk/download-manual/13248/TSP-ACR1552U-1.04.pdf) — USB reader capabilities and Android platform support.
 - [Nordic NFC pairing sample](https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrf/samples/bluetooth/peripheral_nfc_pairing/README.html) — NFC tag-side Bluetooth handover reference; the Android application will handle the external-reader workflow.
 - [Axon model compiler](https://nrfconnectdocs.nordicsemi.com/addons/addon-edge-ai/latest/axon_compiler/Axon_npu_tflite_compiler.html) — quantized-model conversion and compatibility checks.

@@ -23,6 +23,7 @@ The [[Hardware/MCU and Board Capabilities|board reference]] and [[Hardware/Bluet
 
 ## Acoustic datasets and evaluation
 
+- [MathWorks acoustic beamforming example](https://www.mathworks.com/help/audio/ug/acoustic-beamforming-using-a-microphone-array.html) — time-delay alignment, directional interference suppression and input/output SINR evaluation in a speech example. Supports the processing explanation, not a measured machinery-noise result or a MATLAB dependency for this project.
 - [MIMII dataset, public 1.0](https://zenodo.org/records/3384388) — normal and anomalous industrial-machine recordings, dataset description and licence.
 - [MIMII baseline code](https://github.com/MIMII-hitachi/mimii_baseline) — dataset authors' anomaly-detection baseline.
 - [DCASE 2025 Task 2](https://dcase.community/challenge2025/task-first-shot-unsupervised-anomalous-sound-detection-for-machine-condition-monitoring) — machine-condition anomaly-detection task, datasets and evaluation protocol. This is a reference edition; the project has not selected a dataset release yet.
