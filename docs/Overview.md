@@ -1,28 +1,22 @@
-# Overview
+# Acoustic Fault Detection and Localization
 
-Build systems that know when they need attention. Predict failure. Prevent waste. Extend the life of the systems our world depends on.
+A non-contact monitor that detects changes in machinery sounds and estimates which nearby machine needs inspection.
+
+The monitoring node uses the Nordic nRF54LM20 DK and a Sipeed R6+1 microphone array for local audio processing and Edge AI anomaly detection. Zigbee carries compact observations to a local coordinator; NFC-assisted Bluetooth access provides diagnostic history during maintenance. A later field version will use LoRa reporting.
+
+The first demonstration will compare one microphone with the array using two simultaneous fans or motors, measuring detection, false alarms, direction estimates and power. An acoustic anomaly indicates a reason to inspect equipment; it does not establish a specific fault or remaining life.
+
+Status: design and documentation in progress. Hardware integration and measured performance remain unverified.
 
 ## Project documentation
 
-- [Product opportunities and DK utilization](Research/Opportunity%20Assessment.md) — current LM20B chest-body sensing/PDM versus I²S assessment; preceding wearable market, contest distinctiveness and DK comparison retained, checked 2026-10-10
+- [[Hackster/Story|Project story]] — design, operation and validation approach.
+- [[Hackster/Basics|Title and pitch]].
+- [[Hackster/Things|Bill of materials]] — selections pending.
+- [[Hackster/Hardware Application Questions|Hardware application]] — draft answers.
 
-- [Sparse herd telemetry and recovery](Research/Sparse%20Herd%20Telemetry%20and%20Recovery.md) — supporting engineering research, illustrative load and reset/data-loss handling; current problem-first direction is in [[Project]]
+## Technical references
 
-- [Pet products and household validation](Research/Pet%20Products%20and%20Household%20Validation.md) — current competitors, differentiation hypotheses and testing with the user's dog; checked 2026-10-04
-
-- [Animal tag GNSS comparison](Research/Animal%20Tag%20GNSS%20Comparison.md) — LG77LICMD, L89HA and low-power alternatives; checked 2026-10-04
-
-- [Animal tags, sensors and impact](Research/Animal%20Tags%20Sensors%20and%20Impact.md) — measurable data, attachments and animal burden; checked 2026-10-04
-
-- [Animal and wildlife health concepts](Research/Animal%20and%20Wildlife%20Health%20Concepts.md) — proposed directions, dog-surrogate limits, reduced-label learning and public cattle data; checked 2026-10-04
-
-- [Bluetooth industry and academic frontiers](Research/Bluetooth%20Industry%20and%20Academic%20Frontiers.md) — applications, recent standards and original research; checked 2026-10-04
-
-- [Bluetooth and 2.4 GHz radio](Bluetooth%20and%202.4%20GHz%20Radio.md) — protocols, radio specifications and SDK support
-
-- [[Project|Project goal and requirements]]
-- [[MCU and Board Capabilities|MCU, family and board capabilities]] — manufacturer reference dated 2026-09-26; DK and exact Sense microphone follow-ups checked 2026-10-10
-- [[Sources/Competition Overview|Competition overview and resources]]
-- [[Research/Contest Landscape|Application landscape and prize-category research]] — updated 2026-10-05: 69 current listing IDs, 70 historical; official rules rechecked
-
-This documentation vault is self-contained. All note navigation stays within it. A broader structure of topic folders and subfolders will be planned later.
+- [[Hardware/MCU and Board Capabilities|MCU and board capabilities]].
+- [[Hardware/Bluetooth and 2.4 GHz Radio|Bluetooth and radio reference]].
+- [[Sources/References|Sources]] — manufacturer documents, datasets and contest rules.

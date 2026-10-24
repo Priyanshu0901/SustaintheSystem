@@ -1,6 +1,6 @@
 # MCU and board capabilities
 
-Verified against manufacturer documentation: **2026-09-26**. [Overview](Overview.md) · [Project](Project.md)
+Verified against manufacturer documentation: **2026-09-26**. [Overview](../Overview.md)
 
 Factual reference for project discussions and decisions. Scope: **nRF54LM20A/B**, their **nRF54L family**, the **nRF54LM20 DK**, and **XIAO nRF54LM20A Sense**. No application or architecture is selected here. Specifications describe documented capability, not measurements on our hardware. Linked `latest` documentation can change.
 
@@ -13,8 +13,6 @@ Factual reference for project discussions and decisions. Scope: **nRF54LM20A/B**
 | nRF54LM20A / nRF54LM20B | Two wireless SoCs within Nordic's nRF54L series |
 | nRF54LM20 DK | Nordic development board for these SoCs |
 | XIAO nRF54LM20A Sense | Seeed board combining the LM20A with additional components and sensors |
-
-Project inventory status: the supplied discussion reports three XIAO Sense boards ordered; receipt and revisions have not been verified. The DK was discussed as a future purchase. This note does not establish ownership.
 
 ## LM20A and LM20B: processing and memory
 
@@ -50,7 +48,7 @@ These are SoC resources, not a promise that every board exposes every signal. AD
 
 ### Audio acquisition
 
-Audio acquisition follow-up checked **2026-10-10**: the [LM20A/B PDM peripheral](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/pdm.html) documents one/two microphone inputs, hardware decimation to **16-bit PCM**, nominal 8/16/32/48 kHz output and EasyDMA. The [register table](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/pdm.html-topic) lists high-pass pole/disable controls; no configured cutoff/default or SDK driver exposure was established here. The [TDM peripheral](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/tdm.html) supports mono/stereo I²S, EasyDMA, 8/16/24/32-bit sample widths and controller/target clocks. These are hardware capabilities, not a built sample or a promise every microphone clock/rate/format works. Exact wiring, driver, filter and resource compatibility need verification. [Chest wearable assessment](Research/Opportunity%20Assessment.md#lm20b-chest-body-sensing-pdm-versus-i2s--2026-10-10) owns the application tradeoff. This targeted follow-up does not refresh the full catalog.
+Audio acquisition follow-up checked **2026-10-10**: the [LM20A/B PDM peripheral](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/pdm.html) documents one/two microphone inputs, hardware decimation to **16-bit PCM**, nominal 8/16/32/48 kHz output and EasyDMA. The [register table](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/pdm.html-topic) lists high-pass pole/disable controls; no configured cutoff/default or SDK driver exposure was established here. The [TDM peripheral](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/tdm.html) supports mono/stereo I²S, EasyDMA, 8/16/24/32-bit sample widths and controller/target clocks. These are hardware capabilities, not a built sample or a promise every microphone clock/rate/format works. Exact wiring, driver, filter and resource compatibility need verification. This targeted follow-up does not refresh the full catalog.
 
 ### USB
 
@@ -105,7 +103,7 @@ For performance context only, Nordic reports keyword-spotting inference at **4.5
 
 ### Nordic nRF54LM20 DK
 
-DK-specific hardware/software follow-up checked **2026-10-10**; the rest of this catalog retains its original verification date. Proposed application utilization is in [Opportunity assessment](Research/Opportunity%20Assessment.md#development-kit-utilization-for-ideas-25--2026-10-10).
+DK-specific hardware/software follow-up checked **2026-10-10**; the rest of this catalog retains its original verification date.
 
 Nordic's feature list specifies **LM20B silicon**, with **LM20A as an emulated target**. It also lists:
 
@@ -150,7 +148,7 @@ Seeed identifies **LSM6DS3TR-C** for motion and **MSM261DGT006** for audio. Its 
 
 Microphone follow-up checked **2026-10-10**: the [MEMSensing manufacturer catalog](https://www.memsensing.com/product/176.html) lists the exact **MSM261DGT006** as PDM, top port, size 4.0 × 2.0 × 1.1, sensitivity −26, SNR 65 and AOP 120. The catalog headers do not state units, reference conditions, weighting or tolerances; do not promote these summary values to a complete calibrated specification. Full exact-part frequency response, low-frequency noise, clock/power modes and current were not verified. Specifications for similarly named DGT003 parts are not substituted.
 
-Seeed's [recorder source](https://files.seeedstudio.com/wiki/XIAO_nRF54LM20A/main.c) uses **16 kHz, 16-bit mono**, external-flash capture and subsequent BLE NUS/WAV upload. Its guide describes a maximum ten-second recording followed by transfer to a Windows receiver. This is vendor code/documentation, not a local build, live phone stream or measured body-sound capability. PDM output and configured sample rate do not establish acoustic bandwidth. Application/coupling and phone feasibility are assessed in [Opportunity assessment](Research/Opportunity%20Assessment.md#phone-connected-stethoscope-feasibility--2026-10-10).
+Seeed's [recorder source](https://files.seeedstudio.com/wiki/XIAO_nRF54LM20A/main.c) uses **16 kHz, 16-bit mono**, external-flash capture and subsequent BLE NUS/WAV upload. Its guide describes a maximum ten-second recording followed by transfer to a Windows receiver. This is vendor code/documentation, not a local build, live phone stream or measured body-sound capability. PDM output and configured sample rate do not establish acoustic bandwidth.
 
 | LSM6DS3TR-C function | Component capability |
 | --- | --- |

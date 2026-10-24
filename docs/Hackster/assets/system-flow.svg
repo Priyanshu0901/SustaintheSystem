@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="660" viewBox="0 0 1000 660" role="img" aria-labelledby="title desc">
+<title id="title">Acoustic monitoring signal and communication flow</title>
+<desc id="desc">System connections from machinery through synchronized microphone capture, Nordic processing and local history, Zigbee reporting, and NFC-assisted BLE phone access.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#526579" stroke-width="1.5"/></marker></defs>
+<rect width="1000" height="660" rx="18" fill="#f4f7fa"/>
+<g font-family="Segoe UI,Arial,sans-serif" fill="#173249">
+<text x="40" y="42" font-size="24" font-weight="600">Acoustic monitoring: signal and access paths</text>
+<text x="40" y="70" font-size="15" fill="#526579">Local audio processing · Zigbee reporting · direct Bluetooth diagnostics</text>
+<g fill="white" stroke="#9aafbf" stroke-width="1.5">
+<rect x="40" y="110" width="250" height="75" rx="10"/>
+<rect x="375" y="110" width="250" height="75" rx="10"/>
+<rect x="710" y="110" width="250" height="75" rx="10"/>
+<rect x="270" y="255" width="460" height="140" rx="12" fill="#e4eff7" stroke="#40749b"/>
+<rect x="40" y="465" width="285" height="85" rx="10"/>
+<rect x="40" y="585" width="285" height="50" rx="10"/>
+<rect x="675" y="465" width="285" height="85" rx="10"/>
+<rect x="675" y="585" width="285" height="50" rx="10"/>
+</g>
+<g font-size="18" text-anchor="middle">
+<text x="165" y="143">Motors / pumps / fans</text><text x="165" y="167" font-size="14" fill="#526579">Shared acoustic scene</text>
+<text x="500" y="143">Seven-microphone array</text><text x="500" y="167" font-size="14" fill="#526579">Sipeed MAIX R6+1</text>
+<text x="835" y="143">Synchronous audio capture</text><text x="835" y="167" font-size="14" fill="#526579">Aligned microphone channels</text>
+<text x="500" y="286" font-size="20" font-weight="600">Nordic monitoring node</text>
+<text x="500" y="315" font-size="16">Audio features · compatible NPU inference</text>
+<text x="500" y="340" font-size="16">Spatial processing · event history</text>
+<text x="500" y="370" font-size="14" fill="#526579">nRF54LM20 DK / nRF54LM20B target</text>
+<text x="182" y="497">Zigbee coordinator</text><text x="182" y="525" font-size="15" fill="#526579">XIAO ESP32C6</text>
+<text x="182" y="616" font-size="17">Local monitoring application</text>
+<text x="817" y="497">Technician's phone</text><text x="817" y="525" font-size="15" fill="#526579">Authenticated BLE access</text>
+<text x="817" y="616" font-size="17">NFC tap requests BLE advertising</text>
+</g>
+</g>
+<g fill="none" stroke="#526579" stroke-width="2" marker-end="url(#arrow)">
+<path d="M290 148H375"/><path d="M625 148H710"/>
+<path d="M835 185V220H500V255"/>
+<path d="M360 395V430H182V465"/>
+<path d="M182 550V585"/>
+<path d="M640 395V430H817V465"/>
+<path d="M940 585H980V365H730" stroke-dasharray="5 4"/>
+</g>
+<g font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#526579">
+<text x="295" y="135">Sound</text><text x="460" y="242">Synchronized samples</text>
+<text x="49" y="420">Zigbee reports / requests</text><text x="734" y="420">BLE diagnostics</text>
+</g>
+</svg>
