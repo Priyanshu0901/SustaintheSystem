@@ -15,7 +15,7 @@ Bill of materials for the acoustic monitoring node, microphone-based POC nodes a
 | --- | ---: | --- |
 | Nordic nRF54LM20 DK | 1 | Main monitoring node, targeting the nRF54LM20B for Axon NPU inference and multichannel acoustic processing |
 | Sipeed MAIX R6+1 microphone array | 1 | Seven-channel acoustic capture for beamforming and source-direction estimation |
-| Seeed Studio XIAO nRF54LM20A Sense | 4 | Built-in-microphone POC nodes for audio capture, CPU-based inference and a lower-cost single-microphone baseline while the DKs arrive |
+| Seeed Studio XIAO nRF54LM20A Sense | 4 | Microphone/CPU POC and Zigbee firmware testing while the DKs arrive; two temporarily serve as powered routers during mesh tests |
 | ACS ACR1552U USB NFC reader | 1 | USB-connected reader for the Android maintenance interface; reads the nRF tag’s identity and BLE commissioning details |
 | Seeed Studio XIAO ESP32C6 | 1 | Zigbee coordinator; connects the monitoring network to the local computer over USB |
 | Low-voltage DC fans or motors | 2 | Simultaneous-source test setup for normal and abnormal operating conditions |
@@ -31,6 +31,7 @@ The XIAO Sense boards are already available. The nRF54LM20 DK is awaiting arriva
 | Item | Purpose |
 | --- | --- |
 | nRF Connect SDK | Nordic development framework for firmware, peripheral drivers and wireless stacks |
+| Nordic Zigbee R23 Add-on | Zigbee end-device firmware and router test configurations; SDK, chip revision and XIAO board integration will be checked before building |
 | Zephyr RTOS | Embedded operating system and task scheduling |
 | Nordic Edge AI Add-on | Axon model compilation, inference driver and integration tools |
 | Android | Operating system for the maintenance device |

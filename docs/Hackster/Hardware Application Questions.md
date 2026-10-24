@@ -38,24 +38,22 @@ An anomaly will be treated as an inspection indication, not a diagnosis or a pre
 4. Please share the link to the project you have started.  
    The project should include the beginning of your Bill of Materials (BOM) with the nRF54LM20 DK. 
 ```text
-Will be added
+[Project Link](https://www.hackster.io/priyanshu-roy/acoustic-fault-detection-and-localization-0ce81d)
 ```
    Note: The application states that the hardware request cannot be judged without these items.
 
 5. How does your solution work? What are the main features? How will you use Bluetooth and Edge AI on your project? Please specify how you will use the nRF54LM20 DK in your solution.
 
 ```text
-The nRF54LM20 DK will be the monitoring node’s main processing and communication platform, targeting the nRF54LM20B and its Axon NPU. The firmware will handle synchronized audio input, feature extraction, observation storage and wireless communication, with compatible quantized model inference running on the NPU.
+I’ll use the nRF54LM20 DK as the acoustic monitoring node, targeting the nRF54LM20B and its Axon NPU. The DK will acquire synchronized audio from the Sipeed MAIX R6+1 seven-microphone array, extract features, run local inference, store event history and handle wireless communication. Audio capture and processing will run in timed windows, with the CPU waiting between cycles to reduce energy use.
 
-I’ll use spectral analysis and log-mel features with compact autoencoders as the initial anomaly-detection baseline. Training and quantization will run on a computer using MIMII/DCASE machinery recordings and recordings from the physical setup. Separate data will be used for training, threshold selection and evaluation. On the device, I’ll measure detection performance, false alarms, model size, RAM and processing latency.
+For Edge AI, I’ll use a compact autoencoder trained on normal machine sounds. Training and quantization will run on a computer. On the node, the CPU will convert audio windows into log-mel features, and the Axon NPU will run the quantized model. The CPU will compare the reconstructed features with the input to calculate an anomaly score. This will flag departures from normal operation without requiring a labelled example of every possible fault or streaming audio to a server.
 
-The seven-channel microphone array will supply spatial information. I’ll compare beamforming before anomaly detection with detection in mixed audio followed by spatial analysis, using delay-and-sum beamforming and TDOA/GCC-PHAT methods. Channel alignment and sustained capture will be checked before evaluating direction estimates. The output will be a likely source direction or machine association.
+The microphone array will add source-direction information through beamforming and time-difference-of-arrival processing. Combining that spatial information with the anomaly score will help associate an unusual sound with a nearby machine, giving the operator a likely source to inspect.
 
-Zigbee Sleepy End Device operation will carry summaries, anomaly scores, timestamps and direction estimates to the XIAO ESP32C6 coordinator. The local monitoring application will retain reports, display their age and flag nodes that stop reporting. It will also send small diagnostic requests through the network.
+Zigbee will carry compact summaries and anomaly alerts through a XIAO ESP32C6 coordinator to a local monitoring application. Reports will include timestamps, anomaly scores and direction estimates. The application will display event history and report age, while the node will continue processing and logging if the application goes offline. The monitoring node will operate as a sleepy end device, collecting remote diagnostic requests when it polls its parent.
 
-Bluetooth will provide direct maintenance access. The nRF node will act as an NFC tag carrying its identity and BLE commissioning information. An ACS ACR1552U reader connected to Android over USB will read that information; the companion application will then identify the node, establish an authenticated BLE connection and retrieve its history independently of Zigbee. The reader is part of the final maintenance interface. I’ll test tag reading and BLE retrieval while acquisition and inference are active.
-
-Physical validation will use two simultaneous low-voltage fans or motors, with a worn fan or a repeatable mounting change providing the abnormal test case. Measurements will cover detection, correct-machine association, direction error, report delivery, diagnostic latency and reconnection. Power testing will separate sensing, processing, inference, radio and idle consumption, and compare continuous monitoring with periodic sampling and event-driven inference.
+Bluetooth Low Energy will provide direct on-site maintenance access. The nRF node’s NFC tag will carry its identity and BLE commissioning information. A technician will read it using an ACS ACR1552U USB reader connected to Android. The companion application will then identify the node, establish an authenticated BLE connection and retrieve detailed diagnostic history independently of Zigbee. This gives the technician access beside the equipment even when the monitoring network is unavailable.
 ```
 
 6. Tell us about yourself. What do you spend most of your time doing? What skills or experience do you have that will enable you to be successful in building this project?

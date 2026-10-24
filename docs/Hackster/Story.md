@@ -19,11 +19,11 @@ Vibration and temperature sensors already do useful work in condition monitoring
 
 ![Industrial Motor Room](assets/industrial-motor-room-pexels-magda-ehlers-pexels-2569839.jpg)
 
-The monitoring node is built around the Nordic nRF54LM20 DK, targeting the nRF54LM20B and its Axon Neural Processing Unit (NPU). Audio processing and inference will run locally. Zigbee will carry reports to a local monitoring application, while Bluetooth Low Energy (BLE) will provide direct access during maintenance.
+The monitoring node is built around the Nordic nRF54LM20 DK, targeting the nRF54LM20B and its Axon Neural Processing Unit (NPU). Audio processing and inference will run locally. Zigbee will deliver monitoring reports to the local application. During maintenance, a technician will connect directly over Bluetooth Low Energy (BLE) to inspect the node’s diagnostic history.
 
 ![Signal and access paths](assets/system-flow.png)
 
-Each node will store event times, anomaly scores, operating-state information and direction estimates. Sending those observations instead of a continuous audio stream keeps the network traffic small and leaves the acoustic processing independent of the monitoring application. If the application disconnects, the node will continue collecting observations for later retrieval.
+Each node will log event times, anomaly scores, operating conditions and source-direction estimates. Sending these results over Zigbee keeps network traffic low without streaming audio. The node will continue processing and logging if the monitoring application goes offline, retaining its records for later retrieval.
 
 ## Microphone Array and Audio Capture
 
@@ -37,17 +37,17 @@ The XIAO’s built-in microphone also gives me a single-microphone baseline for 
 
 For spatial processing, I’ll use delay-and-sum beamforming to emphasize sound from a selected direction and evaluate time-difference-of-arrival estimates using GCC-PHAT to calculate delays between channels.
 
-I’ll compare two processing arrangements. The first forms directional audio before running the anomaly model. The second detects a change in mixed audio and then examines the spatial information associated with it. The comparison will use correct-machine association and processing cost as well as angular error. Finding the loudest fan is not necessarily finding the abnormal one.
-
 Reflections complicate this because the same sound reaches the array along more than one path. Nearby machines also share parts of the frequency spectrum. The output will therefore identify a likely direction or associate the event with a known machine position; the first implementation will not attempt precise room coordinates.
 
 ## Acoustic Anomaly Detection
 
-The model will learn normal operating sound and produce an anomaly score when an observation differs from it. Starting with normal operation avoids requiring a labelled recording of every fault the equipment might develop.
+Direction alone does not tell me whether a machine needs attention. I’ll train the model on recordings of normal machine operation. Based on how far each audio window deviates from that baseline, the system will assign an anomaly score during monitoring. This allows it to flag unfamiliar sounds without needing a labelled recording of every possible fault.
 
 I’ll begin with spectral analysis and log-mel spectrograms, using FFT and short-time Fourier processing to examine how the signal changes over time. Compact autoencoders will provide the initial model baseline. Feature extraction and inference will be measured together, since a small network does not guarantee a small processing workload.
 
 MIMII and DCASE machinery recordings will provide the first offline training and evaluation data. I’ll keep recordings for training, threshold selection and testing separate, and record the dataset version and operating conditions with the results. Physical recordings from the test setup will then show how the model behaves with this array and these machines.
+
+To combine detection with direction estimation, I’ll compare two processing arrangements. The first forms directional audio before running the anomaly model. The second runs the model on a reference microphone and retains the aligned multichannel window to estimate the source direction when a change is detected. The comparison will use correct-machine association and processing cost as well as angular error. Finding the loudest fan is not necessarily finding the abnormal one.
 
 Training and quantization will run on a computer. I’ll deploy the quantized model to the Nordic device and check operator support, model size, RAM and inference time alongside its detection performance. Acquisition, feature extraction, storage and communication must all fit around that workload.
 
@@ -55,19 +55,15 @@ The NPU will receive a quantized feature tensor, not raw microphone samples. Fir
 
 ![Audio processing and Axon inference](assets/audio-axon-pipeline.png)
 
-For detection-first processing, I’ll use a reference microphone for the model and retain the aligned multichannel window for source-direction analysis.
-
 An anomaly score is a reason to inspect, not a diagnosis of bearing damage. Changes in speed, load and background noise also change the recording. Those normal variations will be included in testing so that a different operating condition does not automatically become a maintenance alert.
-
-> **Image to add after recording:** Normal and abnormal spectrograms with identical axes and colour scales. Include the machine condition, speed and microphone position in the caption. Use the actual recordings from the tests.
 
 ## Wireless Monitoring and Diagnostics
 
-The XIAO ESP32C6 will coordinate the Zigbee network and connect to the monitoring computer over USB. Its firmware will form the network, commission nodes, receive reports and pass diagnostic requests to the selected node. The monitoring application will run locally without an internet dependency.
+Once the node has an anomaly score and a source-direction estimate, it can report those results to the monitoring application. The XIAO ESP32C6 will coordinate the Zigbee network and connect to the monitoring computer over USB. Its firmware will form the network, commission nodes, receive reports and pass diagnostic requests to the selected node. The monitoring application will run locally without an internet dependency.
 
 ![Monitoring network and maintenance access](assets/network-topology.png)
 
-The Nordic nodes will operate as Zigbee Sleepy End Devices. They will send periodic operating summaries and report significant anomalies. Remote requests will be collected when a node polls its parent, so the polling interval will set the balance between response time and radio activity.
+The Nordic monitoring nodes will operate as Zigbee Sleepy End Devices. They will send periodic operating summaries and report significant anomalies. Remote requests will be collected when a node polls its parent, so the polling interval will set the balance between response time and radio activity.
 
 The application will maintain a node registry, cache reports and display their age. Timestamps, sequence numbers and timeouts will identify stale information without querying every node whenever the display refreshes. If reporting stops, the application will mark the node unavailable. A missing packet does not tell us whether the battery, hardware or radio link is responsible.
 
@@ -79,7 +75,7 @@ The node will retain detailed event records and acoustic features for direct ret
 
 ## Power Management
 
-I’ll capture a window of audio, stop acquisition, extract its features and run inference. Once the result is processed, the CPU will wait for the next capture timer. Radio events will continue to run on the Zigbee and BLE schedules, and the Axon driver will return the NPU to its idle state between jobs.
+To manage the energy used by capture, processing and communication, I’ll run acoustic monitoring in timed windows. I’ll capture a window of audio, stop acquisition, extract its features and run inference. Once the result is processed, the CPU will wait for the next capture timer. Radio events will continue to run on the Zigbee and BLE schedules, and the Axon driver will return the NPU to its idle state between jobs.
 
 ![Capture and reporting cycle](assets/low-power-operation.png)
 
@@ -93,13 +89,15 @@ I’ll use two low-voltage fans or motors running together for the first physica
 
 Each session will include the operating speed, source positions and background noise. I’ll move the sources and vary the noise so that the comparison does not depend on one convenient arrangement.
 
-> **Image to add:** A top-down test layout showing fan A, fan B, the array orientation, angles and distances. Follow it with a photograph once assembled. Use the same labels in the recording notes and result plots.
-
 The same recordings and conditions will be evaluated with one microphone and the array. The array adds capture, memory, processing and energy costs, so I’ll measure whether it improves association with the abnormal source enough to justify them. Results will include detection performance, false alarms, direction error and correct-machine association.
 
 Embedded measurements will cover model size, RAM, feature-extraction time, inference latency and total processing time per audio window.
 
-Wireless commissioning and reporting will first use clearly labelled simulated measurements. After those paths work, I’ll connect real acoustic observations and test the complete sequence: a change at the machine, detection and source estimation at the node, a report in the monitoring application, and diagnostic retrieval beside the equipment. Delivery, request latency, stale-node detection and reconnection will be measured separately so that network failures do not get confused with detector failures.
+Before connecting the acoustic detector to the network, I’ll use the available XIAO nRF54LM20A Sense boards to test the Zigbee firmware with the XIAO ESP32C6 coordinator. I’ll start with clearly labelled simulated measurements and check commissioning, periodic reports, anomaly alerts and diagnostic requests. Sequence numbers and timestamps will let me measure report delivery and request latency as I vary the reporting and parent-polling intervals. I’ll also restart individual nodes and the coordinator to check rejoining, stale-node detection and recovery of the application’s node registry.
+
+For mesh testing, I’ll temporarily configure two Sense boards as continuously powered Zigbee routers and use the other two as sleepy end devices. The monitoring nodes will remain end devices; the router firmware is a separate test configuration. I’ll arrange the links so that reports travel through a router, verify the parent and routing information in the logs, then switch off one router and measure lost reports and the time taken to restore delivery through the remaining network. Moving the boards and introducing obstructions will show how delivery and recovery change with placement.
+
+After those paths work, I’ll replace the simulated reports with real microphone observations and repeat the delivery and latency measurements while audio capture, feature extraction and BLE diagnostics are active. The final test will follow the complete sequence: a change at the machine, detection and source estimation at the node, a report in the monitoring application, and diagnostic retrieval beside the equipment. Measuring the network separately first will help distinguish communication failures from detector failures.
 
 Power testing will separate acquisition, feature extraction, inference, Zigbee, BLE and idle consumption. Current measurements will be aligned with those processing stages so that the duty-cycle comparison includes the whole node, not only the NPU or radio.
 
@@ -113,6 +111,7 @@ The field deployment will need its own enclosure, power budget and communication
 
 - [Nordic nRF54LM20 DK](https://www.nordicsemi.com/Products/Development-hardware/nRF54LM20-DK) and [nRF54LM20A/B specification](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/keyfeatures_html5.html) — development platform and A/B hardware differences.
 - [XIAO nRF54LM20A Sense documentation](https://github.com/Seeed-Studio/wiki-documents/blob/docusaurus-version/sites/en/docs/Sensor/SeeedStudio_XIAO/SeeedStudio_XIAO_nRF54LM20A-Sense/XIAO_nRF54LM20A-Sense_Getting_Started.md) — onboard microphone and board peripherals.
+- [Nordic Zigbee R23 architectures](https://nrfconnectdocs.nordicsemi.com/addons/zigbee-r23/latest/architectures.html) and [router template](https://nrfconnectdocs.nordicsemi.com/addons/ncs-zigbee/latest/samples/template/README.html) — end-device/router designs and the starting point for router test firmware; XIAO board integration will be checked during development.
 - [Sipeed R6+1 microphone-array datasheet](https://dl.sipeed.com/MAIX/HDK/Sipeed-R6%2B1_MicArray/Specifications/Sipeed%20R6%2B1%20Microphone%20Array%20Datasheet%20V1.0.pdf) — array hardware reference.
 - [ACS ACR1552U technical specification](https://www.acs.com.hk/download-manual/13248/TSP-ACR1552U-1.04.pdf) — USB reader capabilities and Android platform support.
 - [Nordic NFC pairing sample](https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrf/samples/bluetooth/peripheral_nfc_pairing/README.html) — NFC tag-side Bluetooth handover reference; the Android application will handle the external-reader workflow.
@@ -130,3 +129,8 @@ Photographs used under the [Pexels License](https://www.pexels.com/license/):
 - Industrial motor room: [Gray and Red Industrial Machine](https://www.pexels.com/photo/gray-and-red-industrial-machine-2569839/) by Magda Ehlers.
 
 <!-- END HACKSTER ARTICLE -->
+
+## Draft asset notes
+
+- After recording, add normal and abnormal spectrograms with identical axes and colour scales to Acoustic Anomaly Detection. Include the machine condition, speed and microphone position in the caption. Use the actual recordings from the tests.
+- Add a top-down test layout to Testing and Validation showing fan A, fan B, the array orientation, angles and distances. Follow it with a photograph once assembled. Use the same labels in the recording notes and result plots.

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Hackster/Story.md",
-                "mode": "preview",
+                "file": "Hackster/Hardware Application Questions.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Story"
+              "title": "Hardware Application Questions"
             }
           }
         ]
@@ -190,9 +190,10 @@
   },
   "active": "9d516d7817936874",
   "lastOpenFiles": [
-    "Hackster/Things.md",
     "Hackster/Story.md",
     "Hackster/Hardware Application Questions.md",
+    "Hackster/Basics.md",
+    "Hackster/Things.md",
     "Hackster/assets/low-power-operation.png",
     "Hackster/assets/low-power-operation.drawio",
     "Hackster/assets/audio-axon-pipeline.png",
@@ -205,7 +206,6 @@
     "Hackster/assets/maintenance-workflow.drawio",
     "Hackster/assets/maintenance-workflow.svg",
     "Hackster/assets/system-flow.drawio.png",
-    "Hackster/Basics.md",
     "Hackster/assets/system-flow.svg",
     "Hackster/assets/title_palceholder_image_pexels-mumtaz-niazi-18390768-35645885.jpg",
     "Overview.md",
