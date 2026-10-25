@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Hackster/Story.md",
+                "file": "Hackster/Hardware Application Questions.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Story"
+              "title": "Hardware Application Questions"
             }
           }
         ]
@@ -188,10 +188,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "9d516d7817936874",
+  "active": "6a16198a586271cd",
   "lastOpenFiles": [
-    "Hackster/Hardware Application Questions.md",
     "Hackster/Story.md",
+    "Hackster/Hardware Application Questions.md",
     "Hackster/Basics.md",
     "Hackster/Things.md",
     "Hackster/assets/low-power-operation.png",

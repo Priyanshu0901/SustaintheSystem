@@ -10,10 +10,7 @@ Status: design and documentation in progress. Hardware integration and measured 
 
 ## Project documentation
 
-- [[Hackster/Story|Project story]] — design, operation and validation approach.
-- [[Hackster/Basics|Title and pitch]].
-- [[Hackster/Things|Bill of materials]] — starting components and confirmed roles.
-- [[Hackster/Hardware Application Questions|Hardware application]] — draft answers.
+- [Hackster project](https://www.hackster.io/priyanshu-roy/acoustic-fault-detection-and-localization-0ce81d) — project article and bill of materials.
 
 ## Technical references
 
