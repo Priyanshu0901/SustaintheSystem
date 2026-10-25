@@ -35,6 +35,13 @@ Checked 2026-10-25; these sources describe upstream capabilities and constraints
 - [Waveshare ESP32-C6 LCD/Touch LCD 1.9 guide](https://docs.waveshare.com/ESP32-C6-LCD-1.9) — distinct variants, display/touch controllers, flash and antenna hardware; schematic review remains necessary before board support.
 - [Zigbee2MQTT on Windows](https://www.zigbee2mqtt.io/guide/installation/05_windows.html), [MQTT settings](https://www.zigbee2mqtt.io/guide/configuration/mqtt.html) and [official Mosquitto downloads](https://mosquitto.org/download/) — native PC host installation and broker configuration. Local host preparation does not establish coordinator interoperability.
 
+## Nordic Zigbee test firmware
+
+- [Zigbee R23 v1.4.0 source and documentation](https://github.com/nrfconnect/ncs-zigbee/tree/bc7863e99cbbe121d8755bc49586e977cd46d032) — release notes list LM20A/B support and NCS 3.4.0 compatibility; includes API headers, sleepy-role guidance and dedicated NVRAM layouts. The local project builds against installed NCS 3.4.1; this is separately validated integration, not a vendor compatibility claim.
+- [Seeed XIAO nRF54LM20A getting started](https://wiki.seeedstudio.com/xiao_nrf54lm20a_getting_started/) and [pinned Seeed board source](https://github.com/Seeed-Studio/platform-seeedboards/tree/6a313a19f06994909627250a5e082e637bd34ff6/zephyr/boards/arm/xiao_nrf54lm20a) — board target, GPIO/PWM pin control and programming support. The user's tested local LED configuration is the project hardware reference.
+- [Nordic LM20A/B SDK compatibility matrix](https://docs.nordicsemi.com/r/bundle/comp_matrix_nrf54lm20a/page/comp/nrf54lm20a/nrf54lm20a_nrf_connect_sdk.html) — support depends on silicon revision and protocol/add-on version; actual boards still require identification.
+- [Zigbee2MQTT external converters](https://www.zigbee2mqtt.io/advanced/more/external_converters.html) and [external JavaScript setting](https://www.zigbee2mqtt.io/guide/configuration/all-settings.html#enable_external_js) — data-directory installation and explicit host enablement. [[../Hardware/Nordic Zigbee Node|Node architecture and migration]] records the bench report contract.
+
 ## Acoustic datasets and evaluation
 
 - [MathWorks acoustic beamforming example](https://www.mathworks.com/help/audio/ug/acoustic-beamforming-using-a-microphone-array.html) — time-delay alignment, directional interference suppression and input/output SINR evaluation in a speech example. Supports the processing explanation, not a measured machinery-noise result or a MATLAB dependency for this project.

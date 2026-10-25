@@ -1,0 +1,3 @@
+#include <nrf54lm20_cpuapp_partitions.dtsi>
+/ { chosen { ncs,zigbee-timer = &timer24; }; };
+&timer24 { status = "okay"; };

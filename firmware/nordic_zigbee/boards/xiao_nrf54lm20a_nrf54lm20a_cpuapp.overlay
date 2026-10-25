@@ -1,0 +1,23 @@
+/* Tested xiao_source mapping: red=CH0/P1.22, blue=CH1/P1.23,
+ * green=CH2/P1.24, active low. Pin control is supplied by pinned Seeed BSP.
+ * This is a direct-programming development image; no MCUboot/USB DFU.
+ */
+#include <nrf54lm20_cpuapp_partitions.dtsi>
+
+/* Seeed also declares non-secure upgrade partitions: remove overlaps. */
+/delete-node/ &slot0_ns_partition;
+/delete-node/ &slot1_ns_partition;
+
+/ {
+	chosen { ncs,zigbee-timer = &timer24; };
+};
+&timer24 { status = "okay"; };
+&pwm20 { status = "okay"; };
+&pwm_led0 { pwms = <&pwm20 0 PWM_MSEC(20) PWM_POLARITY_INVERTED>; };
+&pwm_led1 { pwms = <&pwm20 1 PWM_MSEC(20) PWM_POLARITY_INVERTED>; };
+&pwm_led2 { pwms = <&pwm20 2 PWM_MSEC(20) PWM_POLARITY_INVERTED>; };
+
+/* PWM owns these pins; do not let gpio-leds drive the same outputs. */
+&blue_led { status = "disabled"; };
+&red_led { status = "disabled"; };
+&green_led { status = "disabled"; };

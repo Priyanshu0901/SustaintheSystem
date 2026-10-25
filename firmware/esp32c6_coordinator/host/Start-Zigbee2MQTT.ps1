@@ -10,6 +10,17 @@ $entryPath = Join-Path $PSScriptRoot 'node_modules/zigbee2mqtt/index.js'
 if (-not (Test-Path -LiteralPath $nodePath) -or -not (Test-Path -LiteralPath $entryPath)) {
     throw 'Local Node or Zigbee2MQTT is missing. See the coordinator README.'
 }
+# ExternalConverters points its data-directory junction at this package-local
+# node_modules path. npm hoists these dependencies one level higher, leaving
+# that target absent; a dangling junction causes EEXIST on in-process restart.
+$moduleRoot = Join-Path $PSScriptRoot 'node_modules'
+$packageModules = Join-Path $moduleRoot 'zigbee2mqtt/node_modules'
+if (-not (Test-Path -LiteralPath $packageModules)) {
+    if (Get-Item -LiteralPath $packageModules -Force -ErrorAction SilentlyContinue) {
+        throw "Package dependency path exists but is unavailable: $packageModules"
+    }
+    New-Item -ItemType Junction -Path $packageModules -Target $moduleRoot | Out-Null
+}
 if ([System.IO.Ports.SerialPort]::GetPortNames() -notcontains $Port) {
     throw "Serial port $Port is not currently present. Connect and identify the XIAO first."
 }

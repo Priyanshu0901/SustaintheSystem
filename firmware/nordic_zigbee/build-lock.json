@@ -1,0 +1,7 @@
+{
+  "sdk": {"version": "3.4.1", "revision": "b20f8619ba9a5530f8c34b0a130d829947cfe55d"},
+  "zigbee": {"version": "1.4.0", "revision": "bc7863e99cbbe121d8755bc49586e977cd46d032", "documented_sdk": "3.4.0"},
+  "seeed": {"revision": "6a313a19f06994909627250a5e082e637bd34ff6"},
+  "native_toolchain_bundle": "4f5b6ad6dd",
+  "docker_image": "ghcr.io/nrfconnect/sdk-nrf-toolchain@sha256:45b97cad97a9967c52d77d1d1a0f7dd8fe027edd17c05c3eda2eeadc23729418"
+}

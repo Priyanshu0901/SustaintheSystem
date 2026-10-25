@@ -1,0 +1,249 @@
+{
+  "date": "2026-10-25",
+  "build_lock": {
+    "sdk": {
+      "version": "3.4.1",
+      "revision": "b20f8619ba9a5530f8c34b0a130d829947cfe55d"
+    },
+    "zigbee": {
+      "version": "1.4.0",
+      "revision": "bc7863e99cbbe121d8755bc49586e977cd46d032",
+      "documented_sdk": "3.4.0"
+    },
+    "seeed": {
+      "revision": "6a313a19f06994909627250a5e082e637bd34ff6"
+    },
+    "native_toolchain_bundle": "4f5b6ad6dd",
+    "docker_image": "ghcr.io/nrfconnect/sdk-nrf-toolchain@sha256:45b97cad97a9967c52d77d1d1a0f7dd8fe027edd17c05c3eda2eeadc23729418"
+  },
+  "native_builds": {
+    "router": {
+      "result": "pass",
+      "board": "xiao_nrf54lm20a/nrf54lm20a/cpuapp",
+      "flash_bytes": 372832,
+      "ram_bytes": 65312,
+      "application_partition_bytes": 2039808,
+      "sha256": {
+        "zephyr.hex": "143d6ea49acdbc0a9226da323f9dde1307fba987b558f2aadeabdf5d0a85e321",
+        "zephyr.elf": "1c4a5d1d302d19989674aa35853c56c760c1e9018e6abc8a3fc2740decdfe2fa",
+        "zephyr.bin": "834da12a521ae3c5ffcf2705ed4a014eb98f6a4178128f150977708fe2d71c34",
+        ".config": "b5d150e85479ad4f13db34d2d8389dfbf1726499c7ee9d1580fd02093ec1e5ea",
+        "zephyr.dts": "55431b78974eb6881f897ffb4e03fcda32dda5ac34bf8c0d4adc24d32eebb40f"
+      },
+      "checks": [
+        "effective role and board profile",
+        "DT/linker application partition",
+        "non-overlapping persistent partitions",
+        "Intel HEX checksum/data bounds"
+      ]
+    },
+    "sleepy": {
+      "result": "pass",
+      "board": "xiao_nrf54lm20a/nrf54lm20a/cpuapp",
+      "flash_bytes": 292796,
+      "ram_bytes": 51192,
+      "application_partition_bytes": 2039808,
+      "sha256": {
+        "zephyr.hex": "c19818c925700abf32e9e6a47615f6aa3615ce9d8605851bba079d471bb3e840",
+        "zephyr.elf": "24b70bb5b9207a8d8046d5b5be5e231e7e359887826a9de8d02c962d6ace761e",
+        "zephyr.bin": "c251aa134eb24624676b10d982019245740e3bdd7d55fccbb3fca7d834ea0dc0",
+        ".config": "fe3eb2f307b40c2af355401c77b55e02e16325e5120c97ddb617c88e09c30a85",
+        "zephyr.dts": "55431b78974eb6881f897ffb4e03fcda32dda5ac34bf8c0d4adc24d32eebb40f"
+      },
+      "checks": [
+        "effective role and board profile",
+        "DT/linker application partition",
+        "non-overlapping persistent partitions",
+        "Intel HEX checksum/data bounds"
+      ]
+    }
+  },
+  "decoder": {
+    "result": "pass",
+    "node": "22.23.4",
+    "zigbee2mqtt": "2.14.2",
+    "zigbee_herdsman_converters": "26.115.1",
+    "checks": [
+      "golden v1 record",
+      "malformed lengths/version/flags/reserved byte/roles/ranges",
+      "attribute ID fallback",
+      "herdsman ZCL octet parser",
+      "external definition registration and model resolution"
+    ]
+  },
+  "static_checks": [
+    "PowerShell parse including flasher/host launcher",
+    "Python AST parse",
+    "Node syntax/decoder checks",
+    "Markdown local links/docs containment",
+    "Whitespace"
+  ],
+  "tested_reference_sha256": {
+    "main.c": "1d71d30afd6c533cd34d5e8940effb48eefffbef5f3b505a1e3d20029e71c163",
+    "xiao_nrf54lm20a_nrf54lm20a_cpuapp.overlay": "a6004fd06b4d0953b880d890c2a377f8804f6a8b142ebfb713c6af77fb7c1f41"
+  },
+  "inputs": "All frozen revisions verified; Zigbee/Seeed tracked cleanliness verified. Native SDK-wide cleanliness scan was not completed; untracked files are not checked. Shared SDK manifest/source unchanged.",
+  "docker": "Official amd64 3.4.1 image digest resolved. Build scripts syntax-checked; no container firmware build executed.",
+  "dk": "A/B target profiles authored; no DK compilation or hardware test.",
+  "warnings": [
+    "upstream deprecated NRF_PLATFORM_LUMOS",
+    "upstream serial LTO jobs"
+  ],
+  "not_performed": [
+    "Physical power-cycle test",
+    "Router firmware on hardware",
+    "Four-node routed mesh/parent-loss",
+    "RF range",
+    "Long-duration soak",
+    "Power measurement",
+    "Audio/AI",
+    "BLE coexistence",
+    "USB DFU or OTA",
+    "Docker firmware build",
+    "DK compilation or hardware",
+    "Commit or push"
+  ],
+  "hardware_test": {
+    "result": "pass",
+    "date": "2026-10-25",
+    "scope": "One USB-powered XIAO SED, single hop; debug resets/reflash and graceful host restarts. No physical power cycle or routed topology.",
+    "probe": {
+      "serial": "EA5899D5",
+      "interface": "CMSIS-DAPv2",
+      "firmware": "2.0.0",
+      "usb_vid_pid": "2886:0068",
+      "uart": "COM11",
+      "separate_unmodified_nordic_port": "COM6"
+    },
+    "soc": {
+      "part": "0x054bc20a",
+      "variant": "AAB0",
+      "hardware_version_code": "B",
+      "device_id": [
+        "0x0f67bf8a",
+        "0xfefe7a17"
+      ],
+      "ram_kib": 512,
+      "reported_rram_kib": 2036
+    },
+    "programming": {
+      "openocd": "0.12.0",
+      "openocd_sha256": "98996227972cdbebc13abccbdae440314739fd628aaa7dda520a8350ff421d2c",
+      "role": "sleepy",
+      "full_readback_bytes": 292796,
+      "binary_sha256": "c251aa134eb24624676b10d982019245740e3bdd7d55fccbb3fca7d834ea0dc0",
+      "full_readback_match": true,
+      "mass_erase_or_recover": false,
+      "uicr_programmed": false,
+      "initial_crc_helper": "faulted; fallback verified; independent full readback matched. Final Flash-Native.ps1 avoids target CRC and passed load/readback/reset without errors."
+    },
+    "network": {
+      "coordinator_port": "COM12",
+      "coordinator_firmware": "1.5.0.79",
+      "channel": 15,
+      "ieee_address": "0xf4ce36177afefe8a",
+      "short_address": 731,
+      "model": "SustainNode-v1",
+      "type": "EndDevice",
+      "interview": "successful",
+      "decoder": "sustain-node.cjs",
+      "permit_join_final": false,
+      "frontend_http_status": 200
+    },
+    "telemetry": {
+      "episodes": [
+        {
+          "reports": 32,
+          "first_utc": "2026-10-25T11:29:15.733Z",
+          "last_utc": "2026-10-25T11:34:26.140Z",
+          "duration_s": 310.407,
+          "sequence_first": 3,
+          "sequence_last": 34,
+          "uptime_first_s": 28,
+          "uptime_last_s": 338,
+          "sequence_gaps": [],
+          "anomaly_reports": 3,
+          "interval_s": {
+            "min": 10.006,
+            "median": 10.011,
+            "max": 10.032
+          },
+          "linkquality_min": 198,
+          "linkquality_max": 224
+        },
+        {
+          "reports": 18,
+          "first_utc": "2026-10-25T11:34:56.221Z",
+          "last_utc": "2026-10-25T11:37:46.432Z",
+          "duration_s": 170.211,
+          "sequence_first": 2,
+          "sequence_last": 19,
+          "uptime_first_s": 10,
+          "uptime_last_s": 180,
+          "sequence_gaps": [],
+          "anomaly_reports": 1,
+          "interval_s": {
+            "min": 10.006,
+            "median": 10.014,
+            "max": 10.019
+          },
+          "linkquality_min": 188,
+          "linkquality_max": 219
+        },
+        {
+          "reports": 11,
+          "first_utc": "2026-10-25T11:38:00.380Z",
+          "last_utc": "2026-10-25T11:39:40.508Z",
+          "duration_s": 100.128,
+          "sequence_first": 2,
+          "sequence_last": 12,
+          "uptime_first_s": 10,
+          "uptime_last_s": 110,
+          "sequence_gaps": [],
+          "anomaly_reports": 1,
+          "interval_s": {
+            "min": 10.009,
+            "median": 10.013,
+            "max": 10.017
+          },
+          "linkquality_min": 178,
+          "linkquality_max": 198
+        }
+      ],
+      "duplicates_or_cached_republishes": 2,
+      "payload_validation": "pass",
+      "unique_reports": 61,
+      "capture_elapsed_s": 624.775,
+      "tx_completion_successes": 61,
+      "tx_completion_failures": 0,
+      "interpretation": "No sequence gaps within any boot episode; 2 cached host-startup republishes excluded. Not a packet-loss/range or energy measurement."
+    },
+    "recovery": {
+      "same_image_reflash_rejoin": true,
+      "node_only_debug_reset_rejoin": true,
+      "joining_remained_closed": true,
+      "rejoin_after_application_start_s": [
+        9.138,
+        9.156
+      ],
+      "host_restart_initial": "network resumed but external converter EEXIST error; not a clean pass",
+      "host_restart_fix": "Native launcher provides package-local dependency junction to npm-hoisted root; upstream package source unchanged",
+      "host_restart_after_fix": "clean converter load, resumed network and new sequence/uptime report",
+      "host_restart_request_to_first_fresh_report_s": 8.638
+    },
+    "runtime_after_test": {
+      "node": "running",
+      "broker": "running loopback only",
+      "zigbee2mqtt": "running for frontend inspection",
+      "serial_and_mqtt_capture": "stopped",
+      "debug_servers": "disabled",
+      "windows_service_or_autostart": "none"
+    },
+    "local_evidence": "Ignored build/ hardware logs, actions, UART/MQTT JSONL, summary and readback. Network keys excluded from published record."
+  },
+  "documentation_checks": {
+    "markdown_files": 9,
+    "local_links": 81,
+    "errors": 0
+  }
+}

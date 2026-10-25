@@ -190,6 +190,7 @@
   },
   "active": "9d516d7817936874",
   "lastOpenFiles": [
+    "Hardware/Nordic Zigbee Node.md",
     "Hardware/Zigbee Coordinator.md",
     "Hackster/Hardware Application Questions.md",
     "Hackster/Story.md",
@@ -234,7 +235,6 @@
     "Research/Radio Ecosystem POC/Validation and Delivery Plan.md",
     "Research/Radio Ecosystem POC/Use Case Map.md",
     "Research/Radio Ecosystem POC/Product Positioning.md",
-    "Research/Radio Ecosystem POC/Overview.md",
-    "Research/Radio Ecosystem POC/Network and ML Plan.md"
+    "Research/Radio Ecosystem POC/Overview.md"
   ]
 }

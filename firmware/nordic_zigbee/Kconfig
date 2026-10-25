@@ -1,0 +1,17 @@
+mainmenu "Sustain Zigbee test node"
+source "Kconfig.zephyr"
+
+config SUSTAIN_REPORT_INTERVAL_SECONDS
+	int "Simulated observation interval in seconds"
+	range 2 3600
+	default 10
+
+config SUSTAIN_STATUS_RGB
+	bool "RGB PWM network indicator"
+	depends on PWM
+	default n
+
+config SUSTAIN_SLEEPY
+	bool "Sleepy receiver behavior"
+	depends on ZIGBEE_ROLE_END_DEVICE
+	default n
