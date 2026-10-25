@@ -1,0 +1,10 @@
+{
+  "fork": "https://github.com/Priyanshu0901/esp-coordinator.git",
+  "upstream": "https://github.com/tostmann/esp-coordinator.git",
+  "revision": "b292868d1ae5426dc048ee7749d7a710e1ccd789",
+  "version": "1.5.79",
+  "sourceDateEpoch": 1792419414,
+  "idfImage": "espressif/idf:v5.5.1@sha256:dfa2d076c796769c07c155eba6c672b9f395aec943b2ba3701b73379b5f9e884",
+  "platform": "linux/amd64",
+  "target": "esp32c6"
+}

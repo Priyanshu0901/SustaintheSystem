@@ -1,0 +1,12 @@
+{
+  "name": "sustain-zigbee-host",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local Windows Zigbee2MQTT host for the ESP32-C6 USB coordinator",
+  "engines": {
+    "node": "22.23.4"
+  },
+  "dependencies": {
+    "zigbee2mqtt": "2.14.2"
+  }
+}

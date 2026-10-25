@@ -6,7 +6,7 @@ The monitoring node uses the Nordic nRF54LM20 DK and a Sipeed R6+1 microphone ar
 
 The first demonstration will compare one microphone with the array using two simultaneous fans or motors, measuring detection, false alarms, direction estimates and power. An acoustic anomaly indicates a reason to inspect equipment; it does not establish a specific fault or remaining life.
 
-Status: design and documentation in progress. Hardware integration and measured performance remain unverified.
+Status: design and documentation in progress. The USB coordinator has passed build, flash and network formation/resume checks. Sensing-node integration and acoustic performance remain unverified.
 
 ## Project documentation
 
@@ -14,6 +14,7 @@ Status: design and documentation in progress. Hardware integration and measured 
 
 ## Technical references
 
+- [[Hardware/Zigbee Coordinator|Zigbee coordinator build, usage and board migration]].
 - [[Hardware/MCU and Board Capabilities|MCU and board capabilities]].
 - [[Hardware/Bluetooth and 2.4 GHz Radio|Bluetooth and radio reference]].
 - [[Sources/References|Sources]] — manufacturer documents, datasets and contest rules.

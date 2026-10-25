@@ -1,0 +1,18 @@
+# Copied into ignored data/ on first launch by Start-Zigbee2MQTT.ps1.
+# The script supplies the confirmed COM port as an environment override.
+version: 4
+mqtt:
+  base_topic: sustain/zigbee
+  server: mqtt://127.0.0.1:1883
+serial:
+  port: REPLACE_WITH_CONFIRMED_XIAO_COM_PORT
+  adapter: zboss
+frontend:
+  enabled: true
+  host: 127.0.0.1
+  port: 8080
+advanced:
+  channel: 15
+  network_key: GENERATE
+  pan_id: GENERATE
+  ext_pan_id: GENERATE

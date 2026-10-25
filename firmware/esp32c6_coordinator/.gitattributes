@@ -1,0 +1,4 @@
+# Dependency lock comparisons must use identical bytes on Windows and Linux.
+dependencies.lock text eol=lf
+profiles/*.defaults text eol=lf
+tools/*.py text eol=lf

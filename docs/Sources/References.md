@@ -21,6 +21,20 @@
 - [Axon low-power sample](https://nrfconnectdocs.nordicsemi.com/addons/addon-edge-ai/latest/samples/axon/axon_low_power/README.html) — duty-cycled inference and profiling with reference mel frames. Its sample current is not a whole-node acoustic measurement.
 The [[Hardware/MCU and Board Capabilities|board reference]] and [[Hardware/Bluetooth and 2.4 GHz Radio|radio reference]] cite additional sources beside individual technical claims.
 
+## Zigbee coordinator
+
+Checked 2026-10-25; these sources describe upstream capabilities and constraints. The coordinator topic records actual project validation separately.
+
+- [tostmann/esp-coordinator](https://github.com/tostmann/esp-coordinator) and [XIAO antenna build option](https://github.com/tostmann/esp-coordinator/blob/master/main/Kconfig.projbuild) — maintained ZBOSS NCP firmware and board-specific RF switching.
+- [Coordinator web flasher](https://install.busware.de/zboss/) — browser-based firmware installation and separate recovery tooling.
+- [Zigbee2MQTT ZBOSS adapter](https://www.zigbee2mqtt.io/guide/adapters/zboss.html) — experimental status and host feature limitations; [custom device support](https://www.zigbee2mqtt.io/advanced/support-new-devices/01_support_new_devices.html) — device definitions/converters for application data.
+- [Seeed XIAO ESP32-C6 guide](https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/) and [Espressif ESP32-C6-DevKitC-1 guide](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c6/esp32-c6-devkitc-1/user_guide.html) — board interfaces and antenna references.
+- [Official ESP-Zigbee-SDK](https://github.com/espressif/esp-zigbee-sdk) — custom application alternative; pin its stack generation and ESP-IDF compatibility separately from NCP firmware.
+- [Pinned coordinator source](https://github.com/tostmann/esp-coordinator/tree/b292868d1ae5426dc048ee7749d7a710e1ccd789), [project fork](https://github.com/Priyanshu0901/esp-coordinator) and [archived original](https://github.com/andryblack/esp-coordinator) — parent selection and immutable source provenance; [[Hardware/Zigbee Coordinator|coordinator design and usage]].
+- [ESP-IDF Docker image guide](https://docs.espressif.com/projects/esp-idf/en/v5.5.1/esp32c6/api-guides/tools/idf-docker-image.html) — official toolchain container for automated builds.
+- [Waveshare ESP32-C6 LCD/Touch LCD 1.9 guide](https://docs.waveshare.com/ESP32-C6-LCD-1.9) — distinct variants, display/touch controllers, flash and antenna hardware; schematic review remains necessary before board support.
+- [Zigbee2MQTT on Windows](https://www.zigbee2mqtt.io/guide/installation/05_windows.html), [MQTT settings](https://www.zigbee2mqtt.io/guide/configuration/mqtt.html) and [official Mosquitto downloads](https://mosquitto.org/download/) — native PC host installation and broker configuration. Local host preparation does not establish coordinator interoperability.
+
 ## Acoustic datasets and evaluation
 
 - [MathWorks acoustic beamforming example](https://www.mathworks.com/help/audio/ug/acoustic-beamforming-using-a-microphone-array.html) — time-delay alignment, directional interference suppression and input/output SINR evaluation in a speech example. Supports the processing explanation, not a measured machinery-noise result or a MATLAB dependency for this project.

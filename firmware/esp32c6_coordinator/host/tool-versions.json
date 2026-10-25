@@ -1,0 +1,19 @@
+{
+  "prepared": "2026-10-25",
+  "node": {
+    "version": "22.23.4",
+    "url": "https://nodejs.org/dist/v22.23.4/node-v22.23.4-win-x64.zip",
+    "sha256": "cbc74b5e0982c9dbb41525fd8fb5dcd32fbee237863f7829072f4639a1ce5f20",
+    "checksumSource": "https://nodejs.org/dist/latest-v22.x/SHASUMS256.txt"
+  },
+  "mosquitto": {
+    "version": "2.1.2",
+    "url": "https://mosquitto.org/files/binary/win64/mosquitto-2.1.2-install-windows-x64.exe",
+    "sha256": "58008ad7a22ada0b4073afa415801746e027c5f583e4fa52d0f4e9193b98d6aa",
+    "checksumSource": "SHA-256 recorded from the official HTTPS download; installer is unsigned"
+  },
+  "zigbee2mqtt": {
+    "version": "2.14.2",
+    "dependencies": "package-lock.json"
+  }
+}

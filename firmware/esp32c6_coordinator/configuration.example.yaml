@@ -1,0 +1,8 @@
+# Serial fragment only: merge into the host's complete Zigbee2MQTT configuration.
+# Replace with the port visible to the Zigbee2MQTT process.
+# Linux example: /dev/serial/by-id/<actual-device-id>
+# Native Windows example: COM5 (use the assigned port, not this example number).
+# MQTT broker configuration belongs in the full host configuration.
+serial:
+  port: /dev/serial/by-id/REPLACE_WITH_ACTUAL_COORDINATOR
+  adapter: zboss
