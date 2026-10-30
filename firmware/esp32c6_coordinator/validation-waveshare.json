@@ -1,0 +1,87 @@
+{
+  "checkedDate": "2026-10-30",
+  "board": "Waveshare ESP32-C6-Touch-LCD-1.9 (user identified)",
+  "port": "COM14",
+  "baseMac": "ac:eb:e6:39:fe:ec",
+  "detectedSilicon": "ESP32-C6FH4 rev0.2",
+  "detectedFlashBytes": 8388608,
+  "pcbRevision": "Not read from board marking",
+  "secureBoot": false,
+  "flashEncryption": false,
+  "branch": "codex/waveshare-coordinator-ui",
+  "sourceRevision": "b292868d1ae5426dc048ee7749d7a710e1ccd789",
+  "profile": "waveshare-touch-usb",
+  "idfImage": "espressif/idf:v5.5.1@sha256:dfa2d076c796769c07c155eba6c672b9f395aec943b2ba3701b73379b5f9e884",
+  "dependenciesLockSha256": "5ec8035e9e1cfd6e524d476c44b2091da377c877408254957481b303722dd2b0",
+  "factorySha256": "d969030c33404538d2c05c3bcfc248e41b66453502bc66f367435d7fe450332a",
+  "applicationSha256": "868963e3b92c52f511ef1bbd262130f3e90222142cc62e8f508b480d3e665479",
+  "localRuntimeSourceHashes": {
+    "ui/CMakeLists.txt": "5025d69c0ec46c29e8573763de714eac79d3f3050537d1d87a04f3617fc7c02a",
+    "ui/Kconfig": "809cd3161c97eac5db3cc69adffcc188af3fb793e7c8bd5d7256fa20e57d25ab",
+    "ui/coordinator_ui.h": "fc9b5edfa3b40da73e8b8cd2dcd1e6427704727e68b2c0942e58eb33d57a3eb2",
+    "ui/ui_model.c": "9923d864b79c7c2fa69ce250d4426e9c8f188b024766b4d378365ffd561cee73",
+    "ui/ui_model.h": "f73213787e3ece14bc20d4298d5ffc758ac62896bac065808f7a72b94a17eddb",
+    "ui/ui_runtime.c": "3b81235fa0fd4aaab52167fe09214e600c7a2e35475cbc8ff401ba3dc37a0fa9",
+    "ui/ui_theme.h": "0f8bef98807920e753d8279b01eaf56980744dff467745390710ce308d5a61d9",
+    "ui/ui_view.c": "7a293ab336432a263e6a3f892eab89575594a6840ecf305771c694757cad7224",
+    "ui/ui_view.h": "a72d92f00da12e5d529bad2b6e550cbeba59ad5aaec2f83e40bc578d3e7e0be7",
+    "boards/waveshare_touch_1_9/CMakeLists.txt": "ac4720494b089534f37536681b07b5bb64f7ee6c4e1bf495fb3848b08ec57487",
+    "boards/waveshare_touch_1_9/board_display.c": "9503f53788d3c2ef73d0a8aea911b19177273dfa2790c0f7ccf070748d427eb6",
+    "boards/waveshare_touch_1_9/board_display.h": "38593a5399eec1074a64f018c8989e32415179f6e4f95fcbac03521c8c91a5cb",
+    "boards/waveshare_touch_1_9/board_pins.h": "60b643c13cbe7e56d794a94bc7e4b877b46f2275f1f6baea326988a1a5cf9f84",
+    "patches/waveshare-ui.patch": "72dabfa0fa837e8a50bff8a7acc647a3d661c56694b6424b0d74da9b572a361a"
+  },
+  "hostExtensionSha256": "ab147cc823e0c6b924ecc711b300e26f2e3649fb87604c50531eacc6e8c3426c",
+  "flashing": {
+    "initialDevelopmentErase": true,
+    "fullImageVerifiedBeforeBoot": true,
+    "applicationOnlyVerified": true,
+    "applicationOffset": "0x20000",
+    "noEfuseChanges": true
+  },
+  "checks": {
+    "modelValidationExpiryWraparoundAndTileTouchBounds": "passed",
+    "realHostCodecAndUnknownAvailability": "passed",
+    "xiaoRegressionFactorySha256": "8323dc042b81b015c722b1dfe229580999e72c325761246337d7769468361b1e",
+    "xiaoImageMatchesOriginal": true,
+    "upstreamCheckoutClean": true,
+    "firmwareDependencyTreeAdded": false
+  },
+  "runtime": {
+    "networkFormed": true,
+    "networkResumedAfterHostReconnect": true,
+    "networkResumedAfterAppOnlyUpdate": true,
+    "channel": 15,
+    "permitJoin": false,
+    "registeredNodes": 0,
+    "frontendHttpStatus": 200,
+    "panelReady": true,
+    "touchReady": true,
+    "framesObserved": 79,
+    "drawErrors": 0,
+    "freeHeapKiBObserved": 272,
+    "expiredBeforeReconnect": true,
+    "expiredHostAgeSeconds": 53,
+    "freshAfterReconnect": true,
+    "touchEventsBeforeUpdate": 13
+  },
+  "physicalUserConfirmation": {
+    "screenReadable": true,
+    "bothTouchTabsWork": true
+  },
+  "handoff": {
+    "hostAndBrokerRunningForInspection": true,
+    "sharedHostInstallationAndData": true,
+    "servicesOrAutostartAdded": false
+  },
+  "notTested": [
+    "Nordic re-pairing/reports on Waveshare",
+    "Nonzero device availability on hardware",
+    "Routed mesh",
+    "RF range/power",
+    "Long-duration soak",
+    "Backup/restore or coordinator migration",
+    "Remote CI execution"
+  ],
+  "evidence": "Ignored build/ logs and artifacts/ manifests; ignored existing host/data network state. No keys in this record."
+}

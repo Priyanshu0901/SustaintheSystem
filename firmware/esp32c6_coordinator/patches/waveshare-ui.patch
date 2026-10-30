@@ -1,0 +1,75 @@
+--- a/main/main.cpp
++++ b/main/main.cpp
+@@ -4,6 +4,9 @@
+ #include "esp_partition.h"
+ #include "esp_timer.h"
+ #include "app.h"
++#if CONFIG_COORDINATOR_STATUS_UI
++#include "coordinator_ui.h"
++#endif
+ #include "boot_guard.h"
+ #include "sdkconfig.h"
+ #include "driver/gpio.h"
+@@ -139,7 +142,7 @@
+ // it as a GPIO disables the USB-Serial/JTAG controller that carries the NCP
+ // link (and the flash path). On the C5 these pins are therefore left untouched
+ // in their reset state, so USB stays alive.
+-#if CONFIG_IDF_TARGET_ESP32C6
++#if CONFIG_IDF_TARGET_ESP32C6 && !CONFIG_COORDINATOR_STATUS_UI
+ #if CONFIG_NCP_XIAO_EXT_ANTENNA
+ // Seeed XIAO ESP32-C6 RF antenna switch (pins NOT on the module header):
+ // GPIO3 low enables the switch control, GPIO14 selects the antenna
+@@ -192,7 +195,7 @@
+ 
+     boot_guard::init();
+     handle_pending_erase();
+-#if CONFIG_IDF_TARGET_ESP32C6
++#if CONFIG_IDF_TARGET_ESP32C6 && !CONFIG_COORDINATOR_STATUS_UI
+ #if CONFIG_NCP_XIAO_EXT_ANTENNA
+     select_external_antenna();
+ #else
+@@ -200,5 +203,8 @@
+ #endif
+ #endif  // CONFIG_IDF_TARGET_ESP32C6
+     ESP_ERROR_CHECK(app::init());
++#if CONFIG_COORDINATOR_STATUS_UI
++    coordinator_ui_start();
++#endif
+     ESP_ERROR_CHECK(app::start());
+ }
+--- a/main/zb_ncp.cpp
++++ b/main/zb_ncp.cpp
+@@ -1,4 +1,7 @@
+ #include "zb_ncp.h"
++#if CONFIG_COORDINATOR_STATUS_UI
++#include "coordinator_ui.h"
++#endif
+ #include "boot_guard.h"
+ #include "commands.h"
+ #include "protocol.h"
+@@ -314,6 +317,25 @@
+ }  // namespace
+ 
+ void zb_ncp::on_rx_data(const void* data,size_t size) {
++#if CONFIG_COORDINATOR_STATUS_UI
++    // Optional framed UI extension; no radio calls or unframed serial traffic.
++    if (size >= sizeof(cmd_t)) {
++        const cmd_t& cmd = *static_cast<const cmd_t*>(data);
++        if (cmd.type == REQUEST) {
++            uint8_t out[sizeof(cmd_t) + 32];
++            size_t n = coordinator_ui_command(static_cast<uint16_t>(cmd.command_id),
++                static_cast<const uint8_t*>(data) + sizeof(cmd_t), size - sizeof(cmd_t),
++                out + sizeof(cmd_t), 32);
++            if (n) {
++                memcpy(out, data, sizeof(cmd_t));
++                out[1] = RESPONSE;
++                send_cmd_data(out, sizeof(cmd_t) + n);
++                return;
++            }
++        }
++    }
++#endif
++
+ 	// WEDGE-1 safe mode: ZBOSS was never started (repeated early-boot
+ 	// failure, see boot_guard.h). Serve only stack-free commands and answer
+ 	// everything else GENERIC_BLOCKED so hosts fail visibly. Deliberately

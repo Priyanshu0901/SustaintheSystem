@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('xiao-ext-usb', 'generic-usb')]
+    [ValidateSet('xiao-ext-usb', 'generic-usb', 'waveshare-touch-usb')]
     [string]$Profile = 'xiao-ext-usb',
     [switch]$ResolveDependencies
 )

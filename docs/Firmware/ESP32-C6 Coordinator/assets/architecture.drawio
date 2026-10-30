@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="Electron" version="26.0.16">
+  <diagram id="firmware-architecture" name="Firmware architecture">
+    <mxGraphModel grid="1" gridSize="10" page="1" pageWidth="1200" pageHeight="1100">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="build" value="Build-Firmware.ps1&lt;br&gt;Locked source + profile" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="40" y="40" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="container" value="tools/build.py&lt;br&gt;Pinned ESP-IDF build&lt;br&gt;Validated hashed artifacts" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="40" width="300" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="flash" value="Flash-Firmware.ps1&lt;br&gt;Identify; write; verify" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="820" y="40" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="node" value="Existing Nordic node&lt;br&gt;Simulated observations" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#f1f5f9;strokeColor=#64748b;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="40" y="280" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ncp" value="ESP32-C6 upstream NCP&lt;br&gt;ZBOSS radio / network&lt;br&gt;Optional Waveshare UI hook" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#dcfce7;strokeColor=#16a34a;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="280" width="300" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="z2m" value="PC: Zigbee2MQTT&lt;br&gt;Serial adapter + registry" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#f1f5f9;strokeColor=#64748b;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="820" y="280" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="converter" value="Nordic external converter&lt;br&gt;Validate + decode payload" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="820" y="490" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtt" value="PC: Mosquitto&lt;br&gt;Decoded MQTT state" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#f1f5f9;strokeColor=#64748b;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="820" y="700" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="launcher" value="Start-Zigbee2MQTT.ps1&lt;br&gt;Config / port / dependency&lt;br&gt;junction / Git environment" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="490" width="300" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="broker" value="Start-Broker.ps1&lt;br&gt;Loopback broker process" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="700" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="edge0" source="build" target="container" value="Container inputs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge1" source="container" target="flash" value="Images + hashes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" source="flash" target="ncp" value="Program image" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1160" y="180" />
+              <mxPoint x="580" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge3" source="node" target="ncp" value="Zigbee" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" source="ncp" target="z2m" value="Binary USB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge5" source="z2m" target="converter" value="Attributes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" source="converter" target="mqtt" value="Publish" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" source="launcher" target="z2m" value="Launch host" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;exitX=0.5;exitY=0;entryX=0;entryY=0.8;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="435" />
+              <mxPoint x="780" y="435" />
+              <mxPoint x="780" y="352" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" source="broker" target="mqtt" value="Launch broker" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="display-board" value="Waveshare board driver&lt;br&gt;SPI LCD + CST816 touch" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="40" y="930" width="300" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="display-ui" value="ui/ model / view / theme&lt;br&gt;Tile renderer + freshness" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="930" width="300" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="display-host" value="Optional host extension&lt;br&gt;Registry + availability" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="820" y="930" width="300" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="display-status" source="display-host" target="display-ui" value="Framed USB status" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=14;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="display-render" source="display-ui" target="display-board" value="Tiles / touch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=14;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="display-registry" source="z2m" target="display-host" value="Same host / serial queue" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=14;labelBackgroundColor=#ffffff;strokeColor=#475569;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1170" y="325" />
+              <mxPoint x="1170" y="980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

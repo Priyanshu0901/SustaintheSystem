@@ -19,7 +19,7 @@ def run(*args, **kwargs):
 
 def main():
     profile = sys.argv[1]
-    if profile not in {"xiao-ext-usb", "generic-usb"}:
+    if profile not in {"xiao-ext-usb", "generic-usb", "waveshare-touch-usb"}:
         raise SystemExit("Unknown board profile")
     resolve = "--resolve-dependencies" in sys.argv[2:]
     integration, work, out = Path("/integration"), Path("/work"), Path("/out")
@@ -32,6 +32,14 @@ def main():
     archive = integration / "build/source.tar"
     inputs = [archive, integration / "profiles/usb.defaults",
               integration / f"profiles/{profile}.defaults", Path(__file__)]
+    local_files = []
+    if profile == "waveshare-touch-usb":
+        for folder in ("ui", "boards/waveshare_touch_1_9", "patches"):
+            local_files.extend(sorted(p for p in (integration / folder).rglob("*")
+                                      if p.is_file() and "tests" not in p.parts
+                                      and (p.suffix in {".c", ".h", ".txt", ".patch"}
+                                           or p.name == "Kconfig")))
+        inputs.extend(local_files)
     if dep_lock.exists():
         inputs.append(dep_lock)
     identity = hashlib.sha256(json.dumps(lock, sort_keys=True).encode() +
@@ -48,6 +56,19 @@ def main():
         with tarfile.open(archive) as bundle:
             # This tar is produced by git archive from the pinned fork revision.
             bundle.extractall(project, filter="data")
+        if profile == "waveshare-touch-usb":
+            shutil.copytree(integration / "ui", project / "components/coordinator_ui",
+                            ignore=shutil.ignore_patterns("tests", "README.md"))
+            shutil.copytree(integration / "boards/waveshare_touch_1_9",
+                            project / "components/waveshare_display")
+            # The pinned upstream Git blobs contain CRLF. Normalize only the
+            # two patched build-copy files so the reviewed LF patch is portable.
+            for name in ("main/main.cpp", "main/zb_ncp.cpp"):
+                path = project / name
+                path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n"))
+            patch = str(integration / "patches/waveshare-ui.patch")
+            run("git", "apply", "--check", patch, cwd=project)
+            run("git", "apply", patch, cwd=project)
         if dep_lock.exists():
             shutil.copy2(dep_lock, project / "dependencies.lock")
         marker.write_text(identity)
@@ -63,10 +84,13 @@ def main():
     if dep_lock.exists() and sha(dep_lock) != sha(actual_lock):
         raise SystemExit("Build changed dependencies.lock; review a separate dependency update")
     config = (work / "sdkconfig").read_text()
+    flash_mb = 8 if profile == "waveshare-touch-usb" else 4
     expected = ["CONFIG_NCP_BUS_MODE_USB=y", "# CONFIG_NCP_UART_TRANSPORT is not set",
-                "CONFIG_ESP_CONSOLE_SECONDARY_NONE=y", 'CONFIG_ESPTOOLPY_FLASHSIZE="4MB"',
+                "CONFIG_ESP_CONSOLE_SECONDARY_NONE=y", f'CONFIG_ESPTOOLPY_FLASHSIZE="{flash_mb}MB"',
                 "CONFIG_NCP_XIAO_EXT_ANTENNA=y" if profile == "xiao-ext-usb"
                 else "# CONFIG_NCP_XIAO_EXT_ANTENNA is not set"]
+    if profile == "waveshare-touch-usb":
+        expected.append("CONFIG_COORDINATOR_STATUS_UI=y")
     for setting in expected:
         if setting not in config.splitlines():
             raise SystemExit(f"Profile validation failed: {setting}")
@@ -84,9 +108,12 @@ def main():
         shutil.copy2(src, out / name)
     manifest = {**lock, "profile": profile, "inputsSha256": identity,
                 "sourceArchiveSha256": sha(archive), "flashOffset": "0x0",
-                "flashSizeBytes": 4194304, "dependencyResolutionOnly": resolve,
+                "applicationOffset": flash["app"]["offset"],
+                "flashSizeBytes": flash_mb * 1024 * 1024, "dependencyResolutionOnly": resolve,
+                "localSourceFiles": {str(p.relative_to(integration)): sha(p) for p in local_files},
                 "files": {p.name: sha(p) for p in [out / "factory.bin", out / "app.bin",
-                                                   out / "sdkconfig", out / "dependencies.lock"]}}
+                                                   out / "sdkconfig", out / "dependencies.lock",
+                                                   out / "flasher_args.json"]}}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"PASS: {profile}; SHA256 {manifest['files']['factory.bin']}")
 

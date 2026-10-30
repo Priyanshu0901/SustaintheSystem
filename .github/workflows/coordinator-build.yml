@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        profile: [xiao-ext-usb, generic-usb]
+        profile: [xiao-ext-usb, generic-usb, waveshare-touch-usb]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:

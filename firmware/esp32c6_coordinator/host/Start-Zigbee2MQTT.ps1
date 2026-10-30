@@ -1,7 +1,8 @@
 param(
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^COM[0-9]+$')]
-    [string]$Port
+    [string]$Port,
+    [switch]$EnableDisplay
 )
 
 $ErrorActionPreference = 'Stop'
@@ -30,6 +31,14 @@ $configPath = Join-Path $dataPath 'configuration.yaml'
 New-Item -ItemType Directory -Path $dataPath -Force | Out-Null
 if (-not (Test-Path -LiteralPath $configPath)) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'configuration.example.yaml') -Destination $configPath
+}
+$displayExtension = Join-Path $dataPath 'external_extensions/coordinator-display.cjs'
+if ($EnableDisplay) {
+    New-Item -ItemType Directory -Path (Split-Path -Parent $displayExtension) -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'extensions/coordinator-display.cjs') -Destination $displayExtension -Force
+}
+elseif (Test-Path -LiteralPath $displayExtension) {
+    throw 'Display extension is installed in this host data. Use -EnableDisplay for Waveshare, or remove only that extension when returning to XIAO.'
 }
 
 $previousData = $env:ZIGBEE2MQTT_DATA
