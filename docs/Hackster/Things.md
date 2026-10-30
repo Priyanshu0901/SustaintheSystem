@@ -26,12 +26,14 @@ Bill of materials for the acoustic monitoring node, microphone-based POC nodes a
 
 The XIAO Sense boards are already available. The nRF54LM20 DK is awaiting arrival. The ACS reader remains part of the final Android maintenance interface.
 
+Additional ordered hardware: [Waveshare ESP32-C6-LCD-1.9 touch development kit](../Firmware/ESP32-C6%20Coordinator/Board%20Profiles.md#hardware-status). Its status is kept with the coordinator board documentation.
+
 ## Software OSs, Apps and online services
 
 | Item | Purpose |
 | --- | --- |
 | nRF Connect SDK | Nordic development framework for firmware, peripheral drivers and wireless stacks |
-| Nordic Zigbee R23 Add-on | Zigbee end-device firmware and router test configurations; SDK, chip revision and XIAO board integration will be checked before building |
+| Nordic Zigbee R23 Add-on | Existing Zigbee test firmware and router/end-device configurations; [Nordic firmware guide](../Firmware/Nordic%20Zigbee/Overview.md) links pinned inputs and measured validation |
 | Zephyr RTOS | Embedded operating system and task scheduling |
 | Nordic Edge AI Add-on | Axon model compilation, inference driver and integration tools |
 | Android | Operating system for the maintenance device |

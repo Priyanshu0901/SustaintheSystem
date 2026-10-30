@@ -1,0 +1,38 @@
+# Run through Generate.ps1, which fixes the working directory to the repo root.
+PROJECT_NAME           = "Sustain the System — original code"
+PROJECT_BRIEF          = "Nordic node APIs and project-owned integration tooling"
+OUTPUT_DIRECTORY       = build/documentation
+INPUT                  = tools/documentation/Mainpage.dox \
+                         "docs/Firmware/Nordic Zigbee/Code Reference.md" \
+                         "docs/Firmware/ESP32-C6 Coordinator/Code Reference.md" \
+                         firmware/nordic_zigbee/include \
+                         firmware/nordic_zigbee/src \
+                         firmware/nordic_zigbee/tools \
+                         firmware/esp32c6_coordinator/tools/build.py \
+                         firmware/esp32c6_coordinator/ui \
+                         firmware/esp32c6_coordinator/boards/waveshare_touch_1_9
+FILE_PATTERNS          = *.c *.h *.py *.md *.dox
+EXCLUDE                = firmware/esp32c6_coordinator/ui/README.md
+RECURSIVE              = NO
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        = .
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+REFERENCES_RELATION    = YES
+REFERENCED_BY_RELATION = YES
+GENERATE_HTML          = YES
+GENERATE_TREEVIEW      = YES
+SEARCHENGINE           = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
+HAVE_DOT               = NO
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = NO
+WARNINGS               = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_AS_ERROR          = FAIL_ON_WARNINGS
+WARN_LOGFILE           = build/documentation/warnings.log
+QUIET                  = YES

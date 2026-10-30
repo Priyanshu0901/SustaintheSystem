@@ -1,3 +1,6 @@
+/** @file
+ * @brief Device-tree PWM indicator or no-op implementation selected by profile.
+ */
 #include "board_status.h"
 #include <zephyr/kernel.h>
 #if defined(CONFIG_SUSTAIN_STATUS_RGB)

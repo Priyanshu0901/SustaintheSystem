@@ -1,5 +1,7 @@
 # Sources
 
+Board and radio notes retain their source-review dates and dated follow-ups. Vendor documentation establishes capabilities; measured project results belong to each firmware integration's validation record.
+
 ## Hardware and software
 
 - [Nordic nRF54LM20 DK](https://www.nordicsemi.com/Products/Development-hardware/nRF54LM20-DK) — development-kit documentation.
@@ -10,7 +12,6 @@
 - [Nordic TDM overview](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/tdm.html-concept_tdm_overview) and [pin configuration](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/tdm.html-concept_uyv_try_vr) — serial audio SDIN/SDOUT and clock signals. Checked 2026-10-25; these do not establish direct acquisition of the array's four data lines.
 - [Nordic multiprotocol documentation](https://nrfconnectdocs.nordicsemi.com/ncs/latest/nrf/protocols/multiprotocol/index.html) — radio scheduling and coexistence.
 - [Nordic Zigbee R23 architectures](https://nrfconnectdocs.nordicsemi.com/addons/zigbee-r23/latest/architectures.html) and [router template](https://nrfconnectdocs.nordicsemi.com/addons/ncs-zigbee/latest/samples/template/README.html) — single-chip end-device/router roles and nRF54LM20 DK targets. Checked 2026-10-25; these do not establish a tested XIAO firmware build.
-- [nRF54LM20A/B SDK compatibility matrix](https://docs.nordicsemi.com/r/bundle/comp_matrix_nrf54lm20a/page/comp/nrf54lm20a/nrf54lm20a_nrf_connect_sdk.html) — Zigbee availability depends on SoC revision, SDK and add-on; verify the actual boards and selected versions before implementation.
 
 - [ACS ACR1552U technical specification](https://www.acs.com.hk/download-manual/13248/TSP-ACR1552U-1.04.pdf) — USB NFC reader; manufacturer lists Android support. Actual USB host and companion-app integration still needs validation.
 - [XIAO nRF54LM20A Sense board documentation](https://github.com/Seeed-Studio/wiki-documents/blob/docusaurus-version/sites/en/docs/Sensor/SeeedStudio_XIAO/SeeedStudio_XIAO_nRF54LM20A-Sense/XIAO_nRF54LM20A-Sense_Getting_Started.md) — onboard digital microphone and peripherals.
@@ -19,7 +20,8 @@
 - [Axon inference integration](https://nrfconnectdocs.nordicsemi.com/addons/addon-edge-ai/latest/integrations/axon.html) — compiled-model input/output contract, channel-first buffers, completion and NPU idle management.
 - [Axon supported operators](https://nrfconnectdocs.nordicsemi.com/addons/addon-edge-ai/latest/axon_compiler/supported_operators.html) — model compatibility and quantization guidance.
 - [Axon low-power sample](https://nrfconnectdocs.nordicsemi.com/addons/addon-edge-ai/latest/samples/axon/axon_low_power/README.html) — duty-cycled inference and profiling with reference mel frames. Its sample current is not a whole-node acoustic measurement.
-The [[Hardware/MCU and Board Capabilities|board reference]] and [[Hardware/Bluetooth and 2.4 GHz Radio|radio reference]] cite additional sources beside individual technical claims.
+
+The [[Reference/Boards/Nordic SoCs|board reference]] and [[Reference/Radio/Modes and Roles|radio reference]] cite additional sources beside individual technical claims.
 
 ## Zigbee coordinator
 
@@ -30,9 +32,9 @@ Checked 2026-10-25; these sources describe upstream capabilities and constraints
 - [Zigbee2MQTT ZBOSS adapter](https://www.zigbee2mqtt.io/guide/adapters/zboss.html) — experimental status and host feature limitations; [custom device support](https://www.zigbee2mqtt.io/advanced/support-new-devices/01_support_new_devices.html) — device definitions/converters for application data.
 - [Seeed XIAO ESP32-C6 guide](https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/) and [Espressif ESP32-C6-DevKitC-1 guide](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c6/esp32-c6-devkitc-1/user_guide.html) — board interfaces and antenna references.
 - [Official ESP-Zigbee-SDK](https://github.com/espressif/esp-zigbee-sdk) — custom application alternative; pin its stack generation and ESP-IDF compatibility separately from NCP firmware.
-- [Pinned coordinator source](https://github.com/tostmann/esp-coordinator/tree/b292868d1ae5426dc048ee7749d7a710e1ccd789), [project fork](https://github.com/Priyanshu0901/esp-coordinator) and [archived original](https://github.com/andryblack/esp-coordinator) — parent selection and immutable source provenance; [[Hardware/Zigbee Coordinator|coordinator design and usage]].
+- [Pinned coordinator source](https://github.com/tostmann/esp-coordinator/tree/b292868d1ae5426dc048ee7749d7a710e1ccd789), [project fork](https://github.com/Priyanshu0901/esp-coordinator) and [archived original](https://github.com/andryblack/esp-coordinator) — parent selection and immutable source provenance; [[Firmware/ESP32-C6 Coordinator/Overview|coordinator design and usage]].
 - [ESP-IDF Docker image guide](https://docs.espressif.com/projects/esp-idf/en/v5.5.1/esp32c6/api-guides/tools/idf-docker-image.html) — official toolchain container for automated builds.
-- [Waveshare ESP32-C6 LCD/Touch LCD 1.9 guide](https://docs.waveshare.com/ESP32-C6-LCD-1.9) — distinct variants, display/touch controllers, flash and antenna hardware; schematic review remains necessary before board support.
+- [Waveshare ESP32-C6-LCD-1.9 family guide](https://docs.waveshare.com/ESP32-C6-LCD-1.9), [touch-board schematic](https://files.waveshare.com/wiki/ESP32-C6-LCD-1.9/ESP32-C6-Touch-LCD-1.9-Schematic.pdf) and [pinned ESP-IDF display/touch example](https://github.com/waveshareteam/ESP32-C6-LCD-1.9/tree/1fed15e32977de11afe1f710a0f5e915bfcc35a5/02_Example/ESP-IDF/07_LVGL_Test) — pin/control/portrait-offset references checked 2026-10-30. [Implemented profile](../Firmware/ESP32-C6%20Coordinator/Board%20Profiles.md) and [display interface](../Firmware/ESP32-C6%20Coordinator/Display%20UI.md) describe project code.
 - [Zigbee2MQTT on Windows](https://www.zigbee2mqtt.io/guide/installation/05_windows.html), [MQTT settings](https://www.zigbee2mqtt.io/guide/configuration/mqtt.html) and [official Mosquitto downloads](https://mosquitto.org/download/) — native PC host installation and broker configuration. Local host preparation does not establish coordinator interoperability.
 
 ## Nordic Zigbee test firmware
@@ -40,7 +42,7 @@ Checked 2026-10-25; these sources describe upstream capabilities and constraints
 - [Zigbee R23 v1.4.0 source and documentation](https://github.com/nrfconnect/ncs-zigbee/tree/bc7863e99cbbe121d8755bc49586e977cd46d032) — release notes list LM20A/B support and NCS 3.4.0 compatibility; includes API headers, sleepy-role guidance and dedicated NVRAM layouts. The local project builds against installed NCS 3.4.1; this is separately validated integration, not a vendor compatibility claim.
 - [Seeed XIAO nRF54LM20A getting started](https://wiki.seeedstudio.com/xiao_nrf54lm20a_getting_started/) and [pinned Seeed board source](https://github.com/Seeed-Studio/platform-seeedboards/tree/6a313a19f06994909627250a5e082e637bd34ff6/zephyr/boards/arm/xiao_nrf54lm20a) — board target, GPIO/PWM pin control and programming support. The user's tested local LED configuration is the project hardware reference.
 - [Nordic LM20A/B SDK compatibility matrix](https://docs.nordicsemi.com/r/bundle/comp_matrix_nrf54lm20a/page/comp/nrf54lm20a/nrf54lm20a_nrf_connect_sdk.html) — support depends on silicon revision and protocol/add-on version; actual boards still require identification.
-- [Zigbee2MQTT external converters](https://www.zigbee2mqtt.io/advanced/more/external_converters.html) and [external JavaScript setting](https://www.zigbee2mqtt.io/guide/configuration/all-settings.html#enable_external_js) — data-directory installation and explicit host enablement. [[../Hardware/Nordic Zigbee Node|Node architecture and migration]] records the bench report contract.
+- [Zigbee2MQTT external converters](https://www.zigbee2mqtt.io/advanced/more/external_converters.html) and [external JavaScript setting](https://www.zigbee2mqtt.io/guide/configuration/all-settings.html#enable_external_js) — data-directory installation and explicit host enablement. [Observation report protocol](../Firmware/Nordic%20Zigbee/Report%20Protocol.md) records the bench contract.
 
 ## Acoustic datasets and evaluation
 

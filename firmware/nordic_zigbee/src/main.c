@@ -1,3 +1,6 @@
+/** @file
+ * @brief Compose the simulated producer, optional indicator and transport.
+ */
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include "board_status.h"

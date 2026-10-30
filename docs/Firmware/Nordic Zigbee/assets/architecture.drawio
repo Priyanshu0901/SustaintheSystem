@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="Electron" version="26.0.16">
+  <diagram id="firmware-architecture" name="Firmware architecture">
+    <mxGraphModel grid="1" gridSize="10" page="1" pageWidth="1160" pageHeight="950">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="main" value="main.c startup&lt;br&gt;board_status_init()" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="40" y="40" width="300" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="start" value="zigbee_transport_start()&lt;br&gt;Register endpoint; enable stack" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="40" width="300" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="signal" value="zboss_signal_handler()&lt;br&gt;joined flag + board status" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#dcfce7;strokeColor=#16a34a;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="820" y="40" width="300" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="loop" value="main.c periodic loop&lt;br&gt;Generate → submit → sleep" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="40" y="230" width="300" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="sim" value="simulated_source_next()&lt;br&gt;Deterministic observation" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="230" width="300" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="submit" value="zigbee_transport_submit()&lt;br&gt;Validate + copy + schedule" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="410" width="300" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="pending" value="Transport pending slot&lt;br&gt;Encoded observation bytes&lt;br&gt;Spinlock-protected copy" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#fef3c7;strokeColor=#d97706;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="820" y="410" width="300" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="request" value="request_report()&lt;br&gt;Join / in_flight checks&lt;br&gt;Request stack buffer" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#dcfce7;strokeColor=#16a34a;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="610" width="300" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="send" value="send_report()&lt;br&gt;Read pending bytes&lt;br&gt;Build ZCL report" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#dcfce7;strokeColor=#16a34a;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="40" y="610" width="300" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="radio" value="Existing coordinator&lt;br&gt;Zigbee report destination" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#f1f5f9;strokeColor=#64748b;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="40" y="810" width="300" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="complete" value="report_complete()&lt;br&gt;Log status; free buffer&lt;br&gt;Clear in_flight" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#dcfce7;strokeColor=#16a34a;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="430" y="810" width="300" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="edge0" source="main" target="start" value="Initialize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge1" source="start" target="signal" value="Stack signals" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" source="main" target="loop" value="Producer thread" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" source="loop" target="sim" value="Sample" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge4" source="sim" target="submit" value="Snapshot" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" source="submit" target="pending" value="Encoded copy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge6" source="submit" target="request" value="ZBOSS callback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" source="request" target="send" value="Output buffer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" source="send" target="radio" value="Zigbee" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge9" source="send" target="complete" value="Completion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=15;labelBackgroundColor=#ffffff;strokeColor=#475569;exitX=1;exitY=0.85;entryX=0.5;entryY=0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="385" y="695" />
+              <mxPoint x="385" y="760" />
+              <mxPoint x="580" y="760" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

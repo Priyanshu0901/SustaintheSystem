@@ -2,7 +2,9 @@
 
 Original nRF Connect SDK/Zephyr application for the **Seeed XIAO nRF54LM20A Sense**. It sends versioned **simulated** observations to the existing ESP32-C6 coordinator. Build either a powered router or sleepy end device from the same sources. No microphone, inference, BLE or measured acoustic results are implemented.
 
-[Architecture, report contract and DK migration](../../docs/Hardware/Nordic%20Zigbee%20Node.md) explain the portable module boundaries. This README owns setup, build and test operations. [Coordinator operations](../esp32c6_coordinator/README.md) owns starting the broker/host and identifying its serial port.
+[Architecture, report contract and existing profiles](../../docs/Firmware/Nordic%20Zigbee/Overview.md) explain the portable module boundaries. This README owns setup, build and test operations. [Coordinator operations](../esp32c6_coordinator/README.md) owns starting the broker/host and identifying its serial port.
+
+[Code map](../../docs/Firmware/Nordic%20Zigbee/Code%20Reference.md) · [Generate searchable Doxygen reference](../../tools/documentation/README.md).
 
 ## Inputs and provenance
 

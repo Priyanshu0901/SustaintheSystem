@@ -1,3 +1,6 @@
+/** @file
+ * @brief Deterministic test observations; no acoustic input or inference.
+ */
 #include "observation.h"
 
 struct observation simulated_source_next(uint32_t uptime_s, uint8_t role)

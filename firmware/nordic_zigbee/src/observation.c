@@ -1,3 +1,6 @@
+/** @file
+ * @brief Range validation and explicit byte-wise observation encoding.
+ */
 #include "observation.h"
 #include <errno.h>
 

@@ -1,3 +1,10 @@
+/** @file
+ * @brief ZBOSS endpoint registration, report scheduling and buffer ownership.
+ *
+ * Application threads encode into a spinlock-protected pending slot. ZBOSS
+ * callbacks own in_flight, allocate the outgoing buffer and free it after
+ * completion or immediate rejection. No persistent event queue is implemented.
+ */
 #include <errno.h>
 #include <string.h>
 #include <zephyr/kernel.h>

@@ -1,0 +1,25 @@
+/**
+@mainpage Original firmware and integration code
+
+This reference is generated from project-owned C and Python files. The C headers
+own API contracts; the source browser includes internal callbacks and helpers.
+EXTRACT_ALL includes implementation symbols without implying every symbol has
+a hand-written description. No SDK, dependency checkout, upstream coordinator
+protocol code, runtime data or generated firmware is scanned.
+
+Use the related **Nordic code reference** and **Coordinator code reference** pages
+for file maps and PowerShell/JavaScript responsibilities. Those two pages are
+included directly from the maintained docs; there is no second prose copy.
+Doxygen does not parse the PowerShell or CommonJS interfaces in this configuration.
+
+@section navigation Navigation
+- Files: parsed C headers/implementations and Python helpers, with source links.
+- Data structures: the portable observation snapshot and its fields.
+- Related pages: integration code maps and regeneration commands.
+- Search: symbol and file lookup within the generated reference.
+
+@section generation Generation
+From the repository root, run `./tools/documentation/Generate.ps1`.
+The script checks the pinned Doxygen version. See tools/documentation/README.md
+for portable-tool installation, output location and coverage limits.
+*/
