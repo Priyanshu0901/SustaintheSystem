@@ -117,9 +117,15 @@
     "waveshareLqi": 198,
     "xiaoLqiApprox": 254,
     "metric": "LQI, not RSSI in dBm",
-    "antennaDifference": "saved XIAO build selects external; Waveshare uses onboard ceramic",
     "controlledComparisonPerformed": false,
-    "causation": "not established",
-    "packetLossOrRangeConclusion": "none"
+    "causation": "User reports improvement from 154 to 198 after PCB modification. Remaining difference from XIAO is not isolated; onboard-versus-external explanation is inapplicable.",
+    "packetLossOrRangeConclusion": "none",
+    "waveshareLqiBeforeModification": 154,
+    "antennaSetup": {
+      "source": "user clarification on 2026-10-30",
+      "comparison": "same external antenna as XIAO",
+      "wavesharePcbAntennaPathModified": true,
+      "exactModificationIndependentlyInspected": false
+    }
   }
 }
