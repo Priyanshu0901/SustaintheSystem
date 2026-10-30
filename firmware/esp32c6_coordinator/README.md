@@ -8,16 +8,14 @@ The UI lives in [ui/](ui/README.md); hardware pins stay in [boards/waveshare_tou
 
 | Version | Git reference |
 | --- | --- |
-| Validated XIAO external-antenna coordinator | Tag `coordinator-xiao-v1` at `8506d72`; branch `POC/zigbee_coordinator` |
+| Validated XIAO external-antenna coordinator | Tag `coordinator-xiao-v1` at `8506d72` |
 | First validated Waveshare UI implementation | Commit `6ac8bb0` |
-| Active Waveshare workflow | Branch `codex/waveshare-coordinator-ui` |
-| Visual layout/navigation discussion | Branch `codex/waveshare-ui-layout`, created from the saved Waveshare result |
+| Integrated coordinator/node/Waveshare work | Branch `POC_main`; coordinator branch `POC/zigbee_coordinator` |
+| Pristine Nordic baseline | Branch `POC/zigbee_nrf` at `d644be9` |
 
-There is no board-selection argument on this branch. For XIAO, save current changes and switch to its branch, then use the instructions **from that checkout**:
+There is no board-selection argument on this branch. For XIAO, save current changes and check out its tag, then use the instructions **from that checkout**:
 
 ```powershell
-git switch POC/zigbee_coordinator
-# To inspect the exact validated release instead:
 git switch --detach coordinator-xiao-v1
 ```
 

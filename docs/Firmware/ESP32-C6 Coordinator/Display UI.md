@@ -13,7 +13,7 @@ The Waveshare ESP32-C6-Touch-LCD-1.9 runs both the USB ZBOSS coordinator and its
 | `patches/waveshare-ui.patch` | Waveshare startup/request hooks; historical XIAO RF routines removed from the build copy |
 | `host/extensions/coordinator-display.cjs` | Project host extension; registry/availability snapshots through the existing driver queue |
 
-Paths refer to [the coordinator integration](https://github.com/Priyanshu0901/SustaintheSystem/tree/codex/waveshare-coordinator-ui/firmware/esp32c6_coordinator). Its `ui/README.md` owns the edit map and test commands; the integration README owns build/flash/start operations and measured results. The work is local until published.
+Paths refer to [the saved coordinator integration](https://github.com/Priyanshu0901/SustaintheSystem/tree/c81f6b06622c0e0f06c419320156cac85812c71c/firmware/esp32c6_coordinator). Its `ui/README.md` owns the edit map and test commands; the integration README owns build/flash/start operations and measured results. The work is local until published.
 
 The renderer uses a 170×16 RGB565 tile, not a full framebuffer. A single DMA buffer is reused only after transfer completion; after a transfer timeout it is never reused or freed while DMA might own it. LCD initialization/drawing failure is isolated from the NCP. The System page reports panel/touch readiness, uptime, touch events, completed frames and draw errors.
 

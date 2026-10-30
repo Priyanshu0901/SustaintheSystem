@@ -8,7 +8,7 @@ The user connected the **Waveshare ESP32-C6-Touch-LCD-1.9** on 2026-10-30 and se
 
 This branch has one active Waveshare target: 8 MB flash, native framed USB NCP and LCD/touch status UI. `sdkconfig.defaults` owns the active configuration. Build/flash/host scripts do not select a board version.
 
-XIAO's external-antenna coordinator is retained by Git tag `coordinator-xiao-v1` at `8506d72` and existing branch `POC/zigbee_coordinator`. Check out that version for its implementation/commands; no dormant XIAO RF setup runs in the current Waveshare application. Runtime pairing/keys remain local.
+XIAO's external-antenna coordinator is retained by Git tag `coordinator-xiao-v1` at `8506d72`. Check out that version for its implementation/commands; no dormant XIAO RF setup runs in the current Waveshare application. The coordinator development branch includes subsequent Nordic and Waveshare work. Runtime pairing/keys remain local.
 
 ## Waveshare mapping
 
