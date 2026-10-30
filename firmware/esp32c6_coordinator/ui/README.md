@@ -29,4 +29,4 @@ cc -std=c11 -Wall -Wextra -Werror -I. ui_model.c ui_view.c tests/model_and_previ
 ./host/.runtime/node-v22.23.4-win-x64/node.exe ./host/extensions/test-display.cjs
 ```
 
-Build/flash/start commands and measured results remain in the [integration operations guide](../README.md). [Display architecture](../../../docs/Firmware/ESP32-C6%20Coordinator/Display%20UI.md) owns the host/firmware data contract. The implementation is integrated into `POC_main` and `POC/zigbee_coordinator`; the saved single-board baseline is tagged `coordinator-waveshare-v1`. Visual layout/navigation changes remain pending.
+Build/flash/start commands and measured results remain in the [integration operations guide](../README.md). [Display architecture](../../../docs/Firmware/ESP32-C6%20Coordinator/Display%20UI.md) owns the host/firmware data contract. The implementation is integrated into `POC_main` and `POC/zigbee_coordinator`; Waveshare remains active development, with the single-board baseline recorded at commit `c81f6b0`. Visual layout/navigation changes remain pending.
