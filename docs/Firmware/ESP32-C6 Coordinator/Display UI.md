@@ -1,6 +1,6 @@
 # Waveshare status display
 
-The Waveshare ESP32-C6-Touch-LCD-1.9 runs both the USB ZBOSS coordinator and an optional local status display. Project-owned `ui/` code is separate from the board driver and the upstream protocol implementation. No Wi-Fi transport is used.
+The Waveshare ESP32-C6-Touch-LCD-1.9 runs both the USB ZBOSS coordinator and its local status display. Project-owned `ui/` code is separate from the board driver and the upstream protocol implementation. No Wi-Fi transport is used.
 
 ## Written components
 
@@ -10,7 +10,7 @@ The Waveshare ESP32-C6-Touch-LCD-1.9 runs both the USB ZBOSS coordinator and an 
 | `ui/ui_view.c`, `ui/ui_theme.h` | Pure C layout, glyphs and RGB565 colors, independent of ESP-IDF |
 | `ui/ui_runtime.c` | Low-priority task, touch polling, one-second tile rendering and diagnostics |
 | `boards/waveshare_touch_1_9/` | LCD/SPI/touch configuration and transfer completion |
-| `patches/waveshare-ui.patch` | Optional startup/request hooks and exclusion of XIAO RF handling in the build copy |
+| `patches/waveshare-ui.patch` | Waveshare startup/request hooks; historical XIAO RF routines removed from the build copy |
 | `host/extensions/coordinator-display.cjs` | Project host extension; registry/availability snapshots through the existing driver queue |
 
 Paths refer to [the coordinator integration](https://github.com/Priyanshu0901/SustaintheSystem/tree/codex/waveshare-coordinator-ui/firmware/esp32c6_coordinator). Its `ui/README.md` owns the edit map and test commands; the integration README owns build/flash/start operations and measured results. The work is local until published.
@@ -25,7 +25,7 @@ The host sends updates every five seconds. After 15 seconds without a valid upda
 
 ## Bounded USB extension
 
-USB retains ZBOSS framing, CRC, sequence numbers and one serial owner. Two private development commands use the host's existing serialized ZBOSS queue. Their schemas are registered in memory by the opt-in external extension; installed npm package files are unchanged. Compatibility is checked against pinned zigbee-herdsman 10.10.0. This is a project-specific extension, not a standard ZBOSS API.
+USB retains ZBOSS framing, CRC, sequence numbers and one serial owner. Two private development commands use the host's existing serialized ZBOSS queue. Their schemas are registered in memory by the project external extension; installed npm package files are unchanged. Compatibility is checked against pinned zigbee-herdsman 10.10.0. This is a project-specific extension, not a standard ZBOSS API.
 
 | Request | Payload | Result |
 | --- | --- | --- |

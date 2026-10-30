@@ -1,4 +1,4 @@
-/* Optional for waveshare-touch-usb. Uses the existing adapter queue, never a
+/* Waveshare coordinator display. Uses the existing adapter queue, never a
  * second serial connection. Compatible with pinned herdsman 10.10.0 / Z2M 2.14.2. */
 const {FRAMES} = require('zigbee-herdsman/dist/adapter/zboss/commands');
 const U8 = 0x20, U16 = 0x21, U32 = 0x23;

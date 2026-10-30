@@ -18,20 +18,16 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        profile: [xiao-ext-usb, generic-usb, waveshare-touch-usb]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: Build pinned source in Docker
         shell: pwsh
-        run: ./firmware/esp32c6_coordinator/Build-Firmware.ps1 -Profile '${{ matrix.profile }}'
+        run: ./firmware/esp32c6_coordinator/Build-Firmware.ps1
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: coordinator-${{ matrix.profile }}
-          path: firmware/esp32c6_coordinator/artifacts/${{ matrix.profile }}/
+          name: coordinator-waveshare
+          path: firmware/esp32c6_coordinator/artifacts/
           if-no-files-found: error
           retention-days: 14

@@ -1,18 +1,14 @@
-# Coordinator board profiles and antenna routing
+# Active coordinator board and antenna routing
 
 ## Hardware status
 
-The user connected the **Waveshare ESP32-C6-Touch-LCD-1.9** on 2026-10-30 and selected it to replace XIAO as coordinator. Its profile includes the implemented status display and touch navigation. Hardware observations/results remain in the integration operations guide; the precise PCB revision has not been read from a board marking. Prior XIAO results remain recorded separately.
+The user connected the **Waveshare ESP32-C6-Touch-LCD-1.9** on 2026-10-30 and selected it to replace XIAO as coordinator. Its implementation includes the implemented status display and touch navigation. Hardware observations/results remain in the integration operations guide; the precise PCB revision has not been read from a board marking. Prior XIAO results remain recorded separately.
 
-## Existing firmware profiles
+## Active board
 
-| Profile | Antenna / pins | Validation boundary |
-| --- | --- | --- |
-| `xiao-ext-usb` | Upstream external-antenna switch enabled: GPIO3 low, GPIO14 high; 4 MB flash | XIAO only; requires an attached antenna |
-| `generic-usb` | External switch disabled; upstream still configures GPIO3 and GPIO14 as inputs | Comparison build only; not an approved display-board image |
-| `waveshare-touch-usb` | 8 MB, onboard antenna, optional UI component; XIAO RF handling excluded entirely | Waveshare 1.9-inch touch variant only |
+This branch has one active Waveshare target: 8 MB flash, native framed USB NCP and LCD/touch status UI. `sdkconfig.defaults` owns the active configuration. Build/flash/host scripts do not select a board version.
 
-All profiles reserve USB for framed NCP traffic and disable parallel UART1. The Waveshare adds framed private UI status/diagnostic requests; it does not put logs or raw UI text on USB. Its optional patch is applied only to the build copy, while XIAO/generic builds retain unpatched upstream behavior.
+XIAO's external-antenna coordinator is retained by Git tag `coordinator-xiao-v1` at `8506d72` and existing branch `POC/zigbee_coordinator`. Check out that version for its implementation/commands; no dormant XIAO RF setup runs in the current Waveshare application. Runtime pairing/keys remain local.
 
 ## Waveshare mapping
 
@@ -23,8 +19,14 @@ All profiles reserve USB for framed NCP traffic and disable parallel UART1. The 
 | CST816 touch | I2C SDA18/SCL8, address0x15; polled coordinates in portrait orientation |
 | USB NCP | Native USB-Serial/JTAG; no second serial client |
 
-The board driver's pin header owns these definitions. SD card, IMU, Wi-Fi and GPIO expander functions are not initialized by this profile. The board's external-antenna hardware route is not the XIAO software switch. Sources are the [manufacturer example](https://github.com/waveshareteam/ESP32-C6-LCD-1.9/tree/1fed15e32977de11afe1f710a0f5e915bfcc35a5/02_Example/ESP-IDF/07_LVGL_Test) and [touch schematic](https://files.waveshare.com/wiki/ESP32-C6-LCD-1.9/ESP32-C6-Touch-LCD-1.9-Schematic.pdf).
+The board driver's pin header owns these definitions. SD card, IMU, Wi-Fi and GPIO expander functions are not initialized by this implementation. The board's external-antenna hardware route is not the XIAO software switch. Sources are the [manufacturer example](https://github.com/waveshareteam/ESP32-C6-LCD-1.9/tree/1fed15e32977de11afe1f710a0f5e915bfcc35a5/02_Example/ESP-IDF/07_LVGL_Test) and [touch schematic](https://files.waveshare.com/wiki/ESP32-C6-LCD-1.9/ESP32-C6-Touch-LCD-1.9-Schematic.pdf).
 
 The [Seeed guide](https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/) documents the antenna switch. Configuration validation can establish that the external route was compiled in; it cannot establish connector quality, antenna gain or measured range.
 
 [Existing firmware architecture](Architecture.md)
+
+## Interpreting the reported link quality
+
+The user reports Waveshare LQI 198 versus XIAO approximately 254. LQI is not RSSI in dBm or a packet-delivery percentage; compare delivery/sequence behavior along with link quality. [Zigbee2MQTT explains the measurement limits](https://www.zigbee2mqtt.io/guide/faq/#how-to-interpret-rssi-and-lqi-values).
+
+The saved XIAO configuration selects an external antenna. The Waveshare uses its onboard ceramic antenna; its [manufacturer guide](https://docs.waveshare.com/ESP32-C6-LCD-1.9) states that using the touch board's IPEX connector requires solder-pad modification. Antenna type, placement, orientation and nearby electronics can affect the link, but their contribution here has not been isolated by a controlled measurement. The lower number alone does not demonstrate a firmware fault or establish radio range.

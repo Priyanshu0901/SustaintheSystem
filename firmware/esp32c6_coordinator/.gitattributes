@@ -1,8 +1,8 @@
 # Dependency lock comparisons must use identical bytes on Windows and Linux.
 dependencies.lock text eol=lf
-profiles/*.defaults text eol=lf
+sdkconfig.defaults text eol=lf
 tools/*.py text eol=lf
 ui/* text eol=lf
 boards/**/*.c text eol=lf
 boards/**/*.h text eol=lf
-patches/*.patch text eol=lf whitespace=-blank-at-eol
+patches/*.patch text eol=lf whitespace=-blank-at-eol,-space-before-tab

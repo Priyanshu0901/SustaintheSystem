@@ -1,7 +1,6 @@
 param(
     [Parameter(Mandatory = $true)][ValidatePattern('^COM[0-9]+$')][string]$Port,
     [Parameter(Mandatory = $true)][ValidatePattern('^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$')][string]$ExpectedBaseMac,
-    [ValidateSet('xiao-ext-usb', 'waveshare-touch-usb')][string]$Profile = 'xiao-ext-usb',
     [switch]$AppOnly,
     [switch]$EraseDevelopmentFlash
 )
@@ -9,10 +8,10 @@ param(
 $ErrorActionPreference = 'Stop'
 if ($AppOnly -and $EraseDevelopmentFlash) { throw 'App-only updates cannot erase development flash.' }
 $python = Join-Path $PSScriptRoot '.tools/esptool/Scripts/python.exe'
-$outputDir = Join-Path $PSScriptRoot "artifacts/$Profile"
+$outputDir = Join-Path $PSScriptRoot 'artifacts'
 $manifest = Get-Content -Raw -LiteralPath (Join-Path $outputDir 'manifest.json') | ConvertFrom-Json
 $lock = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'upstream.lock.json') | ConvertFrom-Json
-if ($manifest.profile -ne $Profile -or $manifest.target -ne 'esp32c6' -or
+if ($manifest.board -ne 'waveshare-touch-1.9' -or $manifest.target -ne 'esp32c6' -or
     $manifest.revision -ne $lock.revision -or $manifest.idfImage -ne $lock.idfImage -or
     $manifest.dependencyResolutionOnly) { throw 'Unreviewed or incorrect firmware manifest.' }
 foreach ($file in @('factory.bin', 'app.bin', 'sdkconfig', 'dependencies.lock')) {
@@ -24,11 +23,9 @@ if ($AppOnly) {
     $flashArgsHash = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $outputDir 'flasher_args.json')).Hash.ToLowerInvariant()
     if ($flashArgsHash -ne $manifest.files.'flasher_args.json') { throw 'Flash layout hash mismatch.' }
 }
-if ($Profile -eq 'waveshare-touch-usb') {
-    foreach ($file in $manifest.localSourceFiles.PSObject.Properties) {
-        $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $PSScriptRoot $file.Name)).Hash.ToLowerInvariant()
-        if ($actual -ne $file.Value) { throw "Local UI/board source differs from build: $($file.Name)" }
-    }
+foreach ($file in $manifest.localSourceFiles.PSObject.Properties) {
+    $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $PSScriptRoot $file.Name)).Hash.ToLowerInvariant()
+    if ($actual -ne $file.Value) { throw "Local UI/board source differs from build: $($file.Name)" }
 }
 $dependencyHash = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $PSScriptRoot 'dependencies.lock')).Hash.ToLowerInvariant()
 if ($dependencyHash -ne $manifest.files.'dependencies.lock') { throw 'Build uses a different dependency lock.' }
@@ -41,11 +38,11 @@ function Invoke-EspTool {
     Write-Host $text
     return $text
 }
-$flashMb = if ($Profile -eq 'waveshare-touch-usb') { 8 } else { 4 }
-if ($manifest.flashSizeBytes -ne ($flashMb * 1024 * 1024)) { throw 'Manifest flash size differs from profile.' }
+$flashMb = 8
+if ($manifest.flashSizeBytes -ne ($flashMb * 1024 * 1024)) { throw 'Manifest flash size differs from Waveshare board.' }
 $identity = Invoke-EspTool -CommandArgs @('flash-id')
 if ($identity -notmatch "BASE MAC:\s+$([regex]::Escape($ExpectedBaseMac))\b" -or
-    $identity -notmatch "Detected flash size: $($flashMb)MB") { throw 'Board MAC or flash size differs from the selected profile.' }
+    $identity -notmatch "Detected flash size: $($flashMb)MB") { throw 'Board MAC or flash size differs from Waveshare.' }
 $security = Invoke-EspTool -CommandArgs @('get-security-info')
 if ($security -notmatch 'Secure Boot: Disabled' -or $security -notmatch 'Flash Encryption: Disabled') {
     throw 'Secure boot/encryption state is unsuitable for this development flasher.'
@@ -61,7 +58,7 @@ $null = Invoke-EspTool -CommandArgs @('--after', 'no-reset', 'write-flash', $wri
 $null = Invoke-EspTool -CommandArgs @('verify-flash', $writeOffset, $writeImage)
 @{
     port = $Port; baseMac = $ExpectedBaseMac.ToLowerInvariant(); chip = 'esp32c6';
-    revision = $manifest.revision; profile = $manifest.profile;
+    revision = $manifest.revision; board = $manifest.board;
     factorySha256 = $manifest.files.'factory.bin'; verified = $true;
     applicationOnly = [bool]$AppOnly; programmedOffset = $writeOffset;
     erasedDevelopmentFlash = [bool]$EraseDevelopmentFlash;

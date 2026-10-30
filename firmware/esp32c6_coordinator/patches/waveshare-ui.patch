@@ -1,58 +1,98 @@
 --- a/main/main.cpp
 +++ b/main/main.cpp
-@@ -4,6 +4,9 @@
+@@ -4,9 +4,9 @@
  #include "esp_partition.h"
  #include "esp_timer.h"
  #include "app.h"
-+#if CONFIG_COORDINATOR_STATUS_UI
 +#include "coordinator_ui.h"
-+#endif
  #include "boot_guard.h"
  #include "sdkconfig.h"
- #include "driver/gpio.h"
-@@ -139,7 +142,7 @@
- // it as a GPIO disables the USB-Serial/JTAG controller that carries the NCP
- // link (and the flash path). On the C5 these pins are therefore left untouched
- // in their reset state, so USB stays alive.
+-#include "driver/gpio.h"
+ #include "freertos/FreeRTOS.h"
+ #include "freertos/task.h"
+ 
+@@ -134,53 +134,6 @@
+ 
+ }  // namespace boot_guard
+ 
+-// The XIAO RF-antenna-switch handling below is ESP32-C6-only. Both branches
+-// drive GPIO3 and GPIO14, and on the ESP32-C5 GPIO14 is USB_D+ — reconfiguring
+-// it as a GPIO disables the USB-Serial/JTAG controller that carries the NCP
+-// link (and the flash path). On the C5 these pins are therefore left untouched
+-// in their reset state, so USB stays alive.
 -#if CONFIG_IDF_TARGET_ESP32C6
-+#if CONFIG_IDF_TARGET_ESP32C6 && !CONFIG_COORDINATOR_STATUS_UI
- #if CONFIG_NCP_XIAO_EXT_ANTENNA
- // Seeed XIAO ESP32-C6 RF antenna switch (pins NOT on the module header):
- // GPIO3 low enables the switch control, GPIO14 selects the antenna
-@@ -192,7 +195,7 @@
+-#if CONFIG_NCP_XIAO_EXT_ANTENNA
+-// Seeed XIAO ESP32-C6 RF antenna switch (pins NOT on the module header):
+-// GPIO3 low enables the switch control, GPIO14 selects the antenna
+-// (low = internal ceramic, high = external U.FL). Sequence and the 100 ms
+-// settle delay follow Seeed's reference code (wiki "XIAO ESP32C6 Getting
+-// Started"; pin names WIFI_ENABLE/WIFI_ANT_CONFIG in arduino-esp32
+-// variants/XIAO_ESP32C6/pins_arduino.h). Runs before the ZBOSS stack starts,
+-// so the radio only ever transmits on the selected antenna.
+-static void select_external_antenna(void)
+-{
+-    gpio_config_t io = {};
+-    io.pin_bit_mask = (1ULL << GPIO_NUM_3) | (1ULL << GPIO_NUM_14);
+-    // INPUT_OUTPUT (not plain OUTPUT) so the level can be read back for the
+-    // debug log below — push-pull drive is identical.
+-    io.mode = GPIO_MODE_INPUT_OUTPUT;
+-    gpio_config(&io);
+-    gpio_set_level(GPIO_NUM_3, 0);   // enable RF switch control
+-    vTaskDelay(pdMS_TO_TICKS(100));
+-    gpio_set_level(GPIO_NUM_14, 1);  // external antenna
+-    ESP_LOGI("ANT", "ext antenna selected: GPIO3=%d GPIO14=%d",
+-             gpio_get_level(GPIO_NUM_3), gpio_get_level(GPIO_NUM_14));
+-}
+-#else
+-// Default build: put the (XIAO) RF-switch control pins into a defined,
+-// passive state — inputs, no pulls. On the XIAO the board's 5K1 pulldown on
+-// GPIO14 then selects RF1 = the on-board chip antenna (schematic-verified
+-// 2026-06-05), and GPIO3 stays high-Z (switch control inactive). On any
+-// other board this matches the chip's reset state, i.e. it is electrically
+-// a no-op — safe in the one-binary-for-all webflasher image.
+-static void rf_switch_default_input(void)
+-{
+-    gpio_config_t io = {};
+-    io.pin_bit_mask = (1ULL << GPIO_NUM_3) | (1ULL << GPIO_NUM_14);
+-    io.mode = GPIO_MODE_INPUT;
+-    io.pull_up_en = GPIO_PULLUP_DISABLE;
+-    io.pull_down_en = GPIO_PULLDOWN_DISABLE;
+-    gpio_config(&io);
+-}
+-#endif
+-#endif  // CONFIG_IDF_TARGET_ESP32C6
+-
+ extern "C" void app_main(void)
+ {
+     // Reset-cause forensics (free under LOG_NONE): some boards' eFuses
+@@ -192,13 +145,7 @@
  
      boot_guard::init();
      handle_pending_erase();
 -#if CONFIG_IDF_TARGET_ESP32C6
-+#if CONFIG_IDF_TARGET_ESP32C6 && !CONFIG_COORDINATOR_STATUS_UI
- #if CONFIG_NCP_XIAO_EXT_ANTENNA
-     select_external_antenna();
- #else
-@@ -200,5 +203,8 @@
- #endif
- #endif  // CONFIG_IDF_TARGET_ESP32C6
+-#if CONFIG_NCP_XIAO_EXT_ANTENNA
+-    select_external_antenna();
+-#else
+-    rf_switch_default_input();
+-#endif
+-#endif  // CONFIG_IDF_TARGET_ESP32C6
      ESP_ERROR_CHECK(app::init());
-+#if CONFIG_COORDINATOR_STATUS_UI
 +    coordinator_ui_start();
-+#endif
      ESP_ERROR_CHECK(app::start());
  }
 --- a/main/zb_ncp.cpp
 +++ b/main/zb_ncp.cpp
-@@ -1,4 +1,7 @@
+@@ -1,4 +1,5 @@
  #include "zb_ncp.h"
-+#if CONFIG_COORDINATOR_STATUS_UI
 +#include "coordinator_ui.h"
-+#endif
  #include "boot_guard.h"
  #include "commands.h"
  #include "protocol.h"
-@@ -314,6 +317,25 @@
+@@ -314,6 +315,23 @@
  }  // namespace
  
  void zb_ncp::on_rx_data(const void* data,size_t size) {
-+#if CONFIG_COORDINATOR_STATUS_UI
-+    // Optional framed UI extension; no radio calls or unframed serial traffic.
++    // Framed UI extension; no radio calls or unframed serial traffic.
 +    if (size >= sizeof(cmd_t)) {
 +        const cmd_t& cmd = *static_cast<const cmd_t*>(data);
 +        if (cmd.type == REQUEST) {
@@ -68,7 +108,6 @@
 +            }
 +        }
 +    }
-+#endif
 +
  	// WEDGE-1 safe mode: ZBOSS was never started (repeated early-boot
  	// failure, see boot_guard.h). Serve only stack-free commands and answer

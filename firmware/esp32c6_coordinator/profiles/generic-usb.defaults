@@ -1,5 +1,0 @@
-# Build comparison only. Not a validated Waveshare/display-board profile.
-# Upstream still configures GPIO3 and GPIO14 as inputs in this mode.
-CONFIG_NCP_XIAO_EXT_ANTENNA=n
-CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
-CONFIG_ESPTOOLPY_FLASHSIZE="4MB"

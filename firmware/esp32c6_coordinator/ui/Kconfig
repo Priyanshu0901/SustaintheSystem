@@ -1,5 +1,0 @@
-menu "Sustain coordinator UI"
-    config COORDINATOR_STATUS_UI
-        bool "Waveshare 1.9-inch touch status display"
-        default n
-endmenu

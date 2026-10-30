@@ -83,5 +83,43 @@
     "Backup/restore or coordinator migration",
     "Remote CI execution"
   ],
-  "evidence": "Ignored build/ logs and artifacts/ manifests; ignored existing host/data network state. No keys in this record."
+  "evidence": "Ignored build/ logs and artifacts/ manifests; ignored existing host/data network state. No keys in this record.",
+  "hardwareValidatedCommit": "6ac8bb0",
+  "workflowSimplification": {
+    "date": "2026-10-30",
+    "board": "Waveshare ESP32-C6-Touch-LCD-1.9 only",
+    "build": "passed in pinned Docker",
+    "flashed": false,
+    "factorySha256": "b8bd8f4daa156dac7216b5ec4c2a9b086a55c3d9bb9c46f30e6fde9eb5b931e6",
+    "applicationSha256": "e15d0fb78533e78e89665741f4ae41036803f2c9291fee9d587c121047b74b08",
+    "dependencyLockUnchanged": true,
+    "boardSelectionParameters": false,
+    "historicalBoardConfiguration": "Git tag coordinator-xiao-v1 / POC/zigbee_coordinator",
+    "localRuntimeSourceHashes": {
+      "ui/CMakeLists.txt": "5025d69c0ec46c29e8573763de714eac79d3f3050537d1d87a04f3617fc7c02a",
+      "ui/coordinator_ui.h": "fc9b5edfa3b40da73e8b8cd2dcd1e6427704727e68b2c0942e58eb33d57a3eb2",
+      "ui/ui_model.c": "9923d864b79c7c2fa69ce250d4426e9c8f188b024766b4d378365ffd561cee73",
+      "ui/ui_model.h": "f73213787e3ece14bc20d4298d5ffc758ac62896bac065808f7a72b94a17eddb",
+      "ui/ui_runtime.c": "3b81235fa0fd4aaab52167fe09214e600c7a2e35475cbc8ff401ba3dc37a0fa9",
+      "ui/ui_theme.h": "0f8bef98807920e753d8279b01eaf56980744dff467745390710ce308d5a61d9",
+      "ui/ui_view.c": "7a293ab336432a263e6a3f892eab89575594a6840ecf305771c694757cad7224",
+      "ui/ui_view.h": "a72d92f00da12e5d529bad2b6e550cbeba59ad5aaec2f83e40bc578d3e7e0be7",
+      "boards/waveshare_touch_1_9/CMakeLists.txt": "ac4720494b089534f37536681b07b5bb64f7ee6c4e1bf495fb3848b08ec57487",
+      "boards/waveshare_touch_1_9/board_display.c": "9503f53788d3c2ef73d0a8aea911b19177273dfa2790c0f7ccf070748d427eb6",
+      "boards/waveshare_touch_1_9/board_display.h": "38593a5399eec1074a64f018c8989e32415179f6e4f95fcbac03521c8c91a5cb",
+      "boards/waveshare_touch_1_9/board_pins.h": "60b643c13cbe7e56d794a94bc7e4b877b46f2275f1f6baea326988a1a5cf9f84",
+      "patches/waveshare-ui.patch": "0dc059bf19142d2e0a02343735ef775f73fea5e037eaaa50ba7a01f306b9ebfe"
+    },
+    "hardwareResultScope": "Earlier runtime/physical tests refer to baseline 6ac8bb0; this workflow revision was not flashed."
+  },
+  "signalComparison": {
+    "source": "user report",
+    "waveshareLqi": 198,
+    "xiaoLqiApprox": 254,
+    "metric": "LQI, not RSSI in dBm",
+    "antennaDifference": "saved XIAO build selects external; Waveshare uses onboard ceramic",
+    "controlledComparisonPerformed": false,
+    "causation": "not established",
+    "packetLossOrRangeConclusion": "none"
+  }
 }

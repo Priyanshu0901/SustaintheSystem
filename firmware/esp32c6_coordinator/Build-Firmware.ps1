@@ -1,6 +1,4 @@
 param(
-    [ValidateSet('xiao-ext-usb', 'generic-usb', 'waveshare-touch-usb')]
-    [string]$Profile = 'xiao-ext-usb',
     [switch]$ResolveDependencies
 )
 
@@ -28,7 +26,7 @@ if (-not $ResolveDependencies -and -not (Test-Path -LiteralPath (Join-Path $PSSc
 & docker info --format '{{.OSType}}' | Out-Null
 if ($LASTEXITCODE -ne 0) { throw 'Docker Linux engine is unavailable. Start Docker Desktop and retry.' }
 $archiveDir = Join-Path $PSScriptRoot 'build'
-$outputDir = Join-Path $PSScriptRoot "artifacts/$Profile"
+$outputDir = Join-Path $PSScriptRoot 'artifacts'
 New-Item -ItemType Directory -Path $archiveDir, $outputDir -Force | Out-Null
 $archivePath = Join-Path $archiveDir 'source.tar'
 & git -C $sourcePath archive --format=tar "--output=$archivePath" $revision
@@ -37,11 +35,11 @@ $dockerArgs = @(
     'run', '--rm', '--platform', $lock.platform,
     '--mount', "type=bind,source=$PSScriptRoot,target=/integration,readonly",
     '--mount', "type=bind,source=$outputDir,target=/out",
-    '--mount', "type=volume,source=sustain-c6-$Profile,target=/work",
+    '--mount', 'type=volume,source=sustain-c6-waveshare-touch-usb,target=/work',
     '--env', "SOURCE_DATE_EPOCH=$($lock.sourceDateEpoch)",
-    $lock.idfImage, 'python', '/integration/tools/build.py', $Profile
+    $lock.idfImage, 'python', '/integration/tools/build.py'
 )
 if ($ResolveDependencies) { $dockerArgs += '--resolve-dependencies' }
 & docker @dockerArgs
-if ($LASTEXITCODE -ne 0) { throw "Firmware build failed for $Profile. Do not flash old artifacts." }
+if ($LASTEXITCODE -ne 0) { throw 'Waveshare firmware build failed. Do not flash old artifacts.' }
 Write-Host "Verified build artifacts: $outputDir"

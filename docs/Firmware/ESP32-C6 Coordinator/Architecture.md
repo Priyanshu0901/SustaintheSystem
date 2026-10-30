@@ -1,6 +1,6 @@
 # ESP32-C6 coordinator firmware architecture
 
-This describes the implemented USB coordinator and its Windows host. The radio protocol core comes from pinned `esp-coordinator` upstream. Project-owned code adds profiles, build/flash wrappers, host launchers and an optional Waveshare status UI with a separate board driver.
+This describes the implemented USB coordinator and its Windows host. The radio protocol core comes from pinned `esp-coordinator` upstream. This branch owns the Waveshare build/flash wrappers, host launcher and status UI with a separate board driver. XIAO remains in its Git tag/branch rather than active compatibility paths.
 
 ![Existing coordinator and host components](assets/architecture.png)
 
@@ -8,9 +8,9 @@ This describes the implemented USB coordinator and its Windows host. The radio p
 
 ## Build and programming boundaries
 
-`Build-Firmware.ps1` checks the locked upstream checkout, archives it and launches the pinned Docker build. `tools/build.py` applies configuration and, only for Waveshare, copies the original UI/board components and applies a small optional startup/vendor-request hook patch. It validates effective settings and exports images with hashes of the runtime additions. The upstream checkout stays clean; XIAO/generic builds do not receive that patch.
+`Build-Firmware.ps1` checks the locked upstream checkout, archives it and launches the pinned Docker build. `tools/build.py` applies one active `sdkconfig.defaults`, copies the original UI/board components and applies the Waveshare startup/vendor-request integration patch. It validates effective settings and exports images with hashes of the runtime additions. The upstream dependency checkout stays clean; historical board selection is absent from this branch.
 
-`Flash-Firmware.ps1` checks artifact identity and the selected ESP32-C6, then programs and verifies the image before boot. [Upstream and builds](Upstream%20and%20Builds.md) owns parent selection/build isolation; [board profiles](Board%20Profiles.md) owns GPIO and antenna settings. Exact commands and provenance remain in the operations guide.
+`Flash-Firmware.ps1` checks artifact identity and the selected ESP32-C6, then programs and verifies the image before boot. [Upstream and builds](Upstream%20and%20Builds.md) owns parent selection/build isolation; [active board](Board%20Profiles.md) owns GPIO and antenna settings. Exact commands and provenance remain in the operations guide.
 
 ## Runtime boundary
 

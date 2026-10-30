@@ -1,4 +1,4 @@
-"""Container entry point: build an immutable source archive with isolated profiles."""
+"""Container entry point for the active Waveshare coordinator revision."""
 import hashlib
 import json
 import os
@@ -18,10 +18,7 @@ def run(*args, **kwargs):
 
 
 def main():
-    profile = sys.argv[1]
-    if profile not in {"xiao-ext-usb", "generic-usb", "waveshare-touch-usb"}:
-        raise SystemExit("Unknown board profile")
-    resolve = "--resolve-dependencies" in sys.argv[2:]
+    resolve = "--resolve-dependencies" in sys.argv[1:]
     integration, work, out = Path("/integration"), Path("/work"), Path("/out")
     lock = json.loads((integration / "upstream.lock.json").read_text())
     dep_lock = integration / "dependencies.lock"
@@ -30,16 +27,13 @@ def main():
     # Remove the previous success marker before any work; failures cannot leave a flashable manifest.
     (out / "manifest.json").unlink(missing_ok=True)
     archive = integration / "build/source.tar"
-    inputs = [archive, integration / "profiles/usb.defaults",
-              integration / f"profiles/{profile}.defaults", Path(__file__)]
+    inputs = [archive, integration / "sdkconfig.defaults", Path(__file__)]
     local_files = []
-    if profile == "waveshare-touch-usb":
-        for folder in ("ui", "boards/waveshare_touch_1_9", "patches"):
-            local_files.extend(sorted(p for p in (integration / folder).rglob("*")
-                                      if p.is_file() and "tests" not in p.parts
-                                      and (p.suffix in {".c", ".h", ".txt", ".patch"}
-                                           or p.name == "Kconfig")))
-        inputs.extend(local_files)
+    for folder in ("ui", "boards/waveshare_touch_1_9", "patches"):
+        local_files.extend(sorted(p for p in (integration / folder).rglob("*")
+                                  if p.is_file() and "tests" not in p.parts
+                                  and p.suffix in {".c", ".h", ".txt", ".patch"}))
+    inputs.extend(local_files)
     if dep_lock.exists():
         inputs.append(dep_lock)
     identity = hashlib.sha256(json.dumps(lock, sort_keys=True).encode() +
@@ -56,19 +50,18 @@ def main():
         with tarfile.open(archive) as bundle:
             # This tar is produced by git archive from the pinned fork revision.
             bundle.extractall(project, filter="data")
-        if profile == "waveshare-touch-usb":
-            shutil.copytree(integration / "ui", project / "components/coordinator_ui",
-                            ignore=shutil.ignore_patterns("tests", "README.md"))
-            shutil.copytree(integration / "boards/waveshare_touch_1_9",
-                            project / "components/waveshare_display")
-            # The pinned upstream Git blobs contain CRLF. Normalize only the
-            # two patched build-copy files so the reviewed LF patch is portable.
-            for name in ("main/main.cpp", "main/zb_ncp.cpp"):
-                path = project / name
-                path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n"))
-            patch = str(integration / "patches/waveshare-ui.patch")
-            run("git", "apply", "--check", patch, cwd=project)
-            run("git", "apply", patch, cwd=project)
+        shutil.copytree(integration / "ui", project / "components/coordinator_ui",
+                        ignore=shutil.ignore_patterns("tests", "README.md"))
+        shutil.copytree(integration / "boards/waveshare_touch_1_9",
+                        project / "components/waveshare_display")
+        # Keep upstream immutable. Only the build copy receives Waveshare board
+        # initialization and the bounded UI hook; no alternative board paths.
+        for name in ("main/main.cpp", "main/zb_ncp.cpp"):
+            path = project / name
+            path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n"))
+        patch = str(integration / "patches/waveshare-ui.patch")
+        run("git", "apply", "--check", patch, cwd=project)
+        run("git", "apply", patch, cwd=project)
         if dep_lock.exists():
             shutil.copy2(dep_lock, project / "dependencies.lock")
         marker.write_text(identity)
@@ -76,24 +69,21 @@ def main():
     env = os.environ.copy()
     env["IDF_TARGET"] = lock["target"]
     defaults = ";".join([str(project / "sdkconfig.defaults"),
-                         str(integration / "profiles/usb.defaults"),
-                         str(integration / f"profiles/{profile}.defaults")])
+                         str(integration / "sdkconfig.defaults")])
     run("idf.py", "-B", str(build), "-D", "SDKCONFIG=/work/sdkconfig",
         "-D", f"SDKCONFIG_DEFAULTS={defaults}", "build", cwd=project, env=env)
     actual_lock = project / "dependencies.lock"
     if dep_lock.exists() and sha(dep_lock) != sha(actual_lock):
         raise SystemExit("Build changed dependencies.lock; review a separate dependency update")
     config = (work / "sdkconfig").read_text()
-    flash_mb = 8 if profile == "waveshare-touch-usb" else 4
+    flash_mb = 8
     expected = ["CONFIG_NCP_BUS_MODE_USB=y", "# CONFIG_NCP_UART_TRANSPORT is not set",
-                "CONFIG_ESP_CONSOLE_SECONDARY_NONE=y", f'CONFIG_ESPTOOLPY_FLASHSIZE="{flash_mb}MB"',
-                "CONFIG_NCP_XIAO_EXT_ANTENNA=y" if profile == "xiao-ext-usb"
-                else "# CONFIG_NCP_XIAO_EXT_ANTENNA is not set"]
-    if profile == "waveshare-touch-usb":
-        expected.append("CONFIG_COORDINATOR_STATUS_UI=y")
+                "CONFIG_ESP_CONSOLE_SECONDARY_NONE=y", 'CONFIG_ESPTOOLPY_FLASHSIZE="8MB"']
     for setting in expected:
         if setting not in config.splitlines():
-            raise SystemExit(f"Profile validation failed: {setting}")
+            raise SystemExit(f"Waveshare configuration validation failed: {setting}")
+    if "select_external_antenna" in (project / "main/main.cpp").read_text():
+        raise SystemExit("Historical XIAO antenna path remains in the active build")
     flash = json.loads((build / "flasher_args.json").read_text())
     args = []
     for offset, name in flash["flash_files"].items():
@@ -106,7 +96,7 @@ def main():
                       (build / "esp-coordinator.bin", "app.bin"),
                       (build / "flasher_args.json", "flasher_args.json")]:
         shutil.copy2(src, out / name)
-    manifest = {**lock, "profile": profile, "inputsSha256": identity,
+    manifest = {**lock, "board": "waveshare-touch-1.9", "inputsSha256": identity,
                 "sourceArchiveSha256": sha(archive), "flashOffset": "0x0",
                 "applicationOffset": flash["app"]["offset"],
                 "flashSizeBytes": flash_mb * 1024 * 1024, "dependencyResolutionOnly": resolve,
@@ -115,7 +105,7 @@ def main():
                                                    out / "sdkconfig", out / "dependencies.lock",
                                                    out / "flasher_args.json"]}}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    print(f"PASS: {profile}; SHA256 {manifest['files']['factory.bin']}")
+    print(f"PASS: Waveshare; SHA256 {manifest['files']['factory.bin']}")
 
 
 if __name__ == "__main__":

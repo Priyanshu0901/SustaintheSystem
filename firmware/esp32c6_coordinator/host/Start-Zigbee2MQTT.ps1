@@ -1,8 +1,7 @@
 param(
     [Parameter(Mandatory = $true)]
     [ValidatePattern('^COM[0-9]+$')]
-    [string]$Port,
-    [switch]$EnableDisplay
+    [string]$Port
 )
 
 $ErrorActionPreference = 'Stop'
@@ -23,7 +22,7 @@ if (-not (Test-Path -LiteralPath $packageModules)) {
     New-Item -ItemType Junction -Path $packageModules -Target $moduleRoot | Out-Null
 }
 if ([System.IO.Ports.SerialPort]::GetPortNames() -notcontains $Port) {
-    throw "Serial port $Port is not currently present. Connect and identify the XIAO first."
+    throw "Serial port $Port is not currently present. Connect and identify the Waveshare coordinator first."
 }
 
 $dataPath = Join-Path $PSScriptRoot 'data'
@@ -33,13 +32,8 @@ if (-not (Test-Path -LiteralPath $configPath)) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'configuration.example.yaml') -Destination $configPath
 }
 $displayExtension = Join-Path $dataPath 'external_extensions/coordinator-display.cjs'
-if ($EnableDisplay) {
-    New-Item -ItemType Directory -Path (Split-Path -Parent $displayExtension) -Force | Out-Null
-    Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'extensions/coordinator-display.cjs') -Destination $displayExtension -Force
-}
-elseif (Test-Path -LiteralPath $displayExtension) {
-    throw 'Display extension is installed in this host data. Use -EnableDisplay for Waveshare, or remove only that extension when returning to XIAO.'
-}
+New-Item -ItemType Directory -Path (Split-Path -Parent $displayExtension) -Force | Out-Null
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'extensions/coordinator-display.cjs') -Destination $displayExtension -Force
 
 $previousData = $env:ZIGBEE2MQTT_DATA
 $previousPort = $env:ZIGBEE2MQTT_CONFIG_SERIAL_PORT

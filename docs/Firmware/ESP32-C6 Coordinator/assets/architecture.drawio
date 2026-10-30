@@ -5,7 +5,7 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="build" value="Build-Firmware.ps1&lt;br&gt;Locked source + profile" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+        <mxCell id="build" value="Build-Firmware.ps1&lt;br&gt;Locked source + board config" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
           <mxGeometry x="40" y="40" width="300" height="90" as="geometry" />
         </mxCell>
         <mxCell id="container" value="tools/build.py&lt;br&gt;Pinned ESP-IDF build&lt;br&gt;Validated hashed artifacts" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
@@ -17,7 +17,7 @@
         <mxCell id="node" value="Existing Nordic node&lt;br&gt;Simulated observations" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#f1f5f9;strokeColor=#64748b;fontColor=#0f172a;" parent="1" vertex="1">
           <mxGeometry x="40" y="280" width="300" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="ncp" value="ESP32-C6 upstream NCP&lt;br&gt;ZBOSS radio / network&lt;br&gt;Optional Waveshare UI hook" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#dcfce7;strokeColor=#16a34a;fontColor=#0f172a;" parent="1" vertex="1">
+        <mxCell id="ncp" value="ESP32-C6 upstream NCP&lt;br&gt;ZBOSS radio / network&lt;br&gt;Waveshare UI hook" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#dcfce7;strokeColor=#16a34a;fontColor=#0f172a;" parent="1" vertex="1">
           <mxGeometry x="430" y="280" width="300" height="100" as="geometry" />
         </mxCell>
         <mxCell id="z2m" value="PC: Zigbee2MQTT&lt;br&gt;Serial adapter + registry" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#f1f5f9;strokeColor=#64748b;fontColor=#0f172a;" parent="1" vertex="1">
@@ -87,7 +87,7 @@
         <mxCell id="display-ui" value="ui/ model / view / theme&lt;br&gt;Tile renderer + freshness" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
           <mxGeometry x="430" y="930" width="300" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="display-host" value="Optional host extension&lt;br&gt;Registry + availability" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+        <mxCell id="display-host" value="Host display extension&lt;br&gt;Registry + availability" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
           <mxGeometry x="820" y="930" width="300" height="100" as="geometry" />
         </mxCell>
         <mxCell id="display-status" source="display-host" target="display-ui" value="Framed USB status" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeWidth=2;fontFamily=Arial;fontSize=14;labelBackgroundColor=#ffffff;strokeColor=#475569;" parent="1" edge="1">
