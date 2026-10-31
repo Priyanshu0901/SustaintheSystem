@@ -13,7 +13,9 @@ const events = {};
 const publications = [];
 const controller = {
     adapter: {driver: {netInfo: {joined: true, network: {channel: 15}},
-        execCommand: async (cmd, params) => ({payload: {category:0,status:0,version:1,flags:7,page:0,
+        execCommand: async (cmd, params) => ({payload: cmd===0x7f12?
+            {category:0,status:0,version:1,stage:2,error:263,x:0,y:0,width:170,height:30,rotation:0,libraryRotation:0}:
+            {category:0,status:0,version:1,flags:7,page:0,
             touches:2,frames:10,drawErrors:0,uptime:10,hostAge:0,heapKiB:100}})}},
     getDevices: () => [{type:'Coordinator'},{type:'EndDevice',ieeeAddr:'node-a'}, {type:'Router',ieeeAddr:'node-b'}],
     isAdapterDisconnected: () => false, getPermitJoin: () => false,
@@ -42,7 +44,12 @@ const settings = {get:()=>({mqtt:{base_topic:'test'},devices:{'node-a':{friendly
         assert.equal(screen.displaySleeping,true);
         assert.equal(screen.settingsSaved,true);
         assert.equal(screen.rotationDegrees,180);
+        const fault=readZBOSSFrame(Buffer.from('0001127f01000001020701000000000000aa001e000000','hex'));
+        assert.equal(fault.payload.error,263); assert.equal(fault.payload.height,30);
+        await ext.publish({flags:0,drawErrors:1},'fault-test');
+        assert.equal(publications.at(-1)[1].displayFault.error,263);
     } finally { await ext.stop(); }
     assert.equal(FRAMES[0x7f10],undefined);
+    assert.equal(FRAMES[0x7f12],undefined);
     console.log('PASS: real host codec, registry/availability semantics, UI extension cleanup');
 })().catch(e=>{console.error(e);process.exitCode=1});

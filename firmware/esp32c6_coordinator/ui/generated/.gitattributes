@@ -1,0 +1,2 @@
+# EEZ 0.29 emits space-only lines; preserve its generated source verbatim.
+screens.c whitespace=-blank-at-eol

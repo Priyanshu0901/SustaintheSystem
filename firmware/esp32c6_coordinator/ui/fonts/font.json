@@ -1,8 +1,0 @@
-{
-  "family": "B612 Regular",
-  "source": "https://raw.githubusercontent.com/google/fonts/c13390277dfb1fcc7415d84ef7ef9cfc1e52f8c1/ofl/b612/B612-Regular.ttf",
-  "sha256": "139dce659100a83bf95b48474696e448bee95631ef84fd3d0437ced2bf33cf73",
-  "pillow": "12.3.0",
-  "freetype": "2.14.3",
-  "sizes": [11, 13, 30]
-}

@@ -23,6 +23,8 @@ The board driver's pin header owns these definitions. SD card, IMU, Wi-Fi and GP
 
 Display rotation is implemented in the portable UI pixel/touch transforms. The board retains native portrait addressing and its 35-pixel column gap. Display saving switches the panel and active-low backlight off while CST816 polling and the coordinator continue.
 
+The board identity reader requests `ESP_MAC_BASE` and reserves eight SDK bytes before formatting the six-byte base address. ESP-IDF5.5.1's factory-eFuse helper returns an eight-byte EUI-64 on C6; treating that call as a six-byte write corrupts adjacent state. The contract is isolated in `board_identity.c` and covered by a native sanitizer regression.
+
 [Existing firmware architecture](Architecture.md)
 
 ## Interpreting the reported link quality

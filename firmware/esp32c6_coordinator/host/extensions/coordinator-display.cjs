@@ -2,7 +2,7 @@
  * second serial connection. Compatible with pinned herdsman 10.10.0 / Z2M 2.14.2. */
 const {FRAMES} = require('zigbee-herdsman/dist/adapter/zboss/commands');
 const U8 = 0x20, U16 = 0x21, U32 = 0x23;
-const STATUS = 0x7f10, DIAGNOSTICS = 0x7f11;
+const STATUS = 0x7f10, DIAGNOSTICS = 0x7f11, FAULT = 0x7f12;
 const response = [
     ['category', U8], ['status', U8], ['version', U8], ['flags', U8], ['page', U8],
     ['touches', U16], ['frames', U32], ['drawErrors', U16], ['uptime', U32],
@@ -20,13 +20,18 @@ class CoordinatorDisplay {
         const version = require('zigbee-herdsman/package.json').version;
         if (version !== '10.10.0') throw new Error(`Display extension requires reviewed herdsman 10.10.0, found ${version}`);
         this.driver = this.zigbee.zhController.adapter.driver;
-        if (!this.driver?.execCommand || FRAMES[STATUS] || FRAMES[DIAGNOSTICS])
+        if (!this.driver?.execCommand || FRAMES[STATUS] || FRAMES[DIAGNOSTICS] || FRAMES[FAULT])
             throw new Error('Display requires an unused vendor-command pair and the ZBOSS adapter');
         FRAMES[STATUS] = {request: [
             ['version', U8], ['flags', U8], ['channel', U8], ['registered', U16],
             ['available', U16], ['stale', U16],
         ].map(([name, type]) => ({name, type})), response};
         FRAMES[DIAGNOSTICS] = {request: [], response};
+        FRAMES[FAULT] = {request: [], response: [
+            ['category',U8],['status',U8],['version',U8],['stage',U8],['error',U32],
+            ['x',U16],['y',U16],['width',U16],['height',U16],['rotation',U8],
+            ['libraryRotation',U8],
+        ].map(([name,type])=>({name,type}))};
         this.stopped = false;
         const capture = ({topic, payload}) => {
             const prefix = `${this.settings.get().mqtt.base_topic}/`;
@@ -68,11 +73,17 @@ class CoordinatorDisplay {
     }
     async publish(payload, phase, counts) {
         if (!this.mqtt.isConnected()) return;
+        let displayFault;
+        if (payload.drawErrors) {
+            try { displayFault=(await this.driver.execCommand(FAULT,{},3000)).payload; }
+            catch { /* Older compatible firmware may lack the optional fault endpoint. */ }
+        }
         await this.mqtt.publish('bridge/display', JSON.stringify({phase, timestamp: Date.now(), ...payload,
             panelReady: !!(payload.flags & 1), touchReady: !!(payload.flags & 2),
             hostFresh: !!(payload.flags & 4),
             displaySleeping: !!(payload.flags & 16), settingsSaved: !!(payload.flags & 32),
             rotationDegrees: ((payload.flags >> 6) & 3) * 90,
+            ...(displayFault?{displayFault}:{}),
             ...(counts ? {counts, unknown: counts.registered-counts.available-counts.stale} : {}),
         }), {clientOptions: {retain: true}, skipLog: true});
     }
@@ -98,6 +109,7 @@ class CoordinatorDisplay {
         if (this.pending) await this.pending;
         this.eventBus.removeListeners(this);
         delete FRAMES[STATUS]; delete FRAMES[DIAGNOSTICS];
+        delete FRAMES[FAULT];
     }
 }
 module.exports = CoordinatorDisplay;

@@ -9,6 +9,8 @@ INPUT                  = tools/documentation/Mainpage.dox \
                          firmware/nordic_zigbee/src \
                          firmware/nordic_zigbee/tools \
                          firmware/esp32c6_coordinator/tools/build.py \
+                         firmware/esp32c6_coordinator/tools/check_ui_generated.py \
+                         firmware/esp32c6_coordinator/tools/generate_sbom.py \
                          firmware/esp32c6_coordinator/ui \
                          firmware/esp32c6_coordinator/boards/waveshare_touch_1_9
 FILE_PATTERNS          = *.c *.h *.py *.md *.dox

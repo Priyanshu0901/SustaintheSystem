@@ -59,20 +59,21 @@ ui_action_t ui_model_touch(ui_model_t *m, uint16_t x, uint16_t y, uint32_t now)
     m->last_touch_ms = now;
     if (m->sleeping) { m->sleeping = false; return UI_ACTION_WAKE; }
     if (m->splash) { m->splash = false; return UI_ACTION_REDRAW; }
-    if (x < 48 && y < 44) { m->menu_open = !m->menu_open; return UI_ACTION_REDRAW; }
-    if (m->menu_open) {
-        if (y >= 48 && y < 48+3*40) {
-            static const uint8_t pages[] = {UI_PAGE_NETWORK,UI_PAGE_SETTINGS,UI_PAGE_DEBUG};
-            m->page = pages[(y-48)/40];
-            m->menu_open = false;
-            return UI_ACTION_REDRAW;
-        }
-        return UI_ACTION_NONE;
+    return UI_ACTION_NONE;
+}
+
+ui_action_t ui_model_control(ui_model_t *m, ui_control_t control, uint8_t value)
+{
+    if (control==UI_CONTROL_PAGE && value<UI_PAGE_COUNT && m->page!=value) {
+        m->page=value;
+        return UI_ACTION_REDRAW;
     }
-    if (m->page == UI_PAGE_SETTINGS) {
-        if (y >= 48 && y < 92) m->rotation = (m->rotation+1) & 3;
-        else if (y >= 100 && y < 144) m->timeout_index = (m->timeout_index+1) & 3;
-        else return UI_ACTION_NONE;
+    if (control==UI_CONTROL_ROTATION && value<4 && m->rotation!=value) {
+        m->rotation=value;
+        return UI_ACTION_SETTINGS;
+    }
+    if (control==UI_CONTROL_TIMEOUT && value<4 && m->timeout_index!=value) {
+        m->timeout_index=value;
         return UI_ACTION_SETTINGS;
     }
     return UI_ACTION_NONE;

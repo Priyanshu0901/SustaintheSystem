@@ -29,6 +29,16 @@ $archiveDir = Join-Path $PSScriptRoot 'build'
 $outputDir = Join-Path $PSScriptRoot 'artifacts'
 New-Item -ItemType Directory -Path $archiveDir, $outputDir -Force | Out-Null
 $archivePath = Join-Path $archiveDir 'source.tar'
+$uiLock = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'ui/lvgl.lock.json') | ConvertFrom-Json
+$dependencyDir = Join-Path $archiveDir 'dependencies'
+New-Item -ItemType Directory -Path $dependencyDir -Force | Out-Null
+$lvglArchive = Join-Path $dependencyDir $uiLock.lvgl.archive
+if (-not (Test-Path -LiteralPath $lvglArchive)) {
+    Invoke-WebRequest -Uri $uiLock.lvgl.source -OutFile $lvglArchive
+}
+if ((Get-FileHash -Algorithm SHA256 -LiteralPath $lvglArchive).Hash.ToLowerInvariant() -ne $uiLock.lvgl.sha256) {
+    throw 'LVGL archive differs from the pinned release hash.'
+}
 & git -C $sourcePath archive --format=tar "--output=$archivePath" $revision
 if ($LASTEXITCODE -ne 0) { throw 'Cannot archive pinned source.' }
 $dockerArgs = @(

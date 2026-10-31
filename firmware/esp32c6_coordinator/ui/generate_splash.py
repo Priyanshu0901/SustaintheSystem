@@ -1,4 +1,4 @@
-"""Convert an 8-bit RGB/RGBA PNG to a small RGB565 boot asset, without packages.
+"""Convert an 8-bit RGB/RGBA PNG to LVGL ARGB8888 logo assets, without packages.
 
 The manifest names the replaceable source image. PNG filters and alpha are
 decoded here; firmware only reads a const array, with no runtime image decoder.
@@ -80,29 +80,32 @@ def generate(manifest, output):
     if not isinstance(size, int) or not 16 <= size <= 128:
         raise ValueError("Splash size must be 16..128")
     w, h, channels, pixels = read_png(source)
-    # Aspect fit, then area-average premultiplied color onto black.
-    dw, dh = (size, max(1, h*size//w)) if w >= h else (max(1, w*size//h), size)
-    values = []
-    for y in range(dh):
-        ya, yb = y*h//dh, max(y*h//dh+1, (y+1)*h//dh)
-        for x in range(dw):
-            xa, xb = x*w//dw, max(x*w//dw+1, (x+1)*w//dw)
-            sums = [0, 0, 0]
-            for yy in range(ya, yb):
-                for xx in range(xa, xb):
-                    row, offset = pixels[yy], xx*channels
-                    alpha = row[offset+3] if channels == 4 else 255
-                    for c in range(3):
-                        sums[c] += row[offset+c]*alpha
-            r, g, b = (s//((xb-xa)*(yb-ya)*255) for s in sums)
-            values.append((r>>3)<<11 | (g>>2)<<5 | (b>>3))
     output.parent.mkdir(parents=True, exist_ok=True)
-    lines = ["/* Generated from ui/assets/splash.json; do not edit. */", "#pragma once",
-             f"#define UI_SPLASH_WIDTH {dw}", f"#define UI_SPLASH_HEIGHT {dh}",
-             "static const uint16_t ui_splash_pixels[] = {"]
-    for start in range(0, len(values), 16):
-        lines.append(",".join(f"0x{v:04X}" for v in values[start:start+16])+",")
-    output.write_text("\n".join(lines)+"\n};\n")
+    lines = ["/* Generated from ui/assets/splash.json; do not edit. */", "#pragma once", '#include "lvgl.h"']
+    for name, edge in (("splash",size),("header",28),("about",64)):
+        dw, dh = (edge, max(1, h*edge//w)) if w >= h else (max(1, w*edge//h), edge)
+        values = []
+        for y in range(dh):
+            ya, yb = y*h//dh, max(y*h//dh+1, (y+1)*h//dh)
+            for x in range(dw):
+                xa, xb = x*w//dw, max(x*w//dw+1, (x+1)*w//dw)
+                sums, total_alpha = [0, 0, 0], 0
+                for yy in range(ya, yb):
+                    for xx in range(xa, xb):
+                        row, offset = pixels[yy], xx*channels
+                        alpha = row[offset+3] if channels == 4 else 255
+                        total_alpha += alpha
+                        for c in range(3):
+                            sums[c] += row[offset+c]*alpha
+                r, g, b = (s//total_alpha if total_alpha else 0 for s in sums)
+                values.extend((b,g,r,total_alpha//((xb-xa)*(yb-ya))))
+        lines.append(f"static const uint8_t ui_logo_{name}_data[] = {{")
+        for start in range(0, len(values), 24):
+            lines.append(",".join(str(v) for v in values[start:start+24])+",")
+        lines.extend(["};", f"static const lv_image_dsc_t ui_logo_{name} = {{",
+                      f".header={{.magic=LV_IMAGE_HEADER_MAGIC,.cf=LV_COLOR_FORMAT_ARGB8888,.w={dw},.h={dh},.stride={dw*4}}},",
+                      f".data_size=sizeof ui_logo_{name}_data,.data=ui_logo_{name}_data", "};"])
+    output.write_text("\n".join(lines)+"\n")
 
 
 if __name__ == "__main__":

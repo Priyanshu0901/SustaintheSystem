@@ -1,0 +1,24 @@
+{
+  "lvgl": {
+    "version": "9.5.0",
+    "tag": "v9.5.0",
+    "revision": "85aa60d18b3d5e5588d7b247abf90198f07c8a63",
+    "source": "https://codeload.github.com/lvgl/lvgl/zip/85aa60d18b3d5e5588d7b247abf90198f07c8a63",
+    "archive": "lvgl-v9.5.0.zip",
+    "root": "lvgl-85aa60d18b3d5e5588d7b247abf90198f07c8a63",
+    "sha256": "d2076c049473a4983ec1be1b894cc7d8cd0e65e86f13386c775c4333e08db4b5",
+    "license": "MIT"
+  },
+  "generator": {
+    "name": "EEZ Studio",
+    "version": "0.29.0",
+    "source": "https://github.com/eez-open/studio/releases/tag/v0.29.0",
+    "installer": "https://github.com/eez-open/studio/releases/download/v0.29.0/EEZ-Studio-Setup-0.29.0.exe",
+    "installerSha256": "9bbdd9d9dee92ccdb64d503e25491139a9ff36189cb6283da8b32e93b31017e1",
+    "license": "GPL-3.0-only",
+    "editorApiVersion": "9.5.0",
+    "firmwareApiVersion": "9.5.0",
+    "flowSupport": false,
+    "runtimeBundled": false
+  }
+}

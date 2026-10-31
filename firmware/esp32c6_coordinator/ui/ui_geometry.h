@@ -8,3 +8,7 @@ bool ui_geometry_touch(uint8_t rotation, uint16_t *x, uint16_t *y);
  * Bounds are native half-open panel coordinates. Invalid input returns false. */
 bool ui_geometry_pack(uint8_t rotation, int y, int rows, const uint16_t *input,
                       uint16_t *output, int *x0, int *y0, int *x1, int *y1);
+/** Pack an arbitrary LVGL dirty rectangle, bounded by the same pixel capacity. */
+bool ui_geometry_pack_rect(uint8_t rotation, int x, int y, int width, int height,
+                           const uint16_t *input, uint16_t *output,
+                           int *x0, int *y0, int *x1, int *y1);

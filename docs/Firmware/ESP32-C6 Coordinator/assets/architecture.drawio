@@ -8,7 +8,7 @@
         <mxCell id="build" value="Build-Firmware.ps1&lt;br&gt;Locked source + board config" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
           <mxGeometry x="40" y="40" width="300" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="container" value="tools/build.py&lt;br&gt;Pinned ESP-IDF build&lt;br&gt;Validated hashed artifacts" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+        <mxCell id="container" value="tools/build.py&lt;br&gt;Locked inputs / ESP-IDF&lt;br&gt;Images + SBOM + licences" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
           <mxGeometry x="430" y="40" width="300" height="100" as="geometry" />
         </mxCell>
         <mxCell id="flash" value="Flash-Firmware.ps1&lt;br&gt;Identify; write; verify" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
@@ -84,7 +84,7 @@
         <mxCell id="display-board" value="Waveshare board driver&lt;br&gt;SPI LCD + CST816 touch" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
           <mxGeometry x="40" y="930" width="300" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="display-ui" value="ui/ model / view / theme&lt;br&gt;Tile renderer + freshness" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
+        <mxCell id="display-ui" value="EEZ-generated LVGL 9.5.0&lt;br&gt;UI task + host model&lt;br&gt;Screen settings / display saving" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">
           <mxGeometry x="430" y="930" width="300" height="100" as="geometry" />
         </mxCell>
         <mxCell id="display-host" value="Host display extension&lt;br&gt;Registry + availability" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=17;spacing=12;strokeWidth=2;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" parent="1" vertex="1">

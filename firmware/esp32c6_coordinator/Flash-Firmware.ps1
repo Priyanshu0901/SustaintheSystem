@@ -14,7 +14,7 @@ $lock = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'upstream.lock.js
 if ($manifest.board -ne 'waveshare-touch-1.9' -or $manifest.target -ne 'esp32c6' -or
     $manifest.revision -ne $lock.revision -or $manifest.idfImage -ne $lock.idfImage -or
     $manifest.dependencyResolutionOnly) { throw 'Unreviewed or incorrect firmware manifest.' }
-foreach ($file in @('factory.bin', 'app.bin', 'sdkconfig', 'dependencies.lock')) {
+foreach ($file in @('factory.bin', 'app.bin', 'sdkconfig', 'dependencies.lock', 'sbom.cdx.json')) {
     $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $outputDir $file)).Hash.ToLowerInvariant()
     if ($actual -ne $manifest.files.$file) { throw "Artifact hash mismatch: $file" }
 }
