@@ -17,7 +17,7 @@ static ui_model_t model;
 static ui_diagnostics_t diagnostics;
 static portMUX_TYPE lock = portMUX_INITIALIZER_UNLOCKED;
 static uint16_t *wire_pixels;
-static bool render_failed, ui_changed=true, settings_pending;
+static bool render_failed, ui_changed=true, settings_pending, restart_pending;
 static bool input_pressed;
 static uint16_t input_x, input_y;
 static uint8_t frame_rotation;
@@ -31,6 +31,7 @@ static void control_changed(ui_control_t control, uint8_t value)
     portENTER_CRITICAL(&lock);
     const ui_action_t action=ui_model_control(&model,control,value);
     settings_pending |= action==UI_ACTION_SETTINGS;
+    restart_pending |= action==UI_ACTION_RESTART;
     ui_changed |= action!=UI_ACTION_NONE;
     portEXIT_CRITICAL(&lock);
 }
@@ -187,6 +188,8 @@ static void ui_task(void *arg)
             health.settings_saved=stored;
             ui_feedback_save_result(stored);
         }
+        /* Dispatch only after LVGL returned and any pending NVS commit finished. */
+        if (restart_pending) esp_restart();
         if (snapshot.sleeping) {
             if (awake) {
                 const bool ok=board_display_set_awake(false)==ESP_OK;

@@ -50,7 +50,10 @@ void ui_view_update(const ui_model_t *m, const ui_diagnostics_t *d, uint32_t now
     const unsigned page_index=ui_navigation_index(m->page);
     const ui_navigation_entry_t *page=ui_navigation_entry(page_index);
     lv_obj_t *screen=m->splash?objects.boot:page->screen;
-    if (lv_screen_active()!=screen) lv_screen_load(screen);
+    if (lv_screen_active()!=screen) {
+        if (!m->splash) lv_obj_scroll_to_y(page->content,0,LV_ANIM_OFF);
+        lv_screen_load(screen);
+    }
     /* 0->180 and 90->270 keep the same logical resolution. The adapter's
      * native pixel transform still changed, so every pixel must be sent. */
     if (current_rotation!=m->rotation) {

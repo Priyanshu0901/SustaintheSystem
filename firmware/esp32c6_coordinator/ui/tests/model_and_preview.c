@@ -28,6 +28,7 @@ int esp_read_mac(uint8_t *mac, int type)
 }
 static ui_model_t model;
 static ui_action_t last_action;
+static unsigned restart_requests;
 static uint32_t clock_ms;
 static uint16_t framebuffer[UI_WIDTH*UI_HEIGHT];
 static uint16_t draw_buffer[UI_MAX_WIDTH*UI_TILE_ROWS];
@@ -44,6 +45,7 @@ static void control(ui_control_t type, uint8_t value)
 {
     last_action=ui_model_control(&model,type,value);
     if(last_action==UI_ACTION_SETTINGS) assert(ui_settings_save(&model));
+    if(last_action==UI_ACTION_RESTART) ++restart_requests;
 }
 static void pointer_read(lv_indev_t *input, lv_indev_data_t *data)
 {
@@ -122,7 +124,12 @@ static void popup_tests(void)
         ui_feedback_save_result(false);pump(100);
         assert(strstr(lv_label_get_text(toast),"Could not save"));
         ui_feedback_save_result(true);pump(100);
-        assert(strstr(lv_label_get_text(toast),"Saved"));
+        assert(lv_obj_has_flag(toast,LV_OBJ_FLAG_HIDDEN));
+        ui_feedback_save_result(true);pump(100);
+        assert(lv_obj_has_flag(toast,LV_OBJ_FLAG_HIDDEN));
+        ui_feedback_show("Touch to wake.");
+        ui_feedback_save_result(true);pump(100);
+        assert(!strcmp(lv_label_get_text(toast),"Touch to wake."));
         model.rotation^=1;refresh();lv_obj_get_coords(toast,&a);
         assert(a.x1>=10 && a.x2<ui_model_width(&model)-10 && a.y2<ui_model_height(&model)-10);
         pump(3100);assert(lv_obj_has_flag(toast,LV_OBJ_FLAG_HIDDEN));
@@ -157,6 +164,68 @@ static void brightness_and_spacing_tests(void)
                 if(i) assert(lv_obj_get_y(rows[i])-lv_obj_get_y(rows[i-1])==32);
             }
         }
+    }
+}
+static void scroll_and_actions_tests(void)
+{
+    for(int r=0;r<4;++r) for(unsigned page=0;page<ui_navigation_count();++page) {
+        const ui_navigation_entry_t *entry=ui_navigation_entry(page);
+        model.rotation=r;model.page=entry->page;refresh();
+        lv_obj_t *body=entry->content;
+        assert(lv_obj_has_flag(body,LV_OBJ_FLAG_SCROLLABLE));
+        assert(lv_obj_get_scroll_dir(body)==LV_DIR_VER && lv_obj_get_scrollbar_mode(body)==LV_SCROLLBAR_MODE_ACTIVE);
+        assert(lv_color_eq(lv_obj_get_style_bg_color(body,0),lv_color_black()));
+        assert(lv_color_eq(lv_obj_get_style_bg_color(entry->screen,0),lv_color_black()));
+        assert(framebuffer[0]==0);
+        lv_area_t hor,ver,header_before,header_after;
+        lv_obj_get_scrollbar_area(body,&hor,&ver);assert(lv_area_get_width(&ver)<=0);
+        lv_obj_get_coords(entry->menu,&header_before);
+        /* Exercise overflow scrolling even for a page whose current text fits. */
+        lv_obj_t *spacer=lv_obj_create(body);lv_obj_set_size(spacer,1,1);
+        lv_obj_set_pos(spacer,0,lv_obj_get_height(body)+100);
+        lv_obj_remove_flag(spacer,LV_OBJ_FLAG_CLICKABLE|LV_OBJ_FLAG_SCROLLABLE);
+        lv_obj_set_style_opa(spacer,LV_OPA_TRANSP,0);
+        lv_obj_scroll_to_y(body,0,LV_ANIM_OFF);pump(100);
+        point.x=ui_model_width(&model)-6;point.y=ui_model_height(&model)-25;pressed=true;pump(100);
+        for(int i=0;i<8;++i) {point.y-=8;pump(40);}
+        assert(lv_obj_get_scroll_y(body)>0);
+        lv_obj_get_scrollbar_area(body,&hor,&ver);assert(lv_area_get_width(&ver)>0);
+        lv_obj_get_coords(entry->menu,&header_after);
+        assert(!memcmp(&header_before,&header_after,sizeof header_before));
+        pressed=false;pump(1200);
+        lv_obj_get_scrollbar_area(body,&hor,&ver);assert(lv_area_get_width(&ver)<=0);
+        lv_obj_delete(spacer);lv_obj_scroll_to_y(body,0,LV_ANIM_OFF);pump(100);
+    }
+    for(int r=0;r<4;++r) {
+        model.rotation=r;model.page=UI_PAGE_SETTINGS;refresh();
+        lv_obj_t *buttons[]={objects.reset_button,objects.restart_button};
+        for(unsigned i=0;i<2;++i) {
+            lv_obj_scroll_to_view(buttons[i],LV_ANIM_OFF);pump(100);
+            lv_area_t button;lv_obj_get_coords(buttons[i],&button);
+            const unsigned saves_before=test_nvs_commits,restarts_before=restart_requests;
+            point.x=(button.x1+button.x2)/2;point.y=(button.y1+button.y2)/2;pressed=true;pump(80);
+            for(unsigned step=0;step<3;++step){point.y+=6;pump(40);}
+            pressed=false;pump(500);
+            assert(test_nvs_commits==saves_before && restart_requests==restarts_before);
+        }
+        lv_obj_scroll_to_view(objects.restart_button,LV_ANIM_OFF);pump(100);
+        lv_area_t a;lv_obj_get_coords(objects.restart_button,&a);
+        assert(a.y1>=48 && a.y2<ui_model_height(&model));
+        const unsigned commits=test_nvs_commits,restarts=restart_requests;
+        const ui_model_t before=model;
+        click((a.x1+a.x2)/2,(a.y1+a.y2)/2);
+        assert(restart_requests==restarts+1 && test_nvs_commits==commits);
+        assert(!memcmp(&before,&model,sizeof model));
+        model.timeout_index=0;model.brightness=model.brightness_committed=25;
+        assert(ui_model_apply(&model,good,9,clock_ms));
+        const ui_model_t host=model;
+        lv_obj_scroll_to_view(objects.reset_button,LV_ANIM_OFF);pump(100);
+        lv_obj_get_coords(objects.reset_button,&a);click((a.x1+a.x2)/2,(a.y1+a.y2)/2);
+        assert(last_action==UI_ACTION_SETTINGS && test_nvs_commits==commits+1);
+        assert(model.rotation==0 && model.timeout_index==2 && model.brightness==100 && model.brightness_committed==100);
+        assert(model.page==UI_PAGE_SETTINGS && model.flags==host.flags && model.channel==host.channel);
+        assert(model.joined==host.joined && model.available==host.available && model.stale==host.stale && model.last_update_ms==host.last_update_ms);
+        refresh();assert(lv_obj_get_scroll_y(objects.settings_content)==0);
     }
 }
 static void model_tests(void)
@@ -307,14 +376,15 @@ static void gui_tests(void)
     }
     popup_tests();
     brightness_and_spacing_tests();
-    fprintf(stderr,"PASS: brightness drag/release, PWM/NVS, About spacing, Debug visibility=%d, popup/pointer/gutter/toast and model/geometry/MAC regressions\n",UI_SHOW_DEBUG_PAGE);
+    scroll_and_actions_tests();
+    fprintf(stderr,"PASS: silent saves, page swipe/active-only scrollbar/fixed header/black, reset/restart actions, Debug=%d and existing brightness/PWM/NVS/popup/model regressions\n",UI_SHOW_DEBUG_PAGE);
 }
 int main(int argc,char **argv)
 {
     if(argc<2){hardware_settings_tests();model_tests();geometry_tests();gui_init();gui_tests();lv_deinit();return 0;}
     gui_init();
     if(!strcmp(argv[1],"waiting")) model.received=false;
-    if(!strcmp(argv[1],"settings") || !strcmp(argv[1],"rotation") || !strcmp(argv[1],"timeout") || !strcmp(argv[1],"help") || !strcmp(argv[1],"saved")) model.page=UI_PAGE_SETTINGS;
+    if(!strcmp(argv[1],"actions") || !strcmp(argv[1],"scrolling") || !strcmp(argv[1],"settings") || !strcmp(argv[1],"rotation") || !strcmp(argv[1],"timeout") || !strcmp(argv[1],"help") || !strcmp(argv[1],"saved")) model.page=UI_PAGE_SETTINGS;
     if(!strcmp(argv[1],"debug")) model.page=UI_PAGE_DEBUG;
     if(!strcmp(argv[1],"about")) model.page=UI_PAGE_ABOUT;
     if(!strcmp(argv[1],"splash")) model.splash=true;
@@ -325,6 +395,8 @@ int main(int argc,char **argv)
     if(!strcmp(argv[1],"timeout")){lv_dropdown_open(objects.timeout_select);pump(100);}
     if(!strcmp(argv[1],"help")){lv_obj_send_event(objects.sleep_info,LV_EVENT_CLICKED,NULL);pump(100);}
     if(!strcmp(argv[1],"saved")){ui_feedback_save_result(true);pump(100);}
+    if(!strcmp(argv[1],"actions")){lv_obj_scroll_to_view(objects.restart_button,LV_ANIM_OFF);pump(100);}
+    if(!strcmp(argv[1],"scrolling")){point.x=ui_model_width(&model)-6;point.y=ui_model_height(&model)-25;pressed=true;pump(100);for(int i=0;i<8;++i){point.y-=8;pump(40);}}
     printf("P6\n%d %d\n255\n",ui_model_width(&model),ui_model_height(&model));
     for(unsigned i=0;i<UI_WIDTH*UI_HEIGHT;++i){
         const uint16_t c=framebuffer[i];

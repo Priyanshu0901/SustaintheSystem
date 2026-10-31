@@ -27,6 +27,7 @@ typedef struct _objects_t {
     lv_obj_t *boot;
     lv_obj_t *network_navigation;
     lv_obj_t *network_logo;
+    lv_obj_t *network_content;
     lv_obj_t *network_card;
     lv_obj_t *network_state;
     lv_obj_t *host_state;
@@ -42,6 +43,7 @@ typedef struct _objects_t {
     lv_obj_t *joining_value;
     lv_obj_t *settings_navigation;
     lv_obj_t *settings_logo;
+    lv_obj_t *settings_content;
     lv_obj_t *rotation_caption;
     lv_obj_t *rotation_select;
     lv_obj_t *timeout_caption;
@@ -50,8 +52,13 @@ typedef struct _objects_t {
     lv_obj_t *brightness_caption;
     lv_obj_t *brightness_value;
     lv_obj_t *brightness_slider;
+    lv_obj_t *reset_button;
+    lv_obj_t *reset_label;
+    lv_obj_t *restart_button;
+    lv_obj_t *restart_label;
     lv_obj_t *about_navigation;
     lv_obj_t *about_logo;
+    lv_obj_t *about_content;
     lv_obj_t *about_symbol;
     lv_obj_t *maker_caption;
     lv_obj_t *maker_name;
@@ -61,6 +68,7 @@ typedef struct _objects_t {
     lv_obj_t *firmware_role;
     lv_obj_t *debug_navigation;
     lv_obj_t *debug_logo;
+    lv_obj_t *debug_content;
     lv_obj_t *touches_caption;
     lv_obj_t *touches_value;
     lv_obj_t *uptime_caption;

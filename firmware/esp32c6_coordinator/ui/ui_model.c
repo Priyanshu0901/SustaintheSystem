@@ -65,6 +65,12 @@ ui_action_t ui_model_touch(ui_model_t *m, uint16_t x, uint16_t y, uint32_t now)
 
 ui_action_t ui_model_control(ui_model_t *m, ui_control_t control, uint8_t value)
 {
+    if (control==UI_CONTROL_RESET_DISPLAY && value==0) {
+        m->rotation=0; m->timeout_index=2;
+        m->brightness=m->brightness_committed=100;
+        return UI_ACTION_SETTINGS; /* Also repairs absent/invalid display keys. */
+    }
+    if (control==UI_CONTROL_RESTART && value==0) return UI_ACTION_RESTART;
     if ((control==UI_CONTROL_BRIGHTNESS_PREVIEW || control==UI_CONTROL_BRIGHTNESS) && value>=10 && value<=100) {
         const bool changed=m->brightness!=value;
         m->brightness=value;

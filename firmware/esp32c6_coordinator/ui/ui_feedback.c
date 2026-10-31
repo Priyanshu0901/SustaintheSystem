@@ -3,10 +3,12 @@
 
 static lv_obj_t *toast;
 static lv_timer_t *expiry;
+static bool save_error;
 
 static void hide(lv_timer_t *timer)
 {
     lv_obj_add_flag(toast,LV_OBJ_FLAG_HIDDEN);
+    save_error=false;
     lv_timer_pause(timer);
 }
 
@@ -35,6 +37,7 @@ void ui_feedback_layout(void)
 
 void ui_feedback_show(const char *message)
 {
+    save_error=false;
     lv_label_set_text(toast,message);
     lv_obj_remove_flag(toast,LV_OBJ_FLAG_HIDDEN);
     ui_feedback_layout();
@@ -44,5 +47,8 @@ void ui_feedback_show(const char *message)
 
 void ui_feedback_save_result(bool saved)
 {
-    ui_feedback_show(saved?LV_SYMBOL_OK "  Saved":LV_SYMBOL_WARNING "  Could not save settings");
+    if (!saved) {
+        ui_feedback_show(LV_SYMBOL_WARNING "  Could not save settings");
+        save_error=true;
+    } else if (save_error) hide(expiry); /* Dismiss stale failure, no success popup. */
 }

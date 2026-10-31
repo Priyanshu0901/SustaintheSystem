@@ -5,11 +5,11 @@
 static ui_navigation_entry_t entries[4];
 void ui_navigation_init(void)
 {
-    entries[0]=(ui_navigation_entry_t){UI_PAGE_NETWORK,objects.network,objects.network_navigation,objects.network_logo,LV_SYMBOL_WIFI,LV_SYMBOL_WIFI "  Network"};
-    entries[1]=(ui_navigation_entry_t){UI_PAGE_SETTINGS,objects.settings,objects.settings_navigation,objects.settings_logo,LV_SYMBOL_SETTINGS,LV_SYMBOL_SETTINGS "  Settings"};
-    entries[2]=(ui_navigation_entry_t){UI_PAGE_ABOUT,objects.about,objects.about_navigation,objects.about_logo,LV_SYMBOL_FILE,LV_SYMBOL_FILE "  About"};
+    entries[0]=(ui_navigation_entry_t){UI_PAGE_NETWORK,objects.network,objects.network_navigation,objects.network_logo,objects.network_content,LV_SYMBOL_WIFI,LV_SYMBOL_WIFI "  Network"};
+    entries[1]=(ui_navigation_entry_t){UI_PAGE_SETTINGS,objects.settings,objects.settings_navigation,objects.settings_logo,objects.settings_content,LV_SYMBOL_SETTINGS,LV_SYMBOL_SETTINGS "  Settings"};
+    entries[2]=(ui_navigation_entry_t){UI_PAGE_ABOUT,objects.about,objects.about_navigation,objects.about_logo,objects.about_content,LV_SYMBOL_FILE,LV_SYMBOL_FILE "  About"};
 #if UI_SHOW_DEBUG_PAGE
-    entries[3]=(ui_navigation_entry_t){UI_PAGE_DEBUG,objects.debug,objects.debug_navigation,objects.debug_logo,LV_SYMBOL_EYE_OPEN,LV_SYMBOL_EYE_OPEN "  Debug"};
+    entries[3]=(ui_navigation_entry_t){UI_PAGE_DEBUG,objects.debug,objects.debug_navigation,objects.debug_logo,objects.debug_content,LV_SYMBOL_EYE_OPEN,LV_SYMBOL_EYE_OPEN "  Debug"};
 #endif
 }
 unsigned ui_navigation_count(void) { return UI_SHOW_DEBUG_PAGE?4:3; }

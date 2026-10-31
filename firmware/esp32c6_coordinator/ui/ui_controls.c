@@ -27,6 +27,18 @@ static void brightness_changed(lv_event_t *event)
         UI_CONTROL_BRIGHTNESS_PREVIEW:UI_CONTROL_BRIGHTNESS;
     if (on_control) on_control(control,(uint8_t)lv_slider_get_value(lv_event_get_target_obj(event)));
 }
+static void reset_display(lv_event_t *event)
+{
+    (void)event;
+    if (on_control) on_control(UI_CONTROL_RESET_DISPLAY,0);
+    ui_controls_close();
+    lv_obj_scroll_to_y(objects.settings_content,0,LV_ANIM_OFF);
+}
+static void restart_device(lv_event_t *event)
+{
+    (void)event;
+    if (on_control) on_control(UI_CONTROL_RESTART,0);
+}
 static void sleep_help(lv_event_t *event)
 {
     (void)event;
@@ -83,6 +95,7 @@ void ui_controls_init(ui_control_callback_t callback)
         lv_obj_t *list=lv_dropdown_get_list(dropdowns[i]);
         lv_obj_set_style_text_font(list,&lv_font_montserrat_14,0);
         lv_obj_set_style_min_width(list,140,0);
+        lv_obj_set_scrollbar_mode(list,LV_SCROLLBAR_MODE_ACTIVE);
         lv_obj_set_style_pad_all(list,8,0);
         lv_obj_set_style_text_line_space(list,8,0);
         lv_obj_set_style_bg_color(list,lv_color_hex(0x202624),0);
@@ -99,6 +112,8 @@ void ui_controls_init(ui_control_callback_t callback)
     }
     lv_obj_add_event_cb(objects.rotation_select,choose_rotation,LV_EVENT_VALUE_CHANGED,NULL);
     lv_obj_add_event_cb(objects.timeout_select,choose_timeout,LV_EVENT_VALUE_CHANGED,NULL);
+    lv_obj_add_event_cb(objects.reset_button,reset_display,LV_EVENT_CLICKED,NULL);
+    lv_obj_add_event_cb(objects.restart_button,restart_device,LV_EVENT_CLICKED,NULL);
     lv_obj_set_ext_click_area(objects.sleep_info,8);
     lv_obj_set_ext_click_area(objects.brightness_slider,12);
     lv_obj_add_event_cb(objects.brightness_slider,brightness_changed,LV_EVENT_VALUE_CHANGED,NULL);

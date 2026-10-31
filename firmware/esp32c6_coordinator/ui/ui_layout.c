@@ -4,6 +4,9 @@
 
 static void place(lv_obj_t *obj, int x, int y, int w, int h)
 {
+    lv_obj_t *parent=lv_obj_get_parent(obj);
+    if (parent==objects.network_content || parent==objects.settings_content ||
+        parent==objects.about_content || parent==objects.debug_content) y-=48;
     lv_obj_set_pos(obj,x,y); lv_obj_set_size(obj,w,h);
 }
 
@@ -15,6 +18,16 @@ void ui_layout_apply(int width, int height)
     for (unsigned i=0;i<5;++i) {
         lv_obj_set_size(screens[i],width,height);
         lv_obj_remove_flag(screens[i],LV_OBJ_FLAG_SCROLLABLE);
+    }
+    lv_obj_t *contents[]={objects.network_content,objects.settings_content,objects.about_content,objects.debug_content};
+    for (unsigned i=0;i<4;++i) {
+        lv_obj_set_pos(contents[i],0,48);
+        lv_obj_set_size(contents[i],width,height-48);
+        lv_obj_set_scroll_dir(contents[i],LV_DIR_VER);
+        lv_obj_set_scrollbar_mode(contents[i],LV_SCROLLBAR_MODE_ACTIVE);
+        lv_obj_set_style_width(contents[i],2,LV_PART_SCROLLBAR);
+        lv_obj_set_style_bg_color(contents[i],lv_color_hex(0x4C615A),LV_PART_SCROLLBAR);
+        lv_obj_scroll_to_y(contents[i],0,LV_ANIM_OFF);
     }
     for (unsigned i=0;i<ui_navigation_count();++i) {
         const ui_navigation_entry_t *entry=ui_navigation_entry(i);
@@ -47,6 +60,11 @@ void ui_layout_apply(int width, int height)
     place(objects.brightness_caption,10,wide?134:223,105,18);
     place(objects.brightness_value,wide?268:118,wide?128:223,42,18);
     place(objects.brightness_slider,wide?100:18,wide?148:260,wide?202:134,6);
+
+    place(objects.reset_button,10,wide?182:294,wide?142:150,38);
+    place(objects.restart_button,wide?168:10,wide?182:342,wide?142:150,38);
+    lv_obj_set_width(objects.reset_label,LV_PCT(100));lv_obj_center(objects.reset_label);
+    lv_obj_set_width(objects.restart_label,LV_PCT(100));lv_obj_center(objects.restart_label);
 
     lv_obj_t *captions[]={objects.touches_caption,objects.uptime_caption,objects.frames_caption,objects.errors_caption,objects.heap_caption};
     lv_obj_t *values[]={objects.touches_value,objects.uptime_value,objects.frames_value,objects.errors_value,objects.heap_value};

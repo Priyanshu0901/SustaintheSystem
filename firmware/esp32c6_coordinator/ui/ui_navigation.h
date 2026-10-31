@@ -3,7 +3,7 @@
 #include "lvgl.h"
 typedef struct {
     ui_page_t page;
-    lv_obj_t *screen, *menu, *logo;
+    lv_obj_t *screen, *menu, *logo, *content;
     const char *icon, *heading;
 } ui_navigation_entry_t;
 /** Ordered menu registry; initialize after EEZ creates named objects. */
