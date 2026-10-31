@@ -10,6 +10,6 @@ The Waveshare ESP32-C6-Touch-LCD-1.9 runs a USB ZBOSS network coprocessor and a 
 | Which board and antenna settings are active? | [Active board and Git-retained versions](Board%20Profiles.md) |
 | How are radio, host and application responsibilities divided? | [Host integration](Host%20Integration.md) |
 | Where are original scripts documented? | [Code reference](Code%20Reference.md) |
-| How do I build, flash, start the host or inspect results? | [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/esp32c6_coordinator) |
+| How do I build, flash, start the host or inspect results? | [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator) |
 
 The operations guide and validation record own measured results.

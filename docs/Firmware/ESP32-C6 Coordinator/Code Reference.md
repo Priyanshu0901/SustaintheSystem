@@ -4,7 +4,7 @@ The protocol implementation remains in the pinned upstream fork. This project ow
 
 ## Original integration code
 
-Paths are relative to [the integration source](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/esp32c6_coordinator).
+Paths are relative to [the integration source](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator).
 
 | Source | Responsibility |
 | --- | --- |
@@ -43,4 +43,4 @@ Paths are relative to [the integration source](https://github.com/Priyanshu0901/
 
 The shared [generator guide](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/tools/documentation) owns installation, generation commands, output locations and parser coverage. This maintained code map is included directly in its generated reference.
 
-[Upstream and builds](https://github.com/Priyanshu0901/SustaintheSystem/blob/master/docs/Firmware/ESP32-C6%20Coordinator/Upstream%20and%20Builds.md) explains the design; [operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/esp32c6_coordinator) owns commands, pins, dependency provenance and measured results.
+[Upstream and builds](https://github.com/Priyanshu0901/SustaintheSystem/blob/POC/zigbee_coordinator_dev/waveshare/docs/Firmware/ESP32-C6%20Coordinator/Upstream%20and%20Builds.md) explains the design; [operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator) owns commands, pins, dependency provenance and measured results.

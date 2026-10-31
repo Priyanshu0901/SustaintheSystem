@@ -25,7 +25,7 @@ The Waveshare ESP32-C6-Touch-LCD-1.9 runs both the USB ZBOSS coordinator and its
 | `patches/waveshare-ui.patch` | Waveshare startup/request hooks; historical XIAO RF routines removed from the build copy |
 | `host/extensions/coordinator-display.cjs` | Project host extension; registry/availability snapshots through the existing driver queue |
 
-Paths refer to [the Waveshare development integration](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator). Its `ui/README.md` owns the edit map and test commands; the integration README owns build/flash/start operations and measured results. The branch is local until published.
+Paths refer to [the Waveshare development integration](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator). Its `ui/README.md` owns the edit map and test commands; the integration README owns build/flash/start operations and measured results.
 
 LVGL9.5.0 uses partial rendering with a logical draw buffer plus separate DMA/wire buffer, each bounded to 320×16 RGB565 pixels (20,480 bytes total), and a fixed72KiB allocator pool. `lv_conf.h` is authoritative on native tests and firmware; ESP-IDF's LV_CONF_SKIP is disabled. Only the UI task calls LVGL, so USB requests touch only the separately locked model. The adapter owns orientation: LVGL stays at rotation0 and changes logical resolution; geometry rotates dirty rectangles and inversely maps touch. This avoids a second LVGL input rotation. DMA storage is reused after completion and retained on timeout; display failure does not stop the NCP.
 

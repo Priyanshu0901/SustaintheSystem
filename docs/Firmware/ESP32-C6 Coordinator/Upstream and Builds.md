@@ -17,4 +17,4 @@ Docker supplies ESP-IDF and its compiler/Python dependencies. The build extracts
 
 Each successful build exports factory/application images, configuration, component lock, flash arguments, SHA-256 manifest, CycloneDX1.6 SBOM and actual licence notices. [SBOM operations and coverage](https://github.com/Priyanshu0901/SustaintheSystem/blob/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator/SBOM.md) identifies packages and scope. LVGL9.5.0 matches the EEZ0.29.0 editor target; exact tag/commit/archive hashes and generator version are locked. EEZ Flow is disabled; the editor is build tooling only. Normal builds compile tracked generated C after canonical source/output provenance checks. A failed container build removes its success manifest; dependency-resolution output cannot be flashed until reviewed and normally rebuilt.
 
-[Exact inputs, licenses and build/update commands](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/esp32c6_coordinator)
+[Exact inputs, licenses and build/update commands](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator)

@@ -16,6 +16,6 @@ The npm-hoisted Windows host needs a package-local dependency junction for exter
 
 The Waveshare launcher installs the [display extension](Display%20UI.md) into the existing ignored host data automatically; it has no board/display selection flag. It uses the same Zigbee2MQTT process, installation and serialized adapter queue. Availability values are forwarded from actual host publications; missing availability stays unknown. Runtime keys/databases are not branch-versioned. Switching a board does not establish pairing migration.
 
-[Host installation, addresses, commands and recovery limits](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/esp32c6_coordinator#run-the-windows-host). [Nordic decoder installation and tests](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/nordic_zigbee#install-and-check-the-decoder).
+[Host installation, addresses, commands and recovery limits](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator#host-and-display). [Nordic decoder installation and tests](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/nordic_zigbee#install-and-check-the-decoder).
 
 [Code reference](Code%20Reference.md)

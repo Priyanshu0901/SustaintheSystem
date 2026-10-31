@@ -4,7 +4,7 @@ This describes the implemented USB coordinator and its Windows host. The radio p
 
 ![Existing coordinator and host components](assets/architecture.png)
 
-[Editable draw.io source](assets/architecture.drawio). The diagram distinguishes the upstream NCP from project-owned integration code. Source paths below are relative to [the integration directory](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/esp32c6_coordinator).
+[Editable draw.io source](assets/architecture.drawio). The diagram distinguishes the upstream NCP from project-owned integration code. Source paths below are relative to [the integration directory](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator).
 
 ## Build and programming boundaries
 
@@ -22,4 +22,4 @@ The [Nordic architecture](../Nordic%20Zigbee/Architecture.md) owns report produc
 
 `host/Install-Host.ps1` prepares pinned host dependencies. `host/Start-Broker.ps1` launches the loopback broker. `host/Start-Zigbee2MQTT.ps1` supplies the serial port, preserves runtime configuration, scopes Git discovery and supplies the dependency junction used by converter reloads. It leaves installed package source unchanged.
 
-[Host integration](Host%20Integration.md) owns state/restart semantics. [Code reference](Code%20Reference.md) maps project scripts. [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/esp32c6_coordinator) owns setup, addresses and measured results; no new build or hardware test is implied by this documentation.
+[Host integration](Host%20Integration.md) owns state/restart semantics. [Code reference](Code%20Reference.md) maps project scripts. [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator) owns setup, addresses and measured results; no new build or hardware test is implied by this documentation.
