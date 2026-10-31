@@ -39,6 +39,7 @@ Checked 2026-10-25; these sources describe upstream capabilities and constraints
 
 ## Coordinator UI and build inventory
 
+- [ESP-IDF 5.5.1 ESP32-C6 LEDC](https://docs.espressif.com/projects/esp-idf/en/v5.5.1/esp32c6/api-reference/peripherals/ledc.html) — low-speed timer/channel configuration, duty updates and output inversion used by the Waveshare backlight module.
 - [LVGL v9.5.0 release](https://github.com/lvgl/lvgl/releases/tag/v9.5.0) and [exact source revision](https://github.com/lvgl/lvgl/tree/85aa60d18b3d5e5588d7b247abf90198f07c8a63) — runtime pin selected to match the EEZ editor target. [Display UI](../Firmware/ESP32-C6%20Coordinator/Display%20UI.md) describes the implementation.
 - [EEZ Studio0.29.0](https://github.com/eez-open/studio/releases/tag/v0.29.0), [supported LVGL versions](https://github.com/eez-open/studio/blob/v0.29.0/packages/project-editor/project/project.tsx) and [generated-code ownership](https://github.com/eez-open/studio/blob/v0.29.0/README.md#ownership-and-license) — actual generator/tool scope; EEZ Flow is disabled.
 - [CycloneDX1.6 JSON schema](https://github.com/CycloneDX/specification/blob/1.6/schema/bom-1.6.schema.json) — generated firmware inventory format. Package pins, licence notices and bundle-level coverage are documented with the integration's SBOM guide, linked from [build architecture](../Firmware/ESP32-C6%20Coordinator/Upstream%20and%20Builds.md).

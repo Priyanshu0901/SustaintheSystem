@@ -13,8 +13,8 @@ enum ScreensEnum {
     _SCREEN_ID_FIRST = 1,
     SCREEN_ID_NETWORK = 1,
     SCREEN_ID_SETTINGS = 2,
-    SCREEN_ID_DEBUG = 3,
-    SCREEN_ID_ABOUT = 4,
+    SCREEN_ID_ABOUT = 3,
+    SCREEN_ID_DEBUG = 4,
     SCREEN_ID_BOOT = 5,
     _SCREEN_ID_LAST = 5
 };
@@ -22,8 +22,8 @@ enum ScreensEnum {
 typedef struct _objects_t {
     lv_obj_t *network;
     lv_obj_t *settings;
-    lv_obj_t *debug;
     lv_obj_t *about;
+    lv_obj_t *debug;
     lv_obj_t *boot;
     lv_obj_t *network_navigation;
     lv_obj_t *network_logo;
@@ -47,6 +47,18 @@ typedef struct _objects_t {
     lv_obj_t *timeout_caption;
     lv_obj_t *timeout_select;
     lv_obj_t *sleep_info;
+    lv_obj_t *brightness_caption;
+    lv_obj_t *brightness_value;
+    lv_obj_t *brightness_slider;
+    lv_obj_t *about_navigation;
+    lv_obj_t *about_logo;
+    lv_obj_t *about_symbol;
+    lv_obj_t *maker_caption;
+    lv_obj_t *maker_name;
+    lv_obj_t *device_name;
+    lv_obj_t *firmware_version;
+    lv_obj_t *library_version;
+    lv_obj_t *firmware_role;
     lv_obj_t *debug_navigation;
     lv_obj_t *debug_logo;
     lv_obj_t *touches_caption;
@@ -59,15 +71,6 @@ typedef struct _objects_t {
     lv_obj_t *errors_value;
     lv_obj_t *heap_caption;
     lv_obj_t *heap_value;
-    lv_obj_t *about_navigation;
-    lv_obj_t *about_logo;
-    lv_obj_t *about_symbol;
-    lv_obj_t *maker_caption;
-    lv_obj_t *maker_name;
-    lv_obj_t *device_name;
-    lv_obj_t *firmware_version;
-    lv_obj_t *library_version;
-    lv_obj_t *firmware_role;
     lv_obj_t *boot_symbol;
 } objects_t;
 
@@ -79,11 +82,11 @@ void tick_screen_network();
 void create_screen_settings();
 void tick_screen_settings();
 
-void create_screen_debug();
-void tick_screen_debug();
-
 void create_screen_about();
 void tick_screen_about();
+
+void create_screen_debug();
+void tick_screen_debug();
 
 void create_screen_boot();
 void tick_screen_boot();

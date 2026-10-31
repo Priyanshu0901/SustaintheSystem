@@ -16,7 +16,8 @@
 
 enum { UI_NETWORK_UP = 1, UI_MQTT_UP = 2, UI_JOIN_OPEN = 4 };
 typedef enum { UI_PAGE_NETWORK, UI_PAGE_DEBUG, UI_PAGE_SETTINGS, UI_PAGE_ABOUT, UI_PAGE_COUNT } ui_page_t;
-typedef enum { UI_CONTROL_PAGE, UI_CONTROL_ROTATION, UI_CONTROL_TIMEOUT } ui_control_t;
+typedef enum { UI_CONTROL_PAGE, UI_CONTROL_ROTATION, UI_CONTROL_TIMEOUT,
+    UI_CONTROL_BRIGHTNESS_PREVIEW, UI_CONTROL_BRIGHTNESS } ui_control_t;
 typedef enum { UI_ACTION_NONE, UI_ACTION_REDRAW, UI_ACTION_SETTINGS, UI_ACTION_WAKE } ui_action_t;
 
 /** Host-owned counts describe its device registry, excluding the coordinator.
@@ -29,6 +30,7 @@ typedef struct {
     uint32_t last_update_ms;
     bool sleeping, splash;
     uint8_t rotation, timeout_index;
+    uint8_t brightness, brightness_committed;
     uint32_t last_touch_ms, splash_started_ms;
 } ui_model_t;
 

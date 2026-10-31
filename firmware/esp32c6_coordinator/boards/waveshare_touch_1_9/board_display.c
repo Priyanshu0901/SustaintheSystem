@@ -1,4 +1,5 @@
 #include "board_display.h"
+#include "board_backlight.h"
 #include "board_pins.h"
 #include "driver/gpio.h"
 #include "driver/i2c_master.h"
@@ -25,11 +26,8 @@ esp_err_t board_display_init(void)
 {
     transferred = xSemaphoreCreateBinary();
     if (!transferred) return ESP_ERR_NO_MEM;
-    gpio_config_t bl = {.pin_bit_mask = 1ULL << BOARD_LCD_BACKLIGHT, .mode = GPIO_MODE_OUTPUT};
-    esp_err_t err = gpio_config(&bl);
+    esp_err_t err = board_backlight_init();
     if (err != ESP_OK) return err;
-    /* P-channel backlight transistor: low is on. Start with it off. */
-    gpio_set_level(BOARD_LCD_BACKLIGHT, 1);
     spi_bus_config_t bus = {.mosi_io_num = BOARD_LCD_MOSI, .miso_io_num = -1,
         .sclk_io_num = BOARD_LCD_CLK, .quadwp_io_num = -1, .quadhd_io_num = -1,
         .max_transfer_sz = 320 * 16 * 2};
@@ -77,11 +75,16 @@ esp_err_t board_display_tile(int x0, int y0, int x1, int y1, const uint16_t *pix
 
 esp_err_t board_display_set_awake(bool awake)
 {
-    if (!awake) gpio_set_level(BOARD_LCD_BACKLIGHT, 1);
+    if (!awake) {
+        const esp_err_t err=board_backlight_set_awake(false);
+        if (err!=ESP_OK) return err;
+    }
     const esp_err_t err = esp_lcd_panel_disp_on_off(panel, awake);
-    if (err == ESP_OK && awake) gpio_set_level(BOARD_LCD_BACKLIGHT, 0);
+    if (err == ESP_OK && awake) return board_backlight_set_awake(true);
     return err;
 }
+
+esp_err_t board_display_set_brightness(uint8_t percent) { return board_backlight_set_brightness(percent); }
 
 bool board_touch_present(void) { return touch_ready; }
 bool board_touch_read(uint16_t *x, uint16_t *y)

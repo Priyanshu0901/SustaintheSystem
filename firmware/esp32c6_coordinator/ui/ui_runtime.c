@@ -9,7 +9,7 @@
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "nvs.h"
+#include "ui_settings.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -25,34 +25,6 @@ static struct { uint8_t stage, rotation, library_rotation; uint32_t error; uint1
 static uint32_t now_ms(void) { return (uint32_t)(esp_timer_get_time() / 1000); }
 static void put16(uint8_t *p, uint16_t v) { p[0] = v; p[1] = v >> 8; }
 static void put32(uint8_t *p, uint32_t v) { put16(p, v); put16(p+2, v >> 16); }
-
-static bool load_settings(uint8_t *rotation, uint8_t *timeout)
-{
-    nvs_handle_t handle;
-    esp_err_t err=nvs_open("display",NVS_READONLY,&handle);
-    if (err==ESP_ERR_NVS_NOT_FOUND) return true; /* Defaults need no write. */
-    if (err!=ESP_OK) return false;
-    uint8_t value;
-    err=nvs_get_u8(handle,"rotation",&value);
-    bool ok=err==ESP_ERR_NVS_NOT_FOUND || (err==ESP_OK && value<4);
-    if (err==ESP_OK && value<4) *rotation=value;
-    err=nvs_get_u8(handle,"timeout",&value);
-    ok &= err==ESP_ERR_NVS_NOT_FOUND || (err==ESP_OK && value<4);
-    if (err==ESP_OK && value<4) *timeout=value;
-    nvs_close(handle);
-    return ok;
-}
-
-static bool save_settings(const ui_model_t *m)
-{
-    nvs_handle_t handle;
-    if (nvs_open("display",NVS_READWRITE,&handle)!=ESP_OK) return false;
-    esp_err_t err=nvs_set_u8(handle,"rotation",m->rotation);
-    if (err==ESP_OK) err=nvs_set_u8(handle,"timeout",m->timeout_index);
-    if (err==ESP_OK) err=nvs_commit(handle);
-    nvs_close(handle);
-    return err==ESP_OK;
-}
 
 static void control_changed(ui_control_t control, uint8_t value)
 {
@@ -144,10 +116,11 @@ static void ui_task(void *arg)
     const bool ready = board_display_init() == ESP_OK;
     /* UI startup is asynchronous; app::init owns NVS initialization. Retry
      * reads briefly without initializing, erasing or blocking the NCP. */
-    uint8_t rotation=0, timeout=2;
+    ui_model_t settings;
+    ui_model_init(&settings,now_ms());
     bool saved=false;
     for (int i=0;ready && i<20;++i) {
-        saved=load_settings(&rotation,&timeout);
+        saved=ui_settings_load(&settings);
         if (saved) break;
         vTaskDelay(pdMS_TO_TICKS(50));
     }
@@ -158,7 +131,8 @@ static void ui_task(void *arg)
     diagnostics.touch_ready = board_touch_present();
     diagnostics.settings_saved = saved;
     memcpy(diagnostics.device_id,device_id,sizeof device_id);
-    model.rotation=rotation; model.timeout_index=timeout;
+    model.rotation=settings.rotation; model.timeout_index=settings.timeout_index;
+    model.brightness=model.brightness_committed=settings.brightness;
     model.last_touch_ms=model.splash_started_ms=now_ms();
     portEXIT_CRITICAL(&lock);
     if (!ready) { heap_caps_free(draw); heap_caps_free(wire_pixels); vTaskDelete(NULL); return; }
@@ -177,7 +151,7 @@ static void ui_task(void *arg)
     bool was_pressed = false, suppress_until_release=false;
     bool awake=false;
     uint32_t updated_at = 0;
-    uint8_t applied_rotation=255;
+    uint8_t applied_rotation=255, applied_brightness=255;
     for (;;) {
         uint16_t x=0, y=0;
         const bool pressed = board_touch_read(&x,&y);
@@ -206,7 +180,7 @@ static void ui_task(void *arg)
         input_pressed=touch_valid && !suppress_until_release;
         if (settings_pending) {
             settings_pending=false;
-            const bool stored=save_settings(&snapshot);
+            const bool stored=ui_settings_save(&snapshot);
             portENTER_CRITICAL(&lock);
             diagnostics.settings_saved=stored;
             portEXIT_CRITICAL(&lock);
@@ -223,6 +197,16 @@ static void ui_task(void *arg)
             }
             vTaskDelay(pdMS_TO_TICKS(40));
             continue;
+        }
+        if (applied_brightness!=snapshot.brightness) {
+            const bool ok=board_display_set_brightness(snapshot.brightness)==ESP_OK;
+            if (!ok) {
+                portENTER_CRITICAL(&lock);
+                ++diagnostics.draw_errors; diagnostics.panel_ready=false;
+                portEXIT_CRITICAL(&lock);
+                render_failed=true;
+            }
+            applied_brightness=snapshot.brightness;
         }
         if (applied_rotation!=snapshot.rotation) {
             /* The board adapter owns both transforms. Keep LVGL unrotated

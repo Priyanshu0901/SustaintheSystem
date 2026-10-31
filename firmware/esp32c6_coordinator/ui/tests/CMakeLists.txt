@@ -14,13 +14,17 @@ file(GLOB UI_ASSETS CONFIGURE_DEPENDS "${UI}/assets/*")
 add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ui_splash_asset.h"
     COMMAND "${Python3_EXECUTABLE}" "${UI}/generate_splash.py" "${UI}/assets/splash.json" "${CMAKE_CURRENT_BINARY_DIR}/ui_splash_asset.h"
     DEPENDS "${UI}/generate_splash.py" ${UI_ASSETS})
-add_executable(ui-test model_and_preview.c "${UI}/ui_model.c" "${UI}/ui_geometry.c" "${UI}/ui_view.c"
-    "${UI}/ui_layout.c" "${UI}/ui_controls.c" "${UI}/ui_feedback.c"
-    "${UI}/../boards/waveshare_touch_1_9/board_identity.c"
+set(TEST_SOURCES model_and_preview.c hardware_settings.c "${UI}/ui_model.c" "${UI}/ui_geometry.c" "${UI}/ui_view.c"
+    "${UI}/ui_layout.c" "${UI}/ui_controls.c" "${UI}/ui_feedback.c" "${UI}/ui_navigation.c" "${UI}/ui_settings.c"
+    "${UI}/../boards/waveshare_touch_1_9/board_identity.c" "${UI}/../boards/waveshare_touch_1_9/board_backlight.c"
     "${UI}/generated/screens.c" "${UI}/generated/ui.c" "${UI}/generated/images.c" "${UI}/generated/styles.c"
     "${CMAKE_CURRENT_BINARY_DIR}/ui_splash_asset.h")
-target_include_directories(ui-test PRIVATE "${UI}" "${CMAKE_CURRENT_BINARY_DIR}" "${UI}/../boards/waveshare_touch_1_9" "${CMAKE_CURRENT_LIST_DIR}/stubs")
-target_compile_options(ui-test PRIVATE -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer)
+foreach(NAME ui-test ui-test-no-debug)
+    add_executable(${NAME} ${TEST_SOURCES})
+    target_include_directories(${NAME} PRIVATE "${UI}" "${CMAKE_CURRENT_BINARY_DIR}" "${UI}/../boards/waveshare_touch_1_9" "${CMAKE_CURRENT_LIST_DIR}/stubs")
+    target_compile_options(${NAME} PRIVATE -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer)
+    target_link_options(${NAME} PRIVATE -fsanitize=address,undefined)
+    target_link_libraries(${NAME} PRIVATE lvgl m)
+endforeach()
+target_compile_definitions(ui-test-no-debug PRIVATE UI_SHOW_DEBUG_PAGE=0)
 target_compile_options(lvgl PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
-target_link_options(ui-test PRIVATE -fsanitize=address,undefined)
-target_link_libraries(ui-test PRIVATE lvgl m)

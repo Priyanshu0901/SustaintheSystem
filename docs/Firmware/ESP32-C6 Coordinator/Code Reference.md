@@ -17,6 +17,9 @@ Paths are relative to [the integration source](https://github.com/Priyanshu0901/
 | `ui/ui_geometry.c`, `ui/ui_geometry.h` | Logical-to-panel tile packing and inverse touch transforms |
 | `ui/generate_splash.py`, `ui/assets/` | Replaceable original PNG/manifest and build-time LVGL ARGB8888 descriptors |
 | `ui/ui_view.c` | Bind live labels, screens and logos to generated widgets |
+| `ui/ui_navigation.c`, `ui/ui_config.h` | Ordered page registry; optional final Debug menu entry without positional coupling |
+| `ui/ui_settings.c` | Compatible display preferences/defaults and completed-selection NVS writes |
+| `boards/waveshare_touch_1_9/board_backlight.c` | Active-low backlight PWM, brightness range and sleep/wake restoration |
 | `ui/ui_layout.c` | Responsive geometry, icon/title header and shared logo gutter |
 | `ui/ui_controls.c` | Control callbacks, popup bounds and scroll reachability |
 | `ui/ui_feedback.c` | Transient help/storage-result toasts and expiry |

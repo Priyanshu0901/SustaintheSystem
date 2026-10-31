@@ -26,8 +26,14 @@ subprocess.run(["cmake","-S",str(ui/"tests"),"-B",str(build),"-G","Ninja",
 subprocess.run(["cmake","--build",str(build),"-j","8"],check=True)
 binary=build/"ui-test"
 subprocess.run([str(binary)],check=True)
+subprocess.run([str(build/"ui-test-no-debug")],check=True)
 if args.previews:
     for page in ("network","waiting","menu","settings","rotation","timeout","help","saved","debug","about","splash"):
         for rotation in (0,1):
             with (output/f"{page}-{rotation}.ppm").open("wb") as stream:
                 subprocess.run([str(binary),page,str(rotation)],stdout=stream,check=True)
+
+if args.previews:
+    for rotation in (0,1):
+        with (output/f"menu-no-debug-{rotation}.ppm").open("wb") as stream:
+            subprocess.run([str(build/"ui-test-no-debug"),"menu",str(rotation)],stdout=stream,check=True)

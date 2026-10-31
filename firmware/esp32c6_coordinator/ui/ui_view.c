@@ -1,6 +1,7 @@
 #include "ui_view.h"
 #include "ui_layout.h"
 #include "ui_controls.h"
+#include "ui_navigation.h"
 #include "ui_feedback.h"
 #include "firmware_version.h"
 #include "generated/ui.h"
@@ -26,6 +27,7 @@ static void number(lv_obj_t *obj, uint32_t value, bool valid)
 void ui_view_create(ui_control_callback_t callback)
 {
     ui_init();
+    ui_navigation_init();
     ui_controls_init(callback);
     ui_feedback_init();
     lv_image_set_src(objects.network_logo,&ui_logo_header);
@@ -45,8 +47,9 @@ void ui_view_update(const ui_model_t *m, const ui_diagnostics_t *d, uint32_t now
     if (current_width!=width) {
         ui_controls_close(); ui_layout_apply(width,height); ui_feedback_layout(); current_width=width;
     }
-    lv_obj_t *screens[]={objects.network,objects.debug,objects.settings,objects.about};
-    lv_obj_t *screen=m->splash?objects.boot:screens[m->page<UI_PAGE_COUNT?m->page:0];
+    const unsigned page_index=ui_navigation_index(m->page);
+    const ui_navigation_entry_t *page=ui_navigation_entry(page_index);
+    lv_obj_t *screen=m->splash?objects.boot:page->screen;
     if (lv_screen_active()!=screen) lv_screen_load(screen);
     /* 0->180 and 90->270 keep the same logical resolution. The adapter's
      * native pixel transform still changed, so every pixel must be sent. */
@@ -67,10 +70,10 @@ void ui_view_update(const ui_model_t *m, const ui_diagnostics_t *d, uint32_t now
     else strcpy(text,"Unknown: --");
     label(objects.unknown_value,text);
     label(objects.joining_value,fresh?((m->flags&UI_JOIN_OPEN)?"Joining: open":"Joining: closed"):"Joining: --");
-    lv_obj_t *menus[]={objects.network_navigation,objects.debug_navigation,objects.settings_navigation,objects.about_navigation};
-    const uint8_t selections[]={0,2,1,3};
-    if (m->page<UI_PAGE_COUNT && !lv_dropdown_is_open(menus[m->page]))
-        lv_dropdown_set_selected(menus[m->page],selections[m->page]);
+    if (!lv_dropdown_is_open(page->menu)) lv_dropdown_set_selected(page->menu,page_index);
+    if (!lv_slider_is_dragged(objects.brightness_slider)) lv_slider_set_value(objects.brightness_slider,m->brightness,LV_ANIM_OFF);
+    snprintf(text,sizeof text,"%u%%",m->brightness);
+    label(objects.brightness_value,text);
     if (!lv_dropdown_is_open(objects.rotation_select)) lv_dropdown_set_selected(objects.rotation_select,m->rotation);
     if (!lv_dropdown_is_open(objects.timeout_select)) lv_dropdown_set_selected(objects.timeout_select,m->timeout_index);
     number(objects.touches_value,d->touches,true); number(objects.uptime_value,d->uptime_s,true);

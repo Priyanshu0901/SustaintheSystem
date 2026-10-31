@@ -3,6 +3,9 @@
 #include "ui_feedback.h"
 #include "firmware_version.h"
 #include "ui_geometry.h"
+#include "ui_navigation.h"
+#include "ui_settings.h"
+#include "ui_config.h"
 #include "generated/screens.h"
 #include "board_identity.h"
 #include "esp_mac.h"
@@ -35,7 +38,13 @@ static lv_point_t point;
 static ui_diagnostics_t health={.panel_ready=true,.touch_ready=true,.settings_saved=true,
     .uptime_s=1234,.touches=7,.frames=1234,.heap_kib=180,.device_id="AC:EB:E6:39:FE:EC"};
 static uint32_t tick(void) { return clock_ms; }
-static void control(ui_control_t type, uint8_t value) { last_action=ui_model_control(&model,type,value); }
+extern unsigned test_nvs_commits;
+void hardware_settings_tests(void);
+static void control(ui_control_t type, uint8_t value)
+{
+    last_action=ui_model_control(&model,type,value);
+    if(last_action==UI_ACTION_SETTINGS) assert(ui_settings_save(&model));
+}
 static void pointer_read(lv_indev_t *input, lv_indev_data_t *data)
 {
     (void)input; data->point=point; data->state=pressed?LV_INDEV_STATE_PRESSED:LV_INDEV_STATE_RELEASED;
@@ -69,11 +78,16 @@ static void click(int x,int y)
 }
 static void popup_tests(void)
 {
-    lv_obj_t *items[]={objects.network_navigation,objects.settings_navigation,objects.debug_navigation,
-        objects.about_navigation,objects.rotation_select,objects.timeout_select};
-    const uint8_t pages[]={UI_PAGE_NETWORK,UI_PAGE_SETTINGS,UI_PAGE_DEBUG,UI_PAGE_ABOUT,UI_PAGE_SETTINGS,UI_PAGE_SETTINGS};
-    const uint8_t destinations[]={UI_PAGE_NETWORK,UI_PAGE_SETTINGS,UI_PAGE_DEBUG,UI_PAGE_ABOUT};
-    for(int r=0;r<4;++r) for(unsigned i=0;i<6;++i) for(unsigned option=0;option<4;++option) {
+    const unsigned nav_count=ui_navigation_count();
+    lv_obj_t *items[6];uint8_t pages[6];
+    for(unsigned i=0;i<nav_count;++i) {items[i]=ui_navigation_entry(i)->menu;pages[i]=ui_navigation_entry(i)->page;}
+    items[nav_count]=objects.rotation_select;items[nav_count+1]=objects.timeout_select;
+    pages[nav_count]=pages[nav_count+1]=UI_PAGE_SETTINGS;
+    assert(nav_count==(UI_SHOW_DEBUG_PAGE?4U:3U));
+    assert(ui_navigation_entry(0)->page==UI_PAGE_NETWORK && ui_navigation_entry(1)->page==UI_PAGE_SETTINGS && ui_navigation_entry(2)->page==UI_PAGE_ABOUT);
+    if(UI_SHOW_DEBUG_PAGE) assert(ui_navigation_entry(3)->page==UI_PAGE_DEBUG);
+    else assert(!strstr(ui_navigation_options(),"Debug"));
+    for(int r=0;r<4;++r) for(unsigned i=0;i<nav_count+2;++i) for(unsigned option=0;option<(i<nav_count?nav_count:4);++option) {
         model.rotation=r;model.page=pages[i];refresh();
         lv_dropdown_open(items[i]);pump(80);
         lv_obj_t *list=lv_dropdown_get_list(items[i]);
@@ -91,9 +105,9 @@ static void popup_tests(void)
         click(a.x1+20,y);
         assert(!lv_dropdown_is_open(items[i]));
         assert(lv_dropdown_get_selected(items[i])==option);
-        if(i<4) assert(model.page==destinations[option]);
-        if(i==4) assert(model.rotation==option);
-        if(i==5) assert(model.timeout_index==option);
+        if(i<nav_count) assert(model.page==ui_navigation_entry(option)->page);
+        if(i==nav_count) assert(model.rotation==option);
+        if(i==nav_count+1) assert(model.timeout_index==option);
     }
     for(int r=0;r<4;++r) {
         model.rotation=r;model.page=UI_PAGE_SETTINGS;refresh();
@@ -116,6 +130,35 @@ static void popup_tests(void)
     assert(!strcmp(lv_label_get_text(objects.device_name),"ESPC6"));
     assert(!strcmp(lv_label_get_text(objects.firmware_version),"Firmware " UI_FIRMWARE_VERSION));
 }
+static void brightness_and_spacing_tests(void)
+{
+    for(int r=0;r<4;++r) {
+        model.rotation=r;model.page=UI_PAGE_SETTINGS;
+        model.brightness=model.brightness_committed=100;refresh();
+        lv_area_t a;lv_obj_get_coords(objects.brightness_slider,&a);
+        const unsigned before=test_nvs_commits;
+        point.x=a.x2;point.y=(a.y1+a.y2)/2;pressed=true;pump(100);
+        point.x=a.x1+(a.x2-a.x1)/3;pump(100);
+        assert(model.brightness>=10 && model.brightness<100 && model.brightness_committed==100);
+        assert(test_nvs_commits==before);
+        const int value=lv_slider_get_value(objects.brightness_slider);
+        ui_view_update(&model,&health,clock_ms);
+        assert(lv_slider_get_value(objects.brightness_slider)==value);
+        pressed=false;pump(100);
+        assert(test_nvs_commits==before+1 && model.brightness_committed==model.brightness);
+        refresh();char percent[8];snprintf(percent,sizeof percent,"%u%%",model.brightness);
+        assert(!strcmp(lv_label_get_text(objects.brightness_value),percent));
+        assert(lv_obj_get_width(objects.sleep_info)==18 && lv_obj_get_height(objects.sleep_info)==18);
+        if(!(r&1)) {
+            model.page=UI_PAGE_ABOUT;refresh();
+            lv_obj_t *rows[]={objects.maker_name,objects.device_name,objects.firmware_version,objects.library_version,objects.firmware_role};
+            for(unsigned i=0;i<5;++i) {
+                assert(lv_obj_get_style_text_align(rows[i],0)==LV_TEXT_ALIGN_CENTER);
+                if(i) assert(lv_obj_get_y(rows[i])-lv_obj_get_y(rows[i-1])==32);
+            }
+        }
+    }
+}
 static void model_tests(void)
 {
     struct { char before; char value[18]; char after; } identity={.before='A',.after='Z'};
@@ -124,7 +167,13 @@ static void model_tests(void)
     mac_fails=true;assert(!board_identity_read(identity.value) && identity.value[0]==0);mac_fails=false;
     ui_model_t m;
     ui_model_init(&m,100);
-    assert(m.splash && m.timeout_index==2 && m.rotation==0);
+    assert(m.splash && m.timeout_index==2 && m.rotation==0 && m.brightness==100);
+    assert(ui_model_control(&m,UI_CONTROL_BRIGHTNESS_PREVIEW,9)==UI_ACTION_NONE);
+    assert(ui_model_control(&m,UI_CONTROL_BRIGHTNESS,101)==UI_ACTION_NONE);
+    assert(ui_model_control(&m,UI_CONTROL_BRIGHTNESS_PREVIEW,50)==UI_ACTION_REDRAW);
+    assert(m.brightness_committed==100);
+    assert(ui_model_control(&m,UI_CONTROL_BRIGHTNESS,50)==UI_ACTION_SETTINGS);
+    assert(ui_model_control(&m,UI_CONTROL_BRIGHTNESS,50)==UI_ACTION_NONE);
     for(size_t n=0;n<sizeof good;++n) assert(!ui_model_apply(&m,good,n,100));
     assert(ui_model_apply(&m,good,9,100));
     assert(ui_model_fresh(&m,15099) && !ui_model_fresh(&m,15100));
@@ -205,7 +254,7 @@ static void gui_init(void)
 static void gui_tests(void)
 {
     assert(!strcmp(lv_label_get_text(objects.registered_value),"12"));
-    assert(lv_dropdown_get_option_count(objects.network_navigation)==4);
+    assert(lv_dropdown_get_option_count(objects.network_navigation)==ui_navigation_count());
     assert(!strcmp(lv_dropdown_get_text(objects.network_navigation),LV_SYMBOL_WIFI));
     assert(!strcmp(lv_label_get_text(objects.maker_name),"RayKestrel Systems"));
     assert(!strcmp(lv_label_get_text(objects.library_version),"LVGL 9.5.0"));
@@ -216,9 +265,9 @@ static void gui_tests(void)
     /* A real list release closes the popup before delivering selection. */
     lv_dropdown_close(objects.network_navigation);
     lv_obj_send_event(objects.network_navigation,LV_EVENT_VALUE_CHANGED,NULL);
-    assert(model.page==UI_PAGE_DEBUG);refresh();assert(lv_screen_active()==objects.debug);
-    lv_dropdown_set_selected(objects.debug_navigation,1);
-    lv_obj_send_event(objects.debug_navigation,LV_EVENT_VALUE_CHANGED,NULL);
+    assert(model.page==UI_PAGE_ABOUT);refresh();assert(lv_screen_active()==objects.about);
+    lv_dropdown_set_selected(objects.about_navigation,1);
+    lv_obj_send_event(objects.about_navigation,LV_EVENT_VALUE_CHANGED,NULL);
     assert(model.page==UI_PAGE_SETTINGS);refresh();
     lv_dropdown_set_selected(objects.rotation_select,1);
     lv_obj_send_event(objects.rotation_select,LV_EVENT_VALUE_CHANGED,NULL);
@@ -257,11 +306,12 @@ static void gui_tests(void)
         lv_dropdown_close(objects.network_navigation);
     }
     popup_tests();
-    fprintf(stderr,"PASS: popup gutters and all 96 pointer selections, scroll reachability, header/logo/version, toast expiry/reflow, LVGL/model/power/geometry/MAC regressions\n");
+    brightness_and_spacing_tests();
+    fprintf(stderr,"PASS: brightness drag/release, PWM/NVS, About spacing, Debug visibility=%d, popup/pointer/gutter/toast and model/geometry/MAC regressions\n",UI_SHOW_DEBUG_PAGE);
 }
 int main(int argc,char **argv)
 {
-    if(argc<2){model_tests();geometry_tests();gui_init();gui_tests();lv_deinit();return 0;}
+    if(argc<2){hardware_settings_tests();model_tests();geometry_tests();gui_init();gui_tests();lv_deinit();return 0;}
     gui_init();
     if(!strcmp(argv[1],"waiting")) model.received=false;
     if(!strcmp(argv[1],"settings") || !strcmp(argv[1],"rotation") || !strcmp(argv[1],"timeout") || !strcmp(argv[1],"help") || !strcmp(argv[1],"saved")) model.page=UI_PAGE_SETTINGS;

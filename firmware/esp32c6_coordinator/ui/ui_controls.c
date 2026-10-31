@@ -1,16 +1,17 @@
 #include "ui_controls.h"
 #include "ui_feedback.h"
+#include "ui_navigation.h"
 #include "generated/screens.h"
 
 static ui_control_callback_t on_control;
 static lv_obj_t *dropdowns[6];
 static bool constraining;
-static const uint8_t menu_pages[]={UI_PAGE_NETWORK,UI_PAGE_SETTINGS,UI_PAGE_DEBUG,UI_PAGE_ABOUT};
+static unsigned dropdown_count;
 
 static void navigate(lv_event_t *event)
 {
     const uint32_t selected=lv_dropdown_get_selected(lv_event_get_target_obj(event));
-    if (selected<4 && on_control) on_control(UI_CONTROL_PAGE,menu_pages[selected]);
+    if (selected<ui_navigation_count() && on_control) on_control(UI_CONTROL_PAGE,ui_navigation_entry(selected)->page);
 }
 static void choose_rotation(lv_event_t *event)
 {
@@ -19,6 +20,12 @@ static void choose_rotation(lv_event_t *event)
 static void choose_timeout(lv_event_t *event)
 {
     if (on_control) on_control(UI_CONTROL_TIMEOUT,(uint8_t)lv_dropdown_get_selected(lv_event_get_target_obj(event)));
+}
+static void brightness_changed(lv_event_t *event)
+{
+    const ui_control_t control=lv_event_get_code(event)==LV_EVENT_VALUE_CHANGED?
+        UI_CONTROL_BRIGHTNESS_PREVIEW:UI_CONTROL_BRIGHTNESS;
+    if (on_control) on_control(control,(uint8_t)lv_slider_get_value(lv_event_get_target_obj(event)));
 }
 static void sleep_help(lv_event_t *event)
 {
@@ -45,7 +52,7 @@ static void constrain_popups(lv_event_t *event)
     constraining=true;
     const int width=lv_display_get_horizontal_resolution(NULL);
     const int height=lv_display_get_vertical_resolution(NULL);
-    for (unsigned i=0;i<6;++i) {
+    for (unsigned i=0;i<dropdown_count;++i) {
         if (!lv_dropdown_is_open(dropdowns[i])) continue;
         lv_obj_t *list=lv_dropdown_get_list(dropdowns[i]);
         const int w=lv_obj_get_width(list),h=lv_obj_get_height(list);
@@ -61,17 +68,19 @@ static void constrain_popups(lv_event_t *event)
 
 void ui_controls_close(void)
 {
-    for (unsigned i=0;i<6;++i) lv_dropdown_close(dropdowns[i]);
+    for (unsigned i=0;i<dropdown_count;++i) lv_dropdown_close(dropdowns[i]);
 }
 
 void ui_controls_init(ui_control_callback_t callback)
 {
     on_control=callback;
-    lv_obj_t *items[]={objects.network_navigation,objects.settings_navigation,objects.debug_navigation,
-        objects.about_navigation,objects.rotation_select,objects.timeout_select};
-    for (unsigned i=0;i<6;++i) {
-        dropdowns[i]=items[i];
-        lv_obj_t *list=lv_dropdown_get_list(items[i]);
+    const unsigned pages=ui_navigation_count();
+    for (unsigned i=0;i<pages;++i) dropdowns[i]=ui_navigation_entry(i)->menu;
+    dropdowns[pages]=objects.rotation_select;
+    dropdowns[pages+1]=objects.timeout_select;
+    dropdown_count=pages+2;
+    for (unsigned i=0;i<dropdown_count;++i) {
+        lv_obj_t *list=lv_dropdown_get_list(dropdowns[i]);
         lv_obj_set_style_text_font(list,&lv_font_montserrat_14,0);
         lv_obj_set_style_min_width(list,140,0);
         lv_obj_set_style_pad_all(list,8,0);
@@ -81,15 +90,20 @@ void ui_controls_init(ui_control_callback_t callback)
         lv_obj_set_style_text_color(list,lv_color_hex(0xF2F5F4),0);
         lv_obj_set_style_bg_color(list,lv_color_hex(0x335D51),LV_PART_SELECTED|LV_STATE_CHECKED);
         lv_obj_set_style_text_color(list,lv_color_hex(0xF2F5F4),LV_PART_SELECTED|LV_STATE_CHECKED);
-        lv_obj_add_event_cb(items[i],opening,LV_EVENT_READY,NULL);
-        if (i<4) {
-            lv_dropdown_set_options(items[i],LV_SYMBOL_WIFI "  Network\n" LV_SYMBOL_SETTINGS "  Settings\n" LV_SYMBOL_EYE_OPEN "  Debug\n" LV_SYMBOL_FILE "  About");
-            lv_dropdown_set_symbol(items[i],NULL);
-            lv_obj_add_event_cb(items[i],navigate,LV_EVENT_VALUE_CHANGED,NULL);
+        lv_obj_add_event_cb(dropdowns[i],opening,LV_EVENT_READY,NULL);
+        if (i<pages) {
+            lv_dropdown_set_options(dropdowns[i],ui_navigation_options());
+            lv_dropdown_set_symbol(dropdowns[i],NULL);
+            lv_obj_add_event_cb(dropdowns[i],navigate,LV_EVENT_VALUE_CHANGED,NULL);
         }
     }
     lv_obj_add_event_cb(objects.rotation_select,choose_rotation,LV_EVENT_VALUE_CHANGED,NULL);
     lv_obj_add_event_cb(objects.timeout_select,choose_timeout,LV_EVENT_VALUE_CHANGED,NULL);
+    lv_obj_set_ext_click_area(objects.sleep_info,8);
+    lv_obj_set_ext_click_area(objects.brightness_slider,12);
+    lv_obj_add_event_cb(objects.brightness_slider,brightness_changed,LV_EVENT_VALUE_CHANGED,NULL);
+    lv_obj_add_event_cb(objects.brightness_slider,brightness_changed,LV_EVENT_RELEASED,NULL);
+    lv_obj_add_event_cb(objects.brightness_slider,brightness_changed,LV_EVENT_PRESS_LOST,NULL);
     lv_obj_add_event_cb(objects.sleep_info,sleep_help,LV_EVENT_CLICKED,NULL);
     lv_display_add_event_cb(lv_display_get_default(),constrain_popups,LV_EVENT_UPDATE_LAYOUT_COMPLETED,NULL);
 }

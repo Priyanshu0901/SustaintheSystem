@@ -26,6 +26,7 @@ void ui_model_init(ui_model_t *m, uint32_t now)
 {
     memset(m, 0, sizeof *m);
     m->timeout_index = 2;
+    m->brightness=m->brightness_committed=100;
     m->splash = true;
     m->last_touch_ms = m->splash_started_ms = now;
 }
@@ -64,6 +65,15 @@ ui_action_t ui_model_touch(ui_model_t *m, uint16_t x, uint16_t y, uint32_t now)
 
 ui_action_t ui_model_control(ui_model_t *m, ui_control_t control, uint8_t value)
 {
+    if ((control==UI_CONTROL_BRIGHTNESS_PREVIEW || control==UI_CONTROL_BRIGHTNESS) && value>=10 && value<=100) {
+        const bool changed=m->brightness!=value;
+        m->brightness=value;
+        if (control==UI_CONTROL_BRIGHTNESS && m->brightness_committed!=value) {
+            m->brightness_committed=value;
+            return UI_ACTION_SETTINGS;
+        }
+        return changed?UI_ACTION_REDRAW:UI_ACTION_NONE;
+    }
     if (control==UI_CONTROL_PAGE && value<UI_PAGE_COUNT && m->page!=value) {
         m->page=value;
         return UI_ACTION_REDRAW;

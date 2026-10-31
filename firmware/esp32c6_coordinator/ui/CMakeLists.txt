@@ -1,5 +1,6 @@
 idf_component_register(SRCS "ui_model.c" "ui_geometry.c" "ui_view.c" "ui_runtime.c"
                            "ui_layout.c" "ui_controls.c" "ui_feedback.c"
+                           "ui_navigation.c" "ui_settings.c"
                            "generated/screens.c" "generated/ui.c" "generated/images.c" "generated/styles.c"
                        INCLUDE_DIRS "." "${CMAKE_CURRENT_BINARY_DIR}"
                        REQUIRES waveshare_display esp_timer nvs_flash lvgl esp_hw_support)
