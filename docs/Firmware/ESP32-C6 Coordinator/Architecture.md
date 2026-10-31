@@ -1,6 +1,6 @@
 # ESP32-C6 coordinator firmware architecture
 
-This describes the implemented USB coordinator and its Windows host. The radio protocol core comes from pinned `esp-coordinator` upstream. This branch owns the Waveshare build/flash wrappers, host launcher and status UI with a separate board driver. XIAO remains in its Git tag/branch rather than active compatibility paths.
+This describes the implemented USB coordinator and its Windows host. The radio protocol core comes from pinned `esp-coordinator` upstream. This branch owns the sole maintained Waveshare product build/flash wrappers, host launcher and status UI with a separate board driver. XIAO remains only in its historical Git tag.
 
 ![Existing coordinator and host components](assets/architecture.png)
 

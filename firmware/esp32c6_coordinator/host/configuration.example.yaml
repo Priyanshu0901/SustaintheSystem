@@ -5,7 +5,7 @@ mqtt:
   base_topic: sustain/zigbee
   server: mqtt://127.0.0.1:1883
 serial:
-  port: REPLACE_WITH_CONFIRMED_XIAO_COM_PORT
+  port: REPLACE_WITH_CONFIRMED_WAVESHARE_COM_PORT
   adapter: zboss
 frontend:
   enabled: true

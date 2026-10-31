@@ -71,6 +71,8 @@ class CoordinatorDisplay {
         await this.mqtt.publish('bridge/display', JSON.stringify({phase, timestamp: Date.now(), ...payload,
             panelReady: !!(payload.flags & 1), touchReady: !!(payload.flags & 2),
             hostFresh: !!(payload.flags & 4),
+            displaySleeping: !!(payload.flags & 16), settingsSaved: !!(payload.flags & 32),
+            rotationDegrees: ((payload.flags >> 6) & 3) * 90,
             ...(counts ? {counts, unknown: counts.registered-counts.available-counts.stale} : {}),
         }), {clientOptions: {retain: true}, skipLog: true});
     }

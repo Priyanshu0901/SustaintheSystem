@@ -4,22 +4,11 @@ This branch builds one board: **Waveshare ESP32-C6-Touch-LCD-1.9**, USB ZBOSS NC
 
 The UI lives in [ui/](ui/README.md); hardware pins stay in [boards/waveshare_touch_1_9/](boards/waveshare_touch_1_9/board_pins.h). The [architecture](../../docs/Firmware/ESP32-C6%20Coordinator/Architecture.md) explains implemented code. [Code map](../../docs/Firmware/ESP32-C6%20Coordinator/Code%20Reference.md) and [Doxygen tooling](../../tools/documentation/README.md) own code navigation.
 
-## Versions live in Git
+## Active product
 
-| Version | Git reference |
-| --- | --- |
-| Validated XIAO external-antenna coordinator | Tag `coordinator-xiao-v1` at `8506d72` |
-| First validated Waveshare UI implementation | Commit `6ac8bb0` |
-| Integrated coordinator/node/Waveshare work | Branch `POC_main`; coordinator branch `POC/zigbee_coordinator` |
-| Pristine Nordic baseline | Branch `POC/zigbee_nrf` at `d644be9` |
+Waveshare is the sole maintained product build. Build, flash and host commands run directly from this checkout, without a board selector or Waveshare tag. Development is on `POC/zigbee_coordinator_dev/waveshare` and returns to `POC_main` through PR review.
 
-There is no board-selection argument on this branch. For XIAO, save current changes and check out its tag, then use the instructions **from that checkout**:
-
-```powershell
-git switch --detach coordinator-xiao-v1
-```
-
-Git stores firmware/configuration versions. Ignored network keys/databases remain local and are not restored by checkout. Before running the old XIAO host, stop the Waveshare host and remove only `host/data/external_extensions/coordinator-display.cjs`; leave other local state intact. Coordinator network migration is not established by a Git switch.
+The discontinued XIAO build, its commands and validation are preserved only at historical tag `coordinator-xiao-v1`; it is not maintained alongside Waveshare. Git does not restore ignored network keys or device databases.
 
 ## Build
 
@@ -29,7 +18,7 @@ From this directory, in PowerShell 7 with Docker's Linux engine running:
 ./Build-Firmware.ps1
 ```
 
-The active [sdkconfig.defaults](sdkconfig.defaults) selects 8 MB flash, framed USB NCP traffic and no parallel UART/text logs. The user reports modifying the Waveshare PCB antenna path to use the same external antenna as XIAO. That hardware routing is separate from firmware; no XIAO RF-switch initialization is present in the patched application. Historical profiles and the UI enable flag are absent from this branch.
+The active [sdkconfig.defaults](sdkconfig.defaults) selects 8 MB flash, framed USB NCP traffic and no parallel UART/text logs. The user reports modifying the Waveshare PCB antenna path for an external antenna; routing is a hardware choice. The patched application initializes only the active Waveshare board.
 
 [upstream.lock.json](upstream.lock.json) pins [our fork](https://github.com/Priyanshu0901/esp-coordinator) / [tostmann upstream](https://github.com/tostmann/esp-coordinator) at `b292868d1ae5426dc048ee7749d7a710e1ccd789` (1.5.79), ESP-IDF 5.5.1 by Docker digest, target and source timestamp. This is an upstream dependency, not a second maintained board version. Its ignored checkout must be clean. Build glue archives that revision, adds the separate UI/board components and applies [the small integration patch](patches/waveshare-ui.patch) to the container build copy. The protocol core remains upstream-owned.
 
@@ -72,11 +61,17 @@ From Git Bash, invoke `.ps1` through `powershell.exe -NoProfile -ExecutionPolicy
 
 The launcher creates local configuration from [the example](host/configuration.example.yaml) only if absent, preserves it afterward, scopes Git discovery and supplies npm's missing package-local dependency junction for converter reloads. Installed npm source stays unchanged.
 
+On the screen, the top-left hamburger opens icon rows for **Network**, **Settings** and **Debug**. Network shows host status and node counts without a project-name banner. Debug holds touch/frame/error counters and board health. Settings cycles rotation through 0/90/180/270 degrees and display saving through off/15/30/60 seconds (30 seconds by default). Settings persist in NVS. When idle, the panel/backlight turn off; the first touch only wakes it. Zigbee, USB and touch polling continue. This saves display power, not whole-device sleep; no energy reduction has been measured.
+
+The boot splash uses [the replaceable original-named PNG](ui/assets/raykestrel-symbol-refined-white.png). Replace that asset, or change the filename in [splash.json](ui/assets/splash.json), then rebuild. The standard-library build converter preserves aspect ratio, composites onto black and emits a small RGB565 array; no website folder or image package is needed to build. Splash rendering runs in the UI task without holding up coordinator startup.
+
 Frontend: [127.0.0.1:8080](http://127.0.0.1:8080). MQTT: `127.0.0.1:1883`, base `sustain/zigbee`, channel 15. Ctrl+C stops each foreground process. Keep joining closed outside intentional pairing. No service/autostart is configured. Keys/database/logs remain ignored. ZBOSS remains [experimental in Zigbee2MQTT](https://www.zigbee2mqtt.io/guide/adapters/zboss.html); do not assume backup/migration support.
 
 ## Validation and signal comparison
 
-[validation-waveshare.json](validation-waveshare.json) records the earlier full/app-only flash, formation/resume, display/touch, expiry/reconnect and user-confirmed readable screen/both tabs. That run initially had zero registered nodes. The workflow simplification is built and checked separately; it is not reflashed in this task. [validation.json](validation.json) is historical XIAO evidence, also available at its tag. [Nordic results](../nordic_zigbee/README.md) record the prior XIAO single-node experiment.
+[validation-waveshare.json](validation-waveshare.json) separates earlier hardware evidence from the new UI validation. The earlier run established full/app-only flashing, formation/resume, display/touch and expiry/reconnect; it initially had zero registered nodes. [Nordic results](../nordic_zigbee/README.md) own node experiments. Physical observations from the old two-tab UI do not establish the new menu, rotation, settings persistence or display-saving behaviour.
+
+The 2026-10-31 UI passed the pinned Docker build, sanitizer-backed native navigation/power/rotation tests, actual host codec tests and inspected portrait/landscape previews. App-only programming on COM14 verified at `0x20000` without erase. The existing host resumed channel 15 with joining closed and one registered node. Live diagnostics reported panel/touch ready, zero draw errors, display sleeping and unchanged frame count across fresh host updates. Physical readability, rotation, wake gestures and settings persistence await user observation; power reduction was not measured. The existing host/broker remain running for inspection.
 
 The user reports Waveshare improving from **LQI 154 to 198 after its PCB antenna-path modification**, using the **same external antenna as XIAO**; XIAO was approximately 254. These are 0–255 link-quality indications, not RSSI in dBm or percentages. The earlier onboard-versus-external explanation does not apply to this modified board. The exact modification has not been inspected by this agent, and the remaining difference from XIAO has not been isolated by a controlled comparison. The [board reference](../../docs/Firmware/ESP32-C6%20Coordinator/Board%20Profiles.md) contains manufacturer routing sources. No firmware adjustment or RF measurement was performed for this correction.
 

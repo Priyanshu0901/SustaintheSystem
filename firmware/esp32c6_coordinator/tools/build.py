@@ -32,7 +32,7 @@ def main():
     for folder in ("ui", "boards/waveshare_touch_1_9", "patches"):
         local_files.extend(sorted(p for p in (integration / folder).rglob("*")
                                   if p.is_file() and "tests" not in p.parts
-                                  and p.suffix in {".c", ".h", ".txt", ".patch"}))
+                                  and p.suffix in {".c", ".h", ".txt", ".patch", ".py", ".png", ".json"}))
     inputs.extend(local_files)
     if dep_lock.exists():
         inputs.append(dep_lock)

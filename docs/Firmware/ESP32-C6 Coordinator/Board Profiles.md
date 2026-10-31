@@ -21,7 +21,7 @@ XIAO's external-antenna coordinator is retained by Git tag `coordinator-xiao-v1`
 
 The board driver's pin header owns these definitions. SD card, IMU, Wi-Fi and GPIO expander functions are not initialized by this implementation. The board's external-antenna hardware route is not the XIAO software switch. Sources are the [manufacturer example](https://github.com/waveshareteam/ESP32-C6-LCD-1.9/tree/1fed15e32977de11afe1f710a0f5e915bfcc35a5/02_Example/ESP-IDF/07_LVGL_Test) and [touch schematic](https://files.waveshare.com/wiki/ESP32-C6-LCD-1.9/ESP32-C6-Touch-LCD-1.9-Schematic.pdf).
 
-The [Seeed guide](https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/) documents the antenna switch. Configuration validation can establish that the external route was compiled in; it cannot establish connector quality, antenna gain or measured range.
+Display rotation is implemented in the portable UI pixel/touch transforms. The board retains native portrait addressing and its 35-pixel column gap. Display saving switches the panel and active-low backlight off while CST816 polling and the coordinator continue.
 
 [Existing firmware architecture](Architecture.md)
 

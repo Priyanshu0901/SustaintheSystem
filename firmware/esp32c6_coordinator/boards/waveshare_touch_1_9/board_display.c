@@ -32,7 +32,7 @@ esp_err_t board_display_init(void)
     gpio_set_level(BOARD_LCD_BACKLIGHT, 1);
     spi_bus_config_t bus = {.mosi_io_num = BOARD_LCD_MOSI, .miso_io_num = -1,
         .sclk_io_num = BOARD_LCD_CLK, .quadwp_io_num = -1, .quadhd_io_num = -1,
-        .max_transfer_sz = 170 * 16 * 2};
+        .max_transfer_sz = 320 * 16 * 2};
     if ((err = spi_bus_initialize(SPI2_HOST, &bus, SPI_DMA_CH_AUTO)) != ESP_OK) return err;
     esp_lcd_panel_io_handle_t io;
     esp_lcd_panel_io_spi_config_t spi = {.cs_gpio_num = BOARD_LCD_CS, .dc_gpio_num = BOARD_LCD_DC,
@@ -65,15 +65,22 @@ esp_err_t board_display_init(void)
     return ESP_OK;
 }
 
-esp_err_t board_display_tile(int y, int rows, uint16_t *pixels)
+esp_err_t board_display_tile(int x0, int y0, int x1, int y1, const uint16_t *pixels)
 {
-    /* The SPI panel consumes RGB565 high byte first. Rendering stays portable. */
-    for (int i = 0; i < 170 * rows; ++i) pixels[i] = __builtin_bswap16(pixels[i]);
-    esp_err_t err = esp_lcd_panel_draw_bitmap(panel, 0, y, 170, y + rows, pixels);
+    if (x0<0 || x1>170 || y0<0 || y1>320 || x1<=x0 || y1<=y0 ||
+        (x1-x0)*(y1-y0)>320*16) return ESP_ERR_INVALID_ARG;
+    esp_err_t err = esp_lcd_panel_draw_bitmap(panel, x0, y0, x1, y1, pixels);
     if (err != ESP_OK) return err;
     if (xSemaphoreTake(transferred, pdMS_TO_TICKS(500)) != pdTRUE) return ESP_ERR_TIMEOUT;
-    gpio_set_level(BOARD_LCD_BACKLIGHT, 0);
     return ESP_OK;
+}
+
+esp_err_t board_display_set_awake(bool awake)
+{
+    if (!awake) gpio_set_level(BOARD_LCD_BACKLIGHT, 1);
+    const esp_err_t err = esp_lcd_panel_disp_on_off(panel, awake);
+    if (err == ESP_OK && awake) gpio_set_level(BOARD_LCD_BACKLIGHT, 0);
+    return err;
 }
 
 bool board_touch_present(void) { return touch_ready; }

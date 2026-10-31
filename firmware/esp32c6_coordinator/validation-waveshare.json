@@ -94,7 +94,7 @@
     "applicationSha256": "e15d0fb78533e78e89665741f4ae41036803f2c9291fee9d587c121047b74b08",
     "dependencyLockUnchanged": true,
     "boardSelectionParameters": false,
-    "historicalBoardConfiguration": "Git tag coordinator-xiao-v1 / POC/zigbee_coordinator",
+    "historicalBoardConfiguration": "Git tag coordinator-xiao-v1 only (discontinued; no parallel maintenance)",
     "localRuntimeSourceHashes": {
       "ui/CMakeLists.txt": "5025d69c0ec46c29e8573763de714eac79d3f3050537d1d87a04f3617fc7c02a",
       "ui/coordinator_ui.h": "fc9b5edfa3b40da73e8b8cd2dcd1e6427704727e68b2c0942e58eb33d57a3eb2",
@@ -127,5 +127,89 @@
       "wavesharePcbAntennaPathModified": true,
       "exactModificationIndependentlyInspected": false
     }
+  },
+  "uiNavigation": {
+    "date": "2026-10-31",
+    "branch": "POC/zigbee_coordinator_dev/waveshare",
+    "product": "Waveshare only; XIAO sources/commands/validation retained at historical tag",
+    "factorySha256": "0ccfd491ee3440a91cd4a7268fcaf964b124a190db06d9ccce2deba8045feee1",
+    "applicationSha256": "f7dc98c9cb41130fd9f4c894a2de06f60a80ce8692727c1b3f3b2e9682bc9f4e",
+    "localRuntimeSourceHashes": {
+      "ui/CMakeLists.txt": "827e4dbae3921a2c4dc351b7ee742fb3ce6316795ca97506e9112f4b63eeb377",
+      "ui/assets/raykestrel-symbol-refined-white.png": "b9bf4d80d1330bd0b42ae5131586701b935e31c7678440d3b785375a6f3a5dab",
+      "ui/assets/splash.json": "cb4e488aa7e9236f135e2cb63eaa01065f56c045f8f38ceacda36aa1f727c75f",
+      "ui/coordinator_ui.h": "fc9b5edfa3b40da73e8b8cd2dcd1e6427704727e68b2c0942e58eb33d57a3eb2",
+      "ui/generate_splash.py": "44678bc42cd8850222056e0cf1a631b467a04051e766570ec96e30e5b11d4c82",
+      "ui/ui_geometry.c": "6230036c9447c70f20c78c584742c3ef204b8b14984c9fa7b7c775702180a5f7",
+      "ui/ui_geometry.h": "1e69bd9079b0c90346c5db7f93ea542f261bf43de25d3d9e0f2ff84ebaddc5a6",
+      "ui/ui_model.c": "5ca1bd908582ec66e9babae67b0e8091d5cffd0260702523ff579dba605eb64a",
+      "ui/ui_model.h": "b8326553b7ba2156e35ddab4e4d06cd997e8bbfb94daebe5b5923002adc29c65",
+      "ui/ui_runtime.c": "01d7ef3f050b213fd47afa07fd43194ce90ec6fca22a5ccbdc303ec6e1fb7027",
+      "ui/ui_theme.h": "8e48d1a2b01f7e978b1d746b7066d584ef26a7a0882ce379734e53df59fb84ac",
+      "ui/ui_view.c": "80f306f243f49023e3ee1d44ebebde5fcd9291c768d96f95d28daa59bdfde8b6",
+      "ui/ui_view.h": "5e1e77275fceae10b952e01c59e3e2c04374cac615cd579282b88f26b535b6ee",
+      "boards/waveshare_touch_1_9/CMakeLists.txt": "eba0071cb925d8e356a25eb912630e4a7300b3598c1dabd3b2ed32a21cc3f87e",
+      "boards/waveshare_touch_1_9/board_display.c": "cd249c0248ceaa6bc3bbac899a2dc2eb36d4d2cf2a3adb47febd28a8585a3f9c",
+      "boards/waveshare_touch_1_9/board_display.h": "b4282a6db58c1ea4a020e8e5269725aed75563e16edf8235d176639b4b63f921",
+      "boards/waveshare_touch_1_9/board_pins.h": "60b643c13cbe7e56d794a94bc7e4b877b46f2275f1f6baea326988a1a5cf9f84",
+      "patches/waveshare-ui.patch": "0dc059bf19142d2e0a02343735ef775f73fea5e037eaaa50ba7a01f306b9ebfe"
+    },
+    "hostExtensionSha256": "17c5901e6fdaeb2db9020dd15a411e0962e00852c12e94b5c9517a8212e728f6",
+    "dependencyLockUnchanged": true,
+    "softwareChecks": {
+      "pinnedDockerBuild": "passed",
+      "addressAndUndefinedSanitizers": "passed",
+      "navigationWakeConsumptionTimeoutWraparound": "passed",
+      "allPixelAndTouchTransformsFourRotations": "passed",
+      "tileBoundsAllPagesMenuSplashSleep": "passed",
+      "sameRendererPortraitLandscapePreviews": "inspected",
+      "pngDecoderComparedWithPillow": "all source pixels match",
+      "realHostCodecAvailabilityAndNewDiagnosticFlags": "passed"
+    },
+    "applicationUpdate": {
+      "port": "COM14",
+      "baseMac": "ac:eb:e6:39:fe:ec",
+      "offset": "0x20000",
+      "verifiedDigest": true,
+      "erasedFlash": false,
+      "networkStatePreserved": true,
+      "nordicPortOpened": false
+    },
+    "runtime": {
+      "networkResumed": true,
+      "channel": 15,
+      "permitJoin": false,
+      "registeredNodes": 1,
+      "unreportedAvailability": "unknown",
+      "panelReady": true,
+      "touchReady": true,
+      "settingsLoadedOrDefault": true,
+      "displaySleeping": true,
+      "framesWhileSleeping": [
+        31,
+        31
+      ],
+      "uptimeSeconds": [
+        63,
+        68
+      ],
+      "hostFreshDuringSleep": true,
+      "drawErrors": 0,
+      "freeHeapKiB": 257,
+      "frontendHttpStatus": 200
+    },
+    "physicalValidation": "Pending user observation: new colours, splash, menu, rotation and touch-wake; software previews/tests are not physical confirmation.",
+    "notMeasured": [
+      "Display/whole-device power reduction",
+      "Physical screen settings persistence across power loss",
+      "Physical rotation and wake gesture",
+      "New RF/mesh/soak results"
+    ],
+    "handoff": {
+      "existingHostInstallationAndData": true,
+      "hostAndBrokerRunning": true,
+      "servicesOrAutostartAdded": false
+    },
+    "evidence": "Ignored build/ui-navigation-*.log, build/ui-navigation-live.jsonl, build/ui-navigation/ previews and artifacts/ manifest/flash-result.json"
   }
 }

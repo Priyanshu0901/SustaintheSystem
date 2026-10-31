@@ -10,9 +10,11 @@ Paths are relative to [the integration source](https://github.com/Priyanshu0901/
 | --- | --- |
 | `Build-Firmware.ps1` | Enforce pinned/clean source, archive it and launch the single-board container |
 | `tools/build.py` | Hash inputs, invalidate stale success state, build with ESP-IDF, validate effective settings and export hashed images |
-| `ui/ui_model.c`, `ui/ui_model.h` | Validate the host snapshot, expiry and tab state |
+| `ui/ui_model.c`, `ui/ui_model.h` | Host validation/expiry, menu/page state, local rotation and display saving |
+| `ui/ui_geometry.c`, `ui/ui_geometry.h` | Logical-to-panel tile packing and inverse touch transforms |
+| `ui/generate_splash.py`, `ui/assets/` | Replaceable original PNG/manifest and build-time RGB565 generation |
 | `ui/ui_view.c`, `ui/ui_theme.h` | Platform-independent screen layout and theme |
-| `ui/ui_runtime.c`, `ui/coordinator_ui.h` | Low-priority rendering/touch runtime and bounded vendor interface |
+| `ui/ui_runtime.c`, `ui/coordinator_ui.h` | Rendering/touch runtime, local NVS settings, panel sleep/wake and bounded vendor interface |
 | `boards/waveshare_touch_1_9/` | Board pins, LCD DMA lifecycle and CST816 I2C polling |
 | `patches/waveshare-ui.patch` | Waveshare build-copy hooks; upstream dependency checkout remains clean |
 | `host/extensions/coordinator-display.cjs` | Send truthful registry/availability snapshots through the existing serial queue |

@@ -35,6 +35,13 @@ const settings = {get:()=>({mqtt:{base_topic:'test'},devices:{'node-a':{friendly
         const response=Buffer.from('0001107f01000001070002000a00000000000a00000000006400','hex');
         const parsed=readZBOSSFrame(response); assert.equal(parsed.payload.frames,10); assert.equal(parsed.payload.heapKiB,100);
         assert.equal(publications[0][0],'bridge/display');
+        assert.equal(publications[0][1].displaySleeping,false);
+        assert.equal(publications[0][1].rotationDegrees,0);
+        await ext.publish({flags:16|32|128,page:2},'screen-test');
+        const screen=publications.at(-1)[1];
+        assert.equal(screen.displaySleeping,true);
+        assert.equal(screen.settingsSaved,true);
+        assert.equal(screen.rotationDegrees,180);
     } finally { await ext.stop(); }
     assert.equal(FRAMES[0x7f10],undefined);
     console.log('PASS: real host codec, registry/availability semantics, UI extension cleanup');

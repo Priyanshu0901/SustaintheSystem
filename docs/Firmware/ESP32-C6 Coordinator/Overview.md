@@ -1,6 +1,6 @@
 # ESP32-C6 coordinator firmware
 
-The ESP32-C6 runs a USB ZBOSS network coprocessor. XIAO and Waveshare touch profiles share the upstream core; the Waveshare also runs an isolated status UI. The host runs Zigbee2MQTT and MQTT and owns device definitions and decoded state.
+The Waveshare ESP32-C6-Touch-LCD-1.9 runs a USB ZBOSS network coprocessor and a separate status UI with local screen settings. It is the sole maintained coordinator product; XIAO is retained only in its historical Git tag. The host runs Zigbee2MQTT and MQTT and owns device definitions and decoded state.
 
 | Question | Read |
 | --- | --- |
