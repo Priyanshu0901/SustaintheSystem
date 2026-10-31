@@ -34,16 +34,19 @@ bool ui_geometry_pack_rect(uint8_t r, int x, int y, int width, int rows, const u
     case 3: *x0=y; *x1=y+rows; *y0=UI_HEIGHT-x-width; *y1=UI_HEIGHT-x; break;
     default: *x0=x; *x1=x+width; *y0=y; *y1=y+rows; break;
     }
-    for (int yy=0; yy<rows; ++yy) for (int xx=0; xx<width; ++xx) {
-        int px=x+xx, py=y+yy;
+    /* Resolve rotation once per row, rather than branch/multiply per pixel. */
+    for (int yy=0; yy<rows; ++yy) {
+        int offset, step;
         switch (r) {
-        case 1: px=UI_WIDTH-1-y-yy; py=x+xx; break;
-        case 2: px=UI_WIDTH-1-x-xx; py=UI_HEIGHT-1-y-yy; break;
-        case 3: px=y+yy; py=UI_HEIGHT-1-x-xx; break;
-        default: break;
+        case 1: offset=rows-1-yy; step=rows; break;
+        case 2: offset=(rows-1-yy)*width+width-1; step=-1; break;
+        case 3: offset=(width-1)*rows+yy; step=-rows; break;
+        default: offset=yy*width; step=1; break;
         }
-        uint16_t c=in[yy*width+xx];
-        out[(py-*y0)*(*x1-*x0)+px-*x0]=(uint16_t)((c<<8)|(c>>8));
+        for (int xx=0; xx<width; ++xx,offset+=step) {
+            const uint16_t c=*in++;
+            out[offset]=(uint16_t)((c<<8)|(c>>8));
+        }
     }
     return true;
 }

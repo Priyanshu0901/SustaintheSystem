@@ -3,6 +3,7 @@
 
 /* Identical on host and ESP-IDF. Only the UI task calls LVGL. */
 #define LV_COLOR_DEPTH 16
+#define LV_DEF_REFR_PERIOD 20
 #define LV_USE_OS LV_OS_NONE
 #define LV_USE_STDLIB_MALLOC LV_STDLIB_BUILTIN
 #define LV_MEM_SIZE (72U * 1024U)

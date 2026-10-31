@@ -272,8 +272,8 @@ static void geometry_tests(void)
     for(unsigned i=0;i<UI_MAX_WIDTH*UI_TILE_ROWS;++i) in[i]=(uint16_t)i;
     for(int r=0;r<4;++r) {
         const int w=(r&1)?320:170,h=(r&1)?170:320;
-        for(int row=0;row<h;row+=16) {
-            const int rows=h-row<16?h-row:16;
+        for(int row=0;row<h;row+=UI_TILE_ROWS) {
+            const int rows=h-row<UI_TILE_ROWS?h-row:UI_TILE_ROWS;
             int x0,y0,x1,y1;
             out[0]=0x1234;out[w*rows+1]=0x4321;
             assert(ui_geometry_pack(r,row,rows,in,out+1,&x0,&y0,&x1,&y1));
@@ -306,19 +306,30 @@ static void geometry_tests(void)
     assert(!ui_geometry_pack_rect(4,0,0,1,1,in,out,&a,&b,&c,&d));
     assert(!ui_geometry_pack_rect(0,169,319,2,2,in,out,&a,&b,&c,&d));
 }
-static void gui_init(void)
+static void gui_init(uint8_t rotation, bool splash)
 {
     assert(LVGL_VERSION_MAJOR==9 && LVGL_VERSION_MINOR==5 && LVGL_VERSION_PATCH==0);
     lv_init();lv_tick_set_cb(tick);
-    display=lv_display_create(170,320);
+    ui_model_init(&model,0);model.rotation=rotation;model.splash=splash;
+    display=lv_display_create(ui_model_width(&model),ui_model_height(&model));
     assert(display);lv_display_set_color_format(display,LV_COLOR_FORMAT_RGB565);
     lv_display_set_buffers(display,draw_buffer,NULL,sizeof draw_buffer,LV_DISPLAY_RENDER_MODE_PARTIAL);
     lv_display_set_flush_cb(display,flush);
     lv_indev_t *input=lv_indev_create();assert(input);
     lv_indev_set_type(input,LV_INDEV_TYPE_POINTER);lv_indev_set_read_cb(input,pointer_read);
-    ui_model_init(&model,0);model.splash=false;
     assert(ui_model_apply(&model,good,9,0));
-    ui_view_create(control);refresh();
+    ui_view_create(control);
+    /* Match boot: preferences before screen creation; first forced refresh
+     * without a timer tick or an earlier portrait frame. */
+    ui_view_update(&model,&health,0);lv_refr_now(display);
+    assert(lv_screen_active()==(splash?objects.boot:objects.network));
+    if(splash) {
+        const int width=ui_model_width(&model),height=ui_model_height(&model);
+        lv_area_t logo;lv_obj_get_coords(objects.boot_symbol,&logo);
+        assert(abs(logo.x1+logo.x2+1-width)<=1 && abs(logo.y1+logo.y2+1-height)<=1);
+        assert(flushed_pixels==UI_WIDTH*UI_HEIGHT);
+        fprintf(stderr,"PASS: first splash frame rotation=%u, %dx%d, centered logo\n",rotation,width,height);
+    }
 }
 static void gui_tests(void)
 {
@@ -381,8 +392,9 @@ static void gui_tests(void)
 }
 int main(int argc,char **argv)
 {
-    if(argc<2){hardware_settings_tests();model_tests();geometry_tests();gui_init();gui_tests();lv_deinit();return 0;}
-    gui_init();
+    if(argc<2){hardware_settings_tests();model_tests();geometry_tests();gui_init(0,false);gui_tests();lv_deinit();return 0;}
+    const uint8_t rotation=argc>2?(uint8_t)(atoi(argv[2])&3):0;
+    gui_init(rotation,!strcmp(argv[1],"splash"));
     if(!strcmp(argv[1],"waiting")) model.received=false;
     if(!strcmp(argv[1],"actions") || !strcmp(argv[1],"scrolling") || !strcmp(argv[1],"settings") || !strcmp(argv[1],"rotation") || !strcmp(argv[1],"timeout") || !strcmp(argv[1],"help") || !strcmp(argv[1],"saved")) model.page=UI_PAGE_SETTINGS;
     if(!strcmp(argv[1],"debug")) model.page=UI_PAGE_DEBUG;

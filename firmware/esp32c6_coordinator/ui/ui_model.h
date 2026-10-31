@@ -5,7 +5,7 @@
 
 #define UI_WIDTH 170
 #define UI_HEIGHT 320
-#define UI_TILE_ROWS 16
+#define UI_TILE_ROWS 32
 #define UI_MAX_WIDTH 320
 #define UI_HOST_TIMEOUT_MS 15000U
 #define UI_SPLASH_MS 1800U

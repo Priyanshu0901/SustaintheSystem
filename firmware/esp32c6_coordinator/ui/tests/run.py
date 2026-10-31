@@ -27,6 +27,12 @@ subprocess.run(["cmake","--build",str(build),"-j","8"],check=True)
 binary=build/"ui-test"
 subprocess.run([str(binary)],check=True)
 subprocess.run([str(build/"ui-test-no-debug")],check=True)
+for rotation in range(4):
+    for mode in range(3):
+        subprocess.run([str(build/"runtime-test"),str(rotation),str(mode)],check=True)
+for variant in (binary,build/"ui-test-no-debug"):
+    for rotation in range(4):
+        subprocess.run([str(variant),"splash",str(rotation)],stdout=subprocess.DEVNULL,check=True)
 if args.previews:
     for page in ("network","waiting","menu","settings","rotation","timeout","help","saved","actions","scrolling","debug","about","splash"):
         for rotation in (0,1):

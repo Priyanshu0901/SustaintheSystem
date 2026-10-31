@@ -3,9 +3,14 @@
 #include <stdint.h>
 #include "esp_err.h"
 esp_err_t board_display_init(void);
-/** Native portrait rectangle, RGB565 bytes already in panel wire order.
- * DMA buffer must be kept alive and unchanged until this call succeeds. */
-esp_err_t board_display_tile(int x0, int y0, int x1, int y1, const uint16_t *rgb565);
+#define BOARD_LCD_TILE_PIXELS (320 * 32)
+/** Queue a native portrait rectangle; returns without waiting for DMA.
+ * UI task only. Call wait before submitting another rectangle. The RGB565
+ * wire buffer stays alive/unchanged until wait succeeds; retain it on failure. */
+esp_err_t board_display_submit(int x0, int y0, int x1, int y1, const uint16_t *rgb565);
+/** Yield to FreeRTOS until the queued DMA completes (bounded timeout).
+ * A transfer failure is terminal for this display instance. */
+esp_err_t board_display_wait(void);
 /** Turn panel/backlight off for display saving. Touch/radio remain active. */
 esp_err_t board_display_set_awake(bool awake);
 /** Set saved/live brightness (10..100%); retain it while the display sleeps. */

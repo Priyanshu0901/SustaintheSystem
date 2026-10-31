@@ -16,7 +16,9 @@
 static ui_model_t model;
 static ui_diagnostics_t diagnostics;
 static portMUX_TYPE lock = portMUX_INITIALIZER_UNLOCKED;
-static uint16_t *wire_pixels;
+_Static_assert(UI_MAX_WIDTH*UI_TILE_ROWS <= BOARD_LCD_TILE_PIXELS, "Panel tile capacity");
+static uint16_t *wire_pixels[2];
+static unsigned wire_index;
 static bool render_failed, ui_changed=true, settings_pending, restart_pending;
 static bool input_pressed;
 static uint16_t input_x, input_y;
@@ -54,8 +56,14 @@ static void flush_pixels(lv_display_t *display, const lv_area_t *area, uint8_t *
     if (ok) ok=library_rotation==LV_DISPLAY_ROTATION_0;
     if (ok) { stage=1; ok=ui_geometry_pack_rect(adapter_rotation,
         area->x1,area->y1,lv_area_get_width(area),lv_area_get_height(area),
-        (const uint16_t *)pixels,wire_pixels,&x0,&y0,&x1,&y1); }
-    if (ok) { stage=2; error=board_display_tile(x0,y0,x1,y1,wire_pixels); ok=error==ESP_OK; }
+        (const uint16_t *)pixels,wire_pixels[wire_index],&x0,&y0,&x1,&y1); }
+    /* Render and rotate into the free tile while the previous tile is on
+     * SPI. Yield only at handover; never overwrite storage still in DMA. */
+    if (ok) { stage=2; error=board_display_wait(); ok=error==ESP_OK; }
+    if (ok) { error=board_display_submit(x0,y0,x1,y1,wire_pixels[wire_index]); ok=error==ESP_OK; }
+    const bool last=lv_display_flush_is_last(display);
+    if (ok) wire_index^=1;
+    if (ok && last) { error=board_display_wait(); ok=error==ESP_OK; }
     portENTER_CRITICAL(&lock);
     if (!ok && !render_failed) {
         ++diagnostics.draw_errors; diagnostics.panel_ready=false;
@@ -64,11 +72,11 @@ static void flush_pixels(lv_display_t *display, const lv_area_t *area, uint8_t *
         last_fault.width=lv_area_get_width(area); last_fault.height=lv_area_get_height(area);
         last_fault.rotation=adapter_rotation; last_fault.library_rotation=library_rotation;
     }
-    if (ok && lv_display_flush_is_last(display)) ++diagnostics.frames;
+    if (ok && last) ++diagnostics.frames;
     portEXIT_CRITICAL(&lock);
     render_failed |= !ok;
-    /* The LVGL draw buffer is separate from DMA storage. On failure, no
-     * later flush may touch wire_pixels, even if the SPI callback arrives. */
+    /* The LVGL draw buffer can be reused immediately after packing. On
+     * failure, retain both wire buffers even if a late callback arrives. */
     lv_display_flush_ready(display);
 }
 
@@ -110,10 +118,15 @@ size_t coordinator_ui_command(uint16_t cmd, const uint8_t *data, size_t n, uint8
 
 static void ui_task(void *arg)
 {
+    (void)arg;
     const size_t buffer_bytes=UI_MAX_WIDTH*UI_TILE_ROWS*sizeof(uint16_t);
     uint16_t *draw = heap_caps_malloc(buffer_bytes, MALLOC_CAP_8BIT);
-    wire_pixels = heap_caps_malloc(buffer_bytes, MALLOC_CAP_DMA);
-    if (!draw || !wire_pixels) { heap_caps_free(draw); heap_caps_free(wire_pixels); vTaskDelete(NULL); return; }
+    wire_pixels[0] = heap_caps_malloc(buffer_bytes, MALLOC_CAP_DMA);
+    wire_pixels[1] = heap_caps_malloc(buffer_bytes, MALLOC_CAP_DMA);
+    if (!draw || !wire_pixels[0] || !wire_pixels[1]) {
+        heap_caps_free(draw); heap_caps_free(wire_pixels[0]); heap_caps_free(wire_pixels[1]);
+        vTaskDelete(NULL); return;
+    }
     const bool ready = board_display_init() == ESP_OK;
     /* UI startup is asynchronous; app::init owns NVS initialization. Retry
      * reads briefly without initializing, erasing or blocking the NCP. */
@@ -136,11 +149,20 @@ static void ui_task(void *arg)
     model.brightness=model.brightness_committed=settings.brightness;
     model.last_touch_ms=model.splash_started_ms=now_ms();
     portEXIT_CRITICAL(&lock);
-    if (!ready) { heap_caps_free(draw); heap_caps_free(wire_pixels); vTaskDelete(NULL); return; }
+    if (!ready) {
+        heap_caps_free(draw); heap_caps_free(wire_pixels[0]); heap_caps_free(wire_pixels[1]);
+        vTaskDelete(NULL); return;
+    }
     lv_init();
     lv_tick_set_cb(now_ms);
-    lv_display_t *display=lv_display_create(UI_WIDTH,UI_HEIGHT);
-    if (!display) { heap_caps_free(draw); heap_caps_free(wire_pixels); vTaskDelete(NULL); return; }
+    /* Apply persisted geometry before screen creation or the first refresh;
+     * the splash must never start with default portrait orientation. */
+    frame_rotation=settings.rotation;
+    lv_display_t *display=lv_display_create(ui_model_width(&settings),ui_model_height(&settings));
+    if (!display) {
+        heap_caps_free(draw); heap_caps_free(wire_pixels[0]); heap_caps_free(wire_pixels[1]);
+        vTaskDelete(NULL); return;
+    }
     lv_display_set_color_format(display,LV_COLOR_FORMAT_RGB565);
     lv_display_set_buffers(display,draw,NULL,buffer_bytes,LV_DISPLAY_RENDER_MODE_PARTIAL);
     lv_display_set_flush_cb(display,flush_pixels);
@@ -152,7 +174,7 @@ static void ui_task(void *arg)
     bool was_pressed = false, suppress_until_release=false;
     bool awake=false;
     uint32_t updated_at = 0;
-    uint8_t applied_rotation=255, applied_brightness=255;
+    uint8_t applied_rotation=settings.rotation, applied_brightness=255;
     for (;;) {
         uint16_t x=0, y=0;
         const bool pressed = board_touch_read(&x,&y);
@@ -223,8 +245,13 @@ static void ui_task(void *arg)
             ui_view_update(&snapshot,&health,now);
             ui_changed=false; updated_at=now;
         }
-        if (!awake) lv_obj_invalidate(lv_screen_active());
-        lv_timer_handler();
+        /* Refresh timers need not be due yet on boot/wake. Force the entire
+         * saved-orientation frame through DMA before enabling the backlight. */
+        if (!awake) {
+            lv_obj_invalidate(lv_screen_active());
+            lv_refr_now(display);
+        }
+        const uint32_t next=lv_timer_handler();
         if (render_failed) { heap_caps_free(draw); vTaskDelete(NULL); return; }
         if (!awake) {
             if (board_display_set_awake(true)==ESP_OK) awake=true;
@@ -233,7 +260,9 @@ static void ui_task(void *arg)
                 vTaskDelete(NULL); return;
             }
         }
-        vTaskDelay(pdMS_TO_TICKS(20));
+        /* Respect LVGL deadlines; one RTOS tick yields without a fixed20ms
+         * delay after each potentially expensive scroll refresh. */
+        vTaskDelay(pdMS_TO_TICKS(next<10?10:(next>20?20:next)));
     }
 }
 

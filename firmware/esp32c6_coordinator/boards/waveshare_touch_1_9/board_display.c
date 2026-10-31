@@ -14,6 +14,8 @@ static esp_lcd_panel_handle_t panel;
 static i2c_master_dev_handle_t touch;
 static SemaphoreHandle_t transferred;
 static bool touch_ready;
+static bool transfer_pending;
+static esp_err_t transfer_error;
 
 static bool transfer_done(esp_lcd_panel_io_handle_t io, esp_lcd_panel_io_event_data_t *event, void *ctx)
 {
@@ -30,11 +32,11 @@ esp_err_t board_display_init(void)
     if (err != ESP_OK) return err;
     spi_bus_config_t bus = {.mosi_io_num = BOARD_LCD_MOSI, .miso_io_num = -1,
         .sclk_io_num = BOARD_LCD_CLK, .quadwp_io_num = -1, .quadhd_io_num = -1,
-        .max_transfer_sz = 320 * 16 * 2};
+        .max_transfer_sz = BOARD_LCD_TILE_PIXELS * 2};
     if ((err = spi_bus_initialize(SPI2_HOST, &bus, SPI_DMA_CH_AUTO)) != ESP_OK) return err;
     esp_lcd_panel_io_handle_t io;
     esp_lcd_panel_io_spi_config_t spi = {.cs_gpio_num = BOARD_LCD_CS, .dc_gpio_num = BOARD_LCD_DC,
-        .spi_mode = 0, .pclk_hz = 20000000, .trans_queue_depth = 1,
+        .spi_mode = 0, .pclk_hz = BOARD_LCD_SPI_HZ, .trans_queue_depth = 1,
         .on_color_trans_done = transfer_done, .lcd_cmd_bits = 8, .lcd_param_bits = 8};
     if ((err = esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)SPI2_HOST, &spi, &io)) != ESP_OK) return err;
     esp_lcd_panel_dev_config_t cfg = {.reset_gpio_num = BOARD_LCD_RESET,
@@ -63,18 +65,35 @@ esp_err_t board_display_init(void)
     return ESP_OK;
 }
 
-esp_err_t board_display_tile(int x0, int y0, int x1, int y1, const uint16_t *pixels)
+esp_err_t board_display_submit(int x0, int y0, int x1, int y1, const uint16_t *pixels)
 {
+    if (transfer_error != ESP_OK) return transfer_error;
+    if (transfer_pending) return ESP_ERR_INVALID_STATE;
     if (x0<0 || x1>170 || y0<0 || y1>320 || x1<=x0 || y1<=y0 ||
-        (x1-x0)*(y1-y0)>320*16) return ESP_ERR_INVALID_ARG;
-    esp_err_t err = esp_lcd_panel_draw_bitmap(panel, x0, y0, x1, y1, pixels);
-    if (err != ESP_OK) return err;
-    if (xSemaphoreTake(transferred, pdMS_TO_TICKS(500)) != pdTRUE) return ESP_ERR_TIMEOUT;
+        !pixels || (x1-x0)*(y1-y0)>BOARD_LCD_TILE_PIXELS) return ESP_ERR_INVALID_ARG;
+    /* The ISR only signals completion. State and all LCD calls stay on the
+     * UI task; a callback may arrive before draw_bitmap returns. */
+    transfer_error = esp_lcd_panel_draw_bitmap(panel, x0, y0, x1, y1, pixels);
+    if (transfer_error == ESP_OK) transfer_pending = true;
+    return transfer_error;
+}
+
+esp_err_t board_display_wait(void)
+{
+    if (transfer_error != ESP_OK) return transfer_error;
+    if (!transfer_pending) return ESP_OK;
+    if (xSemaphoreTake(transferred, pdMS_TO_TICKS(500)) != pdTRUE) {
+        transfer_error = ESP_ERR_TIMEOUT;
+        return transfer_error;
+    }
+    transfer_pending = false;
     return ESP_OK;
 }
 
 esp_err_t board_display_set_awake(bool awake)
 {
+    const esp_err_t completed = board_display_wait();
+    if (completed != ESP_OK) return completed;
     if (!awake) {
         const esp_err_t err=board_backlight_set_awake(false);
         if (err!=ESP_OK) return err;

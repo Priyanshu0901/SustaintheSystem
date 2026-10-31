@@ -14,12 +14,14 @@ XIAO's external-antenna coordinator is retained by Git tag `coordinator-xiao-v1`
 
 | Peripheral | Pins/settings |
 | --- | --- |
-| ST7789V2 LCD | MOSI4, clock5, DC6, CS7, reset14; 20 MHz SPI; 170×320 portrait with column gap35 |
+| ST7789V2 LCD | MOSI4, clock5, DC6, CS7, reset14; 40 MHz SPI; 170×320 portrait with column gap35 |
 | Backlight | GPIO15, active low through the board's P-channel transistor |
 | CST816 touch | I2C SDA18/SCL8, address0x15; polled coordinates in portrait orientation |
 | USB NCP | Native USB-Serial/JTAG; no second serial client |
 
 The board driver's pin header owns these definitions. SD card, IMU, Wi-Fi and GPIO expander functions are not initialized by this implementation. The board's external-antenna hardware route is not the XIAO software switch. Sources are the [manufacturer example](https://github.com/waveshareteam/ESP32-C6-LCD-1.9/tree/1fed15e32977de11afe1f710a0f5e915bfcc35a5/02_Example/ESP-IDF/07_LVGL_Test) and [touch schematic](https://files.waveshare.com/wiki/ESP32-C6-LCD-1.9/ESP32-C6-Touch-LCD-1.9-Schematic.pdf).
+
+SPI is configured at40MHz, increased from the original20MHz example. The [ST7789 datasheet linked by Waveshare](https://files.waveshare.com/wiki/common/ST7789T3_SPEC_V1.0.pdf), section7.4.3, lists a16ns minimum four-wire write cycle;40MHz uses25ns. That reference is ST7789T3; the exact fitted controller/panel revision has not been independently read. Driver completion checks do not measure signal integrity or prove visual correctness at the increased clock.
 
 Display rotation is implemented in the portable UI pixel/touch transforms. The board retains native portrait addressing and its 35-pixel column gap. Display saving switches the panel and active-low backlight off while CST816 polling and the coordinator continue. The separate backlight module uses inverted10kHz/10-bit low-speed LEDC PWM, retaining a10–100% setting and restoring it on wake. Configuration follows [ESP-IDF5.5.1 LEDC](https://docs.espressif.com/projects/esp-idf/en/v5.5.1/esp32c6/api-reference/peripherals/ledc.html); perceived brightness and power have not been calibrated.
 
