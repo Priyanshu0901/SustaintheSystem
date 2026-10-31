@@ -15,6 +15,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ui_splash_asset.h"
     COMMAND "${Python3_EXECUTABLE}" "${UI}/generate_splash.py" "${UI}/assets/splash.json" "${CMAKE_CURRENT_BINARY_DIR}/ui_splash_asset.h"
     DEPENDS "${UI}/generate_splash.py" ${UI_ASSETS})
 add_executable(ui-test model_and_preview.c "${UI}/ui_model.c" "${UI}/ui_geometry.c" "${UI}/ui_view.c"
+    "${UI}/ui_layout.c" "${UI}/ui_controls.c" "${UI}/ui_feedback.c"
     "${UI}/../boards/waveshare_touch_1_9/board_identity.c"
     "${UI}/generated/screens.c" "${UI}/generated/ui.c" "${UI}/generated/images.c" "${UI}/generated/styles.c"
     "${CMAKE_CURRENT_BINARY_DIR}/ui_splash_asset.h")

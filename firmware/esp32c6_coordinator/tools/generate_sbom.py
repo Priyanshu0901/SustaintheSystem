@@ -7,12 +7,22 @@ are outside this firmware inventory and retain their own package-lock.json.
 from datetime import datetime, timezone
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 import subprocess
 import uuid
 
 import yaml
+
+
+def firmware_version(integration):
+    """Read the product release version from the same header used by About."""
+    text = (integration / "ui/firmware_version.h").read_text(encoding="utf-8")
+    match = re.search(r'^#define UI_FIRMWARE_VERSION "([0-9]+\.[0-9]+\.[0-9]+)"$', text, re.MULTILINE)
+    if not match:
+        raise ValueError("Expected a semantic product version in ui/firmware_version.h")
+    return match[1]
 
 
 def generate(integration, project, build, out, identity):
@@ -94,7 +104,7 @@ def generate(integration, project, build, out, identity):
             "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
             "lifecycles": [{"phase": "build"}],
             "component": {"type": "firmware", "bom-ref": "firmware", "name": "RayKestrel Waveshare Zigbee coordinator",
-                          "version": "source-"+identity[:16], "hashes": [{"alg": "SHA-256", "content": sha(out / "app.bin")}]},
+                          "version": firmware_version(integration), "hashes": [{"alg": "SHA-256", "content": sha(out / "app.bin")}]},
             "tools": {"components": [{"type": "application", "name": "EEZ Studio", "version": ui["generator"]["version"],
                        "licenses": [{"license": {"id": "GPL-3.0-only"}}],
                        "properties": [{"name": "raykestrel:scope", "value": "Build-time generator only; EEZ Flow disabled; no EEZ runtime linked"}]},

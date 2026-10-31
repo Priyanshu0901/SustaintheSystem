@@ -46,8 +46,7 @@ typedef struct _objects_t {
     lv_obj_t *rotation_select;
     lv_obj_t *timeout_caption;
     lv_obj_t *timeout_select;
-    lv_obj_t *sleep_hint;
-    lv_obj_t *save_state;
+    lv_obj_t *sleep_info;
     lv_obj_t *debug_navigation;
     lv_obj_t *debug_logo;
     lv_obj_t *touches_caption;
@@ -66,7 +65,7 @@ typedef struct _objects_t {
     lv_obj_t *maker_caption;
     lv_obj_t *maker_name;
     lv_obj_t *device_name;
-    lv_obj_t *device_id;
+    lv_obj_t *firmware_version;
     lv_obj_t *library_version;
     lv_obj_t *firmware_role;
     lv_obj_t *boot_symbol;

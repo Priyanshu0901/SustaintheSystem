@@ -110,9 +110,9 @@
           "objID": "912fa912-79ea-4e09-b7ad-194961455fef",
           "type": "LVGLDropdownWidget",
           "identifier": "network_navigation",
-          "left": 8,
+          "left": 10,
           "top": 6,
-          "width": 56,
+          "width": 40,
           "height": 36,
           "customInputs": [],
           "customOutputs": [],
@@ -161,7 +161,7 @@
           "objID": "aa8f8405-114a-4186-b697-f072d799287f",
           "type": "LVGLImageWidget",
           "identifier": "network_logo",
-          "left": 134,
+          "left": 132,
           "top": 10,
           "width": 28,
           "height": 28,
@@ -767,9 +767,9 @@
           "objID": "40f46b85-1d27-44b9-bddc-81b6c30528e8",
           "type": "LVGLDropdownWidget",
           "identifier": "settings_navigation",
-          "left": 8,
+          "left": 10,
           "top": 6,
-          "width": 56,
+          "width": 40,
           "height": 36,
           "customInputs": [],
           "customOutputs": [],
@@ -818,7 +818,7 @@
           "objID": "3045662b-204a-4a18-a9aa-e888516b2f6e",
           "type": "LVGLImageWidget",
           "identifier": "settings_logo",
-          "left": 134,
+          "left": 132,
           "top": 10,
           "width": 28,
           "height": 28,
@@ -1036,13 +1036,13 @@
           "useStaticText": true
         },
         {
-          "objID": "6e8f9eb6-8d88-4538-9e33-c9fa9102753e",
+          "objID": "af26ae89-8746-4fdd-a467-29d49716e37b",
           "type": "LVGLLabelWidget",
-          "identifier": "sleep_hint",
-          "left": 10,
-          "top": 223,
-          "width": 150,
-          "height": 42,
+          "identifier": "sleep_info",
+          "left": 130,
+          "top": 129,
+          "width": 30,
+          "height": 32,
           "customInputs": [],
           "customOutputs": [],
           "timeline": [],
@@ -1052,7 +1052,7 @@
           "widthUnit": "px",
           "heightUnit": "px",
           "children": [],
-          "flags": "",
+          "flags": "CLICKABLE",
           "hiddenFlagType": "literal",
           "clickableFlagType": "literal",
           "checkedStateType": "literal",
@@ -1061,58 +1061,22 @@
           "scrollbarMode": "off",
           "scrollDirection": "none",
           "localStyles": {
-            "objID": "ae21904d-966a-4c51-b4c7-ea46ded0e5f9",
+            "objID": "384dc074-93b5-491b-b41c-09e85b715401",
             "definition": {
               "MAIN": {
                 "DEFAULT": {
-                  "text_font": "MONTSERRAT_12",
-                  "text_color": "#BCC5C2"
+                  "text_font": "MONTSERRAT_16",
+                  "text_color": "#F2F5F4",
+                  "text_align": "CENTER",
+                  "pad_top": 6,
+                  "bg_color": "#202624",
+                  "bg_opa": 255,
+                  "radius": 16
                 }
               }
             }
           },
-          "text": "Touch to wake.\nRadio stays active.",
-          "textType": "literal",
-          "longMode": "WRAP",
-          "recolor": false
-        },
-        {
-          "objID": "10422e17-d762-4e2d-911c-f98b15d7704c",
-          "type": "LVGLLabelWidget",
-          "identifier": "save_state",
-          "left": 10,
-          "top": 294,
-          "width": 150,
-          "height": 18,
-          "customInputs": [],
-          "customOutputs": [],
-          "timeline": [],
-          "eventHandlers": [],
-          "leftUnit": "px",
-          "topUnit": "px",
-          "widthUnit": "px",
-          "heightUnit": "px",
-          "children": [],
-          "flags": "",
-          "hiddenFlagType": "literal",
-          "clickableFlagType": "literal",
-          "checkedStateType": "literal",
-          "disabledStateType": "literal",
-          "states": "",
-          "scrollbarMode": "off",
-          "scrollDirection": "none",
-          "localStyles": {
-            "objID": "61f12575-c1ff-45b5-9132-960744502240",
-            "definition": {
-              "MAIN": {
-                "DEFAULT": {
-                  "text_font": "MONTSERRAT_12",
-                  "text_color": "#79DDC2"
-                }
-              }
-            }
-          },
-          "text": "Settings saved",
+          "text": "i",
           "textType": "literal",
           "longMode": "WRAP",
           "recolor": false
@@ -1149,9 +1113,9 @@
           "objID": "717e8695-cf17-415c-bdb3-090fe77d2074",
           "type": "LVGLDropdownWidget",
           "identifier": "debug_navigation",
-          "left": 8,
+          "left": 10,
           "top": 6,
-          "width": 56,
+          "width": 40,
           "height": 36,
           "customInputs": [],
           "customOutputs": [],
@@ -1200,7 +1164,7 @@
           "objID": "0475ebdd-4221-4575-b848-4ff63c5fd28a",
           "type": "LVGLImageWidget",
           "identifier": "debug_logo",
-          "left": 134,
+          "left": 132,
           "top": 10,
           "width": 28,
           "height": 28,
@@ -1681,9 +1645,9 @@
           "objID": "75152c06-d594-46f0-bc9e-3092404b11ef",
           "type": "LVGLDropdownWidget",
           "identifier": "about_navigation",
-          "left": 8,
+          "left": 10,
           "top": 6,
-          "width": 56,
+          "width": 40,
           "height": 36,
           "customInputs": [],
           "customOutputs": [],
@@ -1732,7 +1696,7 @@
           "objID": "e99d3c5b-7ce8-4aa1-955c-2d90e34d5fe9",
           "type": "LVGLImageWidget",
           "identifier": "about_logo",
-          "left": 134,
+          "left": 132,
           "top": 10,
           "width": 28,
           "height": 28,
@@ -1903,7 +1867,7 @@
           "left": 10,
           "top": 188,
           "width": 150,
-          "height": 37,
+          "height": 18,
           "customInputs": [],
           "customOutputs": [],
           "timeline": [],
@@ -1932,7 +1896,7 @@
               }
             }
           },
-          "text": "Waveshare ESP32-C6\nTouch LCD 1.9",
+          "text": "ESPC6",
           "textType": "literal",
           "longMode": "WRAP",
           "recolor": false
@@ -1940,7 +1904,7 @@
         {
           "objID": "ab2fce47-0c99-4c39-b85c-a32904d6c9f2",
           "type": "LVGLLabelWidget",
-          "identifier": "device_id",
+          "identifier": "firmware_version",
           "left": 10,
           "top": 238,
           "width": 150,
@@ -1973,7 +1937,7 @@
               }
             }
           },
-          "text": "MAC unavailable",
+          "text": "Firmware",
           "textType": "literal",
           "longMode": "WRAP",
           "recolor": false

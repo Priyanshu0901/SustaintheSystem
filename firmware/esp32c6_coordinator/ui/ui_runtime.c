@@ -1,6 +1,7 @@
 #include "coordinator_ui.h"
 #include "ui_view.h"
 #include "ui_geometry.h"
+#include "ui_feedback.h"
 #include "board_display.h"
 #include "board_identity.h"
 #include "esp_heap_caps.h"
@@ -210,6 +211,7 @@ static void ui_task(void *arg)
             diagnostics.settings_saved=stored;
             portEXIT_CRITICAL(&lock);
             health.settings_saved=stored;
+            ui_feedback_save_result(stored);
         }
         if (snapshot.sleeping) {
             if (awake) {

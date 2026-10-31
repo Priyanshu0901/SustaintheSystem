@@ -27,7 +27,7 @@ subprocess.run(["cmake","--build",str(build),"-j","8"],check=True)
 binary=build/"ui-test"
 subprocess.run([str(binary)],check=True)
 if args.previews:
-    for page in ("network","waiting","menu","settings","rotation","debug","about","splash"):
+    for page in ("network","waiting","menu","settings","rotation","timeout","help","saved","debug","about","splash"):
         for rotation in (0,1):
             with (output/f"{page}-{rotation}.ppm").open("wb") as stream:
                 subprocess.run([str(binary),page,str(rotation)],stdout=stream,check=True)

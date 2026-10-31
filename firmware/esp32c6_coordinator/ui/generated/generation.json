@@ -1,22 +1,22 @@
 {
-  "generator": "EEZ Studio",
   "version": "0.29.0",
-  "firmwareApiVersion": "9.5.0",
   "flowSupport": false,
+  "projectSha256": "a87fe9e59fb156d5ded3af2fcd6d96743b88edc06dc1f68e484f4c3333868d33",
+  "hashNormalization": "UTF-8 text with LF",
   "files": {
     "actions.h": "b17427d1e077482fa62245980dc7380eef57fd42a0a5c891ee224d0c10559f73",
     "fonts.h": "a85a8697e76e5ca6c2e37902c6254087e773b3a5c9a1f6d34836e3bb7d7f3de2",
     "images.c": "7ec8b8e6b77d089526c44d41cc8b3944dbdbd59cd008535be7bf609d06662161",
     "images.h": "f51ae33634329c6bba96c5c4ccc5ad0738aad69a6a51341b5b10a85272df87e9",
-    "screens.c": "b2b9749451699baa3c7cc82c233b065e369936e1dcaead7cff1976c4e3db53d5",
-    "screens.h": "59798aaef846bc041544a0528fc974c941d91d6c56c35f1c0a0ecd70c32fb623",
+    "screens.c": "c63efcf5056ab37d3c399557ec3a50e19f78bc119d4f72316f7bfc7a7cd45381",
+    "screens.h": "69f9e1b46957b58b5ad4bc85354af5594d68434cd1470bd55c899019ff348d98",
     "styles.c": "56668af6c0f81fb18f83acdb2b85e410791ecd8a30799ef30ae2fc313dc54880",
     "styles.h": "6f29f38871ec6e36983abad2195179dde2e7fbae5e3ce79ae575ae397fe85c75",
     "ui.c": "77c07e34f698529f44a929401965edb9312dea54487817541ae05932f191e746",
     "ui.h": "efca64d0ac3be665ec604f2f148eed55ace251413f89fbe64df5d89b13972a07",
     "vars.h": "4730ec151383acd5ece3c8e0ebc5b2b24ad47a38058d12c8d4703bba89700b43"
   },
-  "hashNormalization": "UTF-8 text with LF",
+  "generator": "EEZ Studio",
   "editorApiVersion": "9.5.0",
-  "projectSha256": "de0ac0870c23868c1dd08823ec35f7af2fa34290da04316debda48e7c3649623"
+  "firmwareApiVersion": "9.5.0"
 }

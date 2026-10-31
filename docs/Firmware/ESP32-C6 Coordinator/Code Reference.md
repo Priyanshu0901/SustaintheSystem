@@ -16,7 +16,11 @@ Paths are relative to [the integration source](https://github.com/Priyanshu0901/
 | `ui/ui_model.c`, `ui/ui_model.h` | Host validation/expiry, stable page IDs, validated control values and idle/wake state |
 | `ui/ui_geometry.c`, `ui/ui_geometry.h` | Logical-to-panel tile packing and inverse touch transforms |
 | `ui/generate_splash.py`, `ui/assets/` | Replaceable original PNG/manifest and build-time LVGL ARGB8888 descriptors |
-| `ui/ui_view.c` | Bind live values, callbacks and logos to generated LVGL widgets; adapt landscape layout |
+| `ui/ui_view.c` | Bind live labels, screens and logos to generated widgets |
+| `ui/ui_layout.c` | Responsive geometry, icon/title header and shared logo gutter |
+| `ui/ui_controls.c` | Control callbacks, popup bounds and scroll reachability |
+| `ui/ui_feedback.c` | Transient help/storage-result toasts and expiry |
+| `ui/firmware_version.h` | Single editable product version used by About, manifest and SBOM |
 | `tools/generate_sbom.py` | Export the build-specific CycloneDX inventory and actual licence notices |
 | `ui/ui_runtime.c`, `ui/coordinator_ui.h` | Rendering/touch runtime, local NVS settings, panel sleep/wake and bounded vendor interface |
 | `boards/waveshare_touch_1_9/` | Board pins, LCD DMA lifecycle and CST816 I2C polling |

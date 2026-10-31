@@ -9,7 +9,7 @@ import sys
 import tarfile
 import zipfile
 from check_ui_generated import check as check_ui_generated
-from generate_sbom import generate as generate_sbom
+from generate_sbom import generate as generate_sbom, firmware_version
 
 
 def sha(path):
@@ -125,6 +125,7 @@ def main():
         shutil.copy2(src, out / name)
     license_files = generate_sbom(integration, project, build, out, identity)
     manifest = {**lock, "board": "waveshare-touch-1.9", "inputsSha256": identity,
+                "firmwareVersion": firmware_version(integration),
                 "licenseFiles": license_files,
                 "uiDependencies": ui_lock,
                 "sourceArchiveSha256": sha(archive), "flashOffset": "0x0",

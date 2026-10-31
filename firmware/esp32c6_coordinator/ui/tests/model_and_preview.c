@@ -1,5 +1,7 @@
 #include "ui_model.h"
 #include "ui_view.h"
+#include "ui_feedback.h"
+#include "firmware_version.h"
 #include "ui_geometry.h"
 #include "generated/screens.h"
 #include "board_identity.h"
@@ -60,6 +62,59 @@ static void refresh(void)
     ui_view_update(&model,&health,clock_ms);
     lv_obj_invalidate(lv_screen_active());
     pump(100);
+}
+static void click(int x,int y)
+{
+    point.x=x;point.y=y;pressed=true;pump(100);pressed=false;pump(100);
+}
+static void popup_tests(void)
+{
+    lv_obj_t *items[]={objects.network_navigation,objects.settings_navigation,objects.debug_navigation,
+        objects.about_navigation,objects.rotation_select,objects.timeout_select};
+    const uint8_t pages[]={UI_PAGE_NETWORK,UI_PAGE_SETTINGS,UI_PAGE_DEBUG,UI_PAGE_ABOUT,UI_PAGE_SETTINGS,UI_PAGE_SETTINGS};
+    const uint8_t destinations[]={UI_PAGE_NETWORK,UI_PAGE_SETTINGS,UI_PAGE_DEBUG,UI_PAGE_ABOUT};
+    for(int r=0;r<4;++r) for(unsigned i=0;i<6;++i) for(unsigned option=0;option<4;++option) {
+        model.rotation=r;model.page=pages[i];refresh();
+        lv_dropdown_open(items[i]);pump(80);
+        lv_obj_t *list=lv_dropdown_get_list(items[i]);
+        lv_area_t a;lv_obj_get_coords(list,&a);
+        assert(a.x1>=10 && a.y1>=10 && a.x2<ui_model_width(&model)-10 && a.y2<ui_model_height(&model)-10);
+        lv_obj_t *text=lv_obj_get_child(list,0);
+        const lv_font_t *font=lv_obj_get_style_text_font(text,0);
+        const int line=lv_font_get_line_height(font)+lv_obj_get_style_text_line_space(text,0);
+        /* Exercise options below a short landscape popup's scroll viewport. */
+        lv_obj_scroll_to_y(list,(int)option*line-lv_obj_get_content_height(list)/2,LV_ANIM_OFF);
+        pump(80);
+        lv_area_t label_area;lv_obj_get_coords(text,&label_area);
+        const int y=label_area.y1+(int)option*line+lv_font_get_line_height(font)/2;
+        assert(y>a.y1 && y<a.y2);
+        click(a.x1+20,y);
+        assert(!lv_dropdown_is_open(items[i]));
+        assert(lv_dropdown_get_selected(items[i])==option);
+        if(i<4) assert(model.page==destinations[option]);
+        if(i==4) assert(model.rotation==option);
+        if(i==5) assert(model.timeout_index==option);
+    }
+    for(int r=0;r<4;++r) {
+        model.rotation=r;model.page=UI_PAGE_SETTINGS;refresh();
+        assert(lv_dropdown_get_symbol(objects.settings_navigation)==NULL);
+        assert(!strcmp(lv_dropdown_get_text(objects.settings_navigation),(r&1)?LV_SYMBOL_SETTINGS "  Settings":LV_SYMBOL_SETTINGS));
+        lv_area_t a;lv_obj_get_coords(objects.settings_logo,&a);
+        assert(a.x2==ui_model_width(&model)-11 && a.y1==10);
+        lv_obj_get_coords(objects.sleep_info,&a);click((a.x1+a.x2)/2,(a.y1+a.y2)/2);
+        lv_obj_t *toast=lv_obj_get_child(lv_layer_top(),0);
+        assert(!lv_obj_has_flag(toast,LV_OBJ_FLAG_HIDDEN));
+        assert(!strcmp(lv_label_get_text(toast),"Touch to wake.\nRadio stays active."));
+        ui_feedback_save_result(false);pump(100);
+        assert(strstr(lv_label_get_text(toast),"Could not save"));
+        ui_feedback_save_result(true);pump(100);
+        assert(strstr(lv_label_get_text(toast),"Saved"));
+        model.rotation^=1;refresh();lv_obj_get_coords(toast,&a);
+        assert(a.x1>=10 && a.x2<ui_model_width(&model)-10 && a.y2<ui_model_height(&model)-10);
+        pump(3100);assert(lv_obj_has_flag(toast,LV_OBJ_FLAG_HIDDEN));
+    }
+    assert(!strcmp(lv_label_get_text(objects.device_name),"ESPC6"));
+    assert(!strcmp(lv_label_get_text(objects.firmware_version),"Firmware " UI_FIRMWARE_VERSION));
 }
 static void model_tests(void)
 {
@@ -201,14 +256,15 @@ static void gui_tests(void)
         assert(lv_dropdown_is_open(objects.network_navigation));
         lv_dropdown_close(objects.network_navigation);
     }
-    fprintf(stderr,"PASS: LVGL 9.5.0 generated screens, pointer menu in four orientations, explicit/open controls, eight-byte MAC regression, model/power and dirty-rectangle transforms\n");
+    popup_tests();
+    fprintf(stderr,"PASS: popup gutters and all 96 pointer selections, scroll reachability, header/logo/version, toast expiry/reflow, LVGL/model/power/geometry/MAC regressions\n");
 }
 int main(int argc,char **argv)
 {
     if(argc<2){model_tests();geometry_tests();gui_init();gui_tests();lv_deinit();return 0;}
     gui_init();
     if(!strcmp(argv[1],"waiting")) model.received=false;
-    if(!strcmp(argv[1],"settings") || !strcmp(argv[1],"rotation")) model.page=UI_PAGE_SETTINGS;
+    if(!strcmp(argv[1],"settings") || !strcmp(argv[1],"rotation") || !strcmp(argv[1],"timeout") || !strcmp(argv[1],"help") || !strcmp(argv[1],"saved")) model.page=UI_PAGE_SETTINGS;
     if(!strcmp(argv[1],"debug")) model.page=UI_PAGE_DEBUG;
     if(!strcmp(argv[1],"about")) model.page=UI_PAGE_ABOUT;
     if(!strcmp(argv[1],"splash")) model.splash=true;
@@ -216,6 +272,9 @@ int main(int argc,char **argv)
     refresh();
     if(!strcmp(argv[1],"menu")){lv_dropdown_open(objects.network_navigation);pump(100);}
     if(!strcmp(argv[1],"rotation")){lv_dropdown_open(objects.rotation_select);pump(100);}
+    if(!strcmp(argv[1],"timeout")){lv_dropdown_open(objects.timeout_select);pump(100);}
+    if(!strcmp(argv[1],"help")){lv_obj_send_event(objects.sleep_info,LV_EVENT_CLICKED,NULL);pump(100);}
+    if(!strcmp(argv[1],"saved")){ui_feedback_save_result(true);pump(100);}
     printf("P6\n%d %d\n255\n",ui_model_width(&model),ui_model_height(&model));
     for(unsigned i=0;i<UI_WIDTH*UI_HEIGHT;++i){
         const uint16_t c=framebuffer[i];

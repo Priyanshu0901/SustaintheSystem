@@ -6,7 +6,11 @@ This directory owns the Waveshare UI. **LVGL 9.5.0** renders it; **EEZ Studio 0.
 | --- | --- |
 | Portrait widget tree, text, static colours and styles | [editor/coordinator.eez-project](editor/coordinator.eez-project), opened in EEZ Studio |
 | Generated C/header files | [generated/](generated/screens.c), regenerated rather than edited |
-| Live data, page/settings callbacks, logo binding and landscape layout | [ui_view.c](ui_view.c) |
+| Snapshot/label binding and screen selection | [ui_view.c](ui_view.c) |
+| Responsive layout and shared header gutter | [ui_layout.c](ui_layout.c) |
+| Page/settings controls and bounded popups | [ui_controls.c](ui_controls.c) |
+| Transient help/storage feedback and expiry | [ui_feedback.c](ui_feedback.c) |
+| Product release version | [firmware_version.h](firmware_version.h) |
 | Host snapshot validation, page IDs and idle/wake state | [ui_model.c](ui_model.c), [ui_model.h](ui_model.h) |
 | Dirty-rectangle packing and inverse touch transforms | [ui_geometry.c](ui_geometry.c), [ui_geometry.h](ui_geometry.h) |
 | Sole LVGL task, display/input callbacks, NVS and diagnostics | [ui_runtime.c](ui_runtime.c) |
@@ -29,15 +33,17 @@ The default executable is the isolated local copy under `.tools/eez/app/`. To us
 ./ui/Generate-UI.ps1 -EezExecutable 'C:/Path/To/EEZ Studio.exe'
 ```
 
-The wrapper checks the editor version and successful generation, then records canonical UTF-8/LF project/output hashes in `generated/generation.json`. Normal Docker builds check those hashes and compile the tracked generated C; they need neither the desktop editor nor a licence token. A project/output mismatch requires regeneration. The directory-local Git attribute permits EEZ's space-only lines in `screens.c`; generated C is kept verbatim. The original portrait design stays editable in EEZ; the binding layer adjusts positions and sizes for landscape. Keep hardware, NVS and host logic outside generated files.
+The wrapper checks the editor version and successful generation, then records canonical UTF-8/LF project/output hashes in `generated/generation.json`. Normal Docker builds check those hashes and compile the tracked generated C; they need neither the desktop editor nor a licence token. A project/output mismatch requires regeneration. The directory-local Git attribute permits EEZ's space-only lines in `screens.c`; generated C is kept verbatim. The original portrait design stays editable in EEZ; the layout module adjusts positions and sizes for landscape. Keep hardware, NVS and host logic outside generated files.
 
 ## Implemented screens
 
-The active-page icon opens an LVGL dropdown for **Network**, **Settings**, **Debug** and **About**. A RayKestrel logo sits at the top right. The front page has no project-name banner. Network shows only actual host data, with unknown availability and 15-second expiry. Debug shows touch events, uptime, refreshes, draw errors and free heap; hardware readiness remains available in host diagnostics. About shows **RayKestrel Systems**, the Waveshare device, base MAC and LVGL version.
+The active-page icon (plus page title in landscape) opens an arrow-free LVGL dropdown for **Network**, **Settings**, **Debug** and **About**. The RayKestrel header logo aligns by its actual image size to the same ten-pixel right gutter as the content. Every popup stays within that gutter; short landscape lists scroll. The front page has no project-name banner. Network shows only actual host data, with unknown availability and 15-second expiry. Debug shows touch events, uptime, refreshes, draw errors and free heap; hardware readiness remains available in host diagnostics. About shows **RayKestrel Systems**, the concise **ESPC6** device name, product firmware version and LVGL version.
 
-Settings has explicit dropdown options for 0/90/180/270-degree rotation and display sleep off/15/30/60 seconds (default 30). Re-selecting a value does not write NVS. Selections persist in the separate `display` namespace. Idle turns off panel/backlight and stops LVGL rendering; USB, Zigbee and touch polling continue. First touch wakes only, held touch prevents sleep, and host updates do not reset the idle timer. Missing touch input keeps the display awake.
+Settings has explicit dropdown options for 0/90/180/270-degree rotation and display sleep off/15/30/60 seconds (default 30). Re-selecting a value does not write NVS. The info icon beside Display sleep shows a three-second toast: “Touch to wake. Radio stays active.” Storage success/failure appears transiently after actual NVS completion, replacing the persistent Saved row. Selections persist in the separate `display` namespace. Idle turns off panel/backlight and stops LVGL rendering; USB, Zigbee and touch polling continue. First touch wakes only, held touch prevents sleep, and host updates do not reset the idle timer. Missing touch input keeps the display awake.
 
 Startup shows the replaceable original-named PNG for 1.8 seconds or until touch. The dependency-free converter produces alpha-preserving LVGL image descriptors for splash/header/About; replace the asset or edit its JSON filename, then rebuild. No runtime PNG decoder is used.
+
+The product version is **0.2.0**, declared once in `firmware_version.h`. Update that semantic version for a product release and rebuild; About, the build manifest and SBOM firmware metadata read the same value. This is independent of upstream NCP 1.5.79 and LVGL 9.5.0. Source hashes still identify each exact build.
 
 ## Runtime and checks
 
@@ -49,6 +55,6 @@ Native tests use the exact locked LVGL source, real widgets, a pointer driver an
 python /integration/ui/tests/run.py --output /integration/build/lvgl-ui --previews
 ```
 
-This validates host/model expiry, display sleep/wake, every pixel/touch transform in four rotations, arbitrary dirty rectangles, real pointer opening of the menu, explicit selection callbacks and generated screens. PPM previews come from LVGL itself with test fixture data. [The host codec test](../host/extensions/test-display.cjs) checks the unchanged framed USB contract using the existing portable Node.
+This validates host/model expiry, display sleep/wake, every pixel/touch transform in four rotations, arbitrary dirty rectangles, real pointer selection of all four options in all six dropdowns across four orientations (96 cases), popup gutters/scroll reachability, logo/header/version, toast replacement/expiry/reflow, explicit selection callbacks and generated screens. PPM previews come from LVGL itself with test fixture data. [The host codec test](../host/extensions/test-display.cjs) checks the unchanged framed USB contract using the existing portable Node.
 
 [Operations](../README.md) owns build/flash/host commands and actual hardware results. [SBOM](../SBOM.md) owns package pins, licences and inventory coverage. [Display architecture](../../../docs/Firmware/ESP32-C6%20Coordinator/Display%20UI.md) owns runtime/protocol boundaries. Development remains on `POC/zigbee_coordinator_dev/waveshare`; XIAO is historical tag-only.

@@ -31,8 +31,8 @@ void create_screen_network() {
             // network_navigation
             lv_obj_t *obj = lv_dropdown_create(parent_obj);
             objects.network_navigation = obj;
-            lv_obj_set_pos(obj, 8, 6);
-            lv_obj_set_size(obj, 56, 36);
+            lv_obj_set_pos(obj, 10, 6);
+            lv_obj_set_size(obj, 40, 36);
             lv_dropdown_set_options_static(obj, "Network\nSettings\nDebug\nAbout");
             lv_dropdown_set_selected(obj, 0);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SNAPPABLE);
@@ -51,7 +51,7 @@ void create_screen_network() {
             // network_logo
             lv_obj_t *obj = lv_image_create(parent_obj);
             objects.network_logo = obj;
-            lv_obj_set_pos(obj, 134, 10);
+            lv_obj_set_pos(obj, 132, 10);
             lv_obj_set_size(obj, 28, 28);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SNAPPABLE);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xf2f5f4), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -224,8 +224,8 @@ void create_screen_settings() {
             // settings_navigation
             lv_obj_t *obj = lv_dropdown_create(parent_obj);
             objects.settings_navigation = obj;
-            lv_obj_set_pos(obj, 8, 6);
-            lv_obj_set_size(obj, 56, 36);
+            lv_obj_set_pos(obj, 10, 6);
+            lv_obj_set_size(obj, 40, 36);
             lv_dropdown_set_options_static(obj, "Network\nSettings\nDebug\nAbout");
             lv_dropdown_set_selected(obj, 1);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SNAPPABLE);
@@ -244,7 +244,7 @@ void create_screen_settings() {
             // settings_logo
             lv_obj_t *obj = lv_image_create(parent_obj);
             objects.settings_logo = obj;
-            lv_obj_set_pos(obj, 134, 10);
+            lv_obj_set_pos(obj, 132, 10);
             lv_obj_set_size(obj, 28, 28);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SNAPPABLE);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xf2f5f4), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -307,26 +307,21 @@ void create_screen_settings() {
             lv_obj_set_style_text_font(obj, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
         }
         {
-            // sleep_hint
+            // sleep_info
             lv_obj_t *obj = lv_label_create(parent_obj);
-            objects.sleep_hint = obj;
-            lv_obj_set_pos(obj, 10, 223);
-            lv_obj_set_size(obj, 150, 42);
+            objects.sleep_info = obj;
+            lv_obj_set_pos(obj, 130, 129);
+            lv_obj_set_size(obj, 30, 32);
+            lv_obj_add_flag(obj, LV_OBJ_FLAG_CLICKABLE);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SNAPPABLE);
-            lv_obj_set_style_text_font(obj, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_color(obj, lv_color_hex(0xbcc5c2), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text_static(obj, "Touch to wake.\nRadio stays active.");
-        }
-        {
-            // save_state
-            lv_obj_t *obj = lv_label_create(parent_obj);
-            objects.save_state = obj;
-            lv_obj_set_pos(obj, 10, 294);
-            lv_obj_set_size(obj, 150, 18);
-            lv_obj_remove_flag(obj, LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SNAPPABLE);
-            lv_obj_set_style_text_font(obj, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_color(obj, lv_color_hex(0x79ddc2), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text_static(obj, "Settings saved");
+            lv_obj_set_style_text_font(obj, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(0xf2f5f4), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_pad_top(obj, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x202624), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_radius(obj, 16, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text_static(obj, "i");
         }
     }
     
@@ -347,8 +342,8 @@ void create_screen_debug() {
             // debug_navigation
             lv_obj_t *obj = lv_dropdown_create(parent_obj);
             objects.debug_navigation = obj;
-            lv_obj_set_pos(obj, 8, 6);
-            lv_obj_set_size(obj, 56, 36);
+            lv_obj_set_pos(obj, 10, 6);
+            lv_obj_set_size(obj, 40, 36);
             lv_dropdown_set_options_static(obj, "Network\nSettings\nDebug\nAbout");
             lv_dropdown_set_selected(obj, 2);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SNAPPABLE);
@@ -367,7 +362,7 @@ void create_screen_debug() {
             // debug_logo
             lv_obj_t *obj = lv_image_create(parent_obj);
             objects.debug_logo = obj;
-            lv_obj_set_pos(obj, 134, 10);
+            lv_obj_set_pos(obj, 132, 10);
             lv_obj_set_size(obj, 28, 28);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SNAPPABLE);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xf2f5f4), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -502,8 +497,8 @@ void create_screen_about() {
             // about_navigation
             lv_obj_t *obj = lv_dropdown_create(parent_obj);
             objects.about_navigation = obj;
-            lv_obj_set_pos(obj, 8, 6);
-            lv_obj_set_size(obj, 56, 36);
+            lv_obj_set_pos(obj, 10, 6);
+            lv_obj_set_size(obj, 40, 36);
             lv_dropdown_set_options_static(obj, "Network\nSettings\nDebug\nAbout");
             lv_dropdown_set_selected(obj, 3);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SNAPPABLE);
@@ -522,7 +517,7 @@ void create_screen_about() {
             // about_logo
             lv_obj_t *obj = lv_image_create(parent_obj);
             objects.about_logo = obj;
-            lv_obj_set_pos(obj, 134, 10);
+            lv_obj_set_pos(obj, 132, 10);
             lv_obj_set_size(obj, 28, 28);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SNAPPABLE);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xf2f5f4), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -565,22 +560,22 @@ void create_screen_about() {
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.device_name = obj;
             lv_obj_set_pos(obj, 10, 188);
-            lv_obj_set_size(obj, 150, 37);
+            lv_obj_set_size(obj, 150, 18);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SNAPPABLE);
             lv_obj_set_style_text_font(obj, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xbcc5c2), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text_static(obj, "Waveshare ESP32-C6\nTouch LCD 1.9");
+            lv_label_set_text_static(obj, "ESPC6");
         }
         {
-            // device_id
+            // firmware_version
             lv_obj_t *obj = lv_label_create(parent_obj);
-            objects.device_id = obj;
+            objects.firmware_version = obj;
             lv_obj_set_pos(obj, 10, 238);
             lv_obj_set_size(obj, 150, 18);
             lv_obj_remove_flag(obj, LV_OBJ_FLAG_CLICK_FOCUSABLE|LV_OBJ_FLAG_GESTURE_BUBBLE|LV_OBJ_FLAG_PRESS_LOCK|LV_OBJ_FLAG_SCROLLABLE|LV_OBJ_FLAG_SCROLL_CHAIN_HOR|LV_OBJ_FLAG_SCROLL_CHAIN_VER|LV_OBJ_FLAG_SCROLL_ELASTIC|LV_OBJ_FLAG_SCROLL_MOMENTUM|LV_OBJ_FLAG_SNAPPABLE);
             lv_obj_set_style_text_font(obj, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xbcc5c2), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_label_set_text_static(obj, "MAC unavailable");
+            lv_label_set_text_static(obj, "Firmware");
         }
         {
             // library_version
