@@ -8,6 +8,6 @@ Original NCS/Zephyr test application for XIAO nRF54LM20A Sense. It generates sim
 | Endpoint, cluster and byte layout | [Report protocol](Report%20Protocol.md) |
 | Existing pins, DK configurations and role selection | [Board profiles](Board%20Profiles.md) |
 | Function contracts and source navigation | [Code reference](Code%20Reference.md) |
-| Setup, build, flash, decoder and measured results | [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/nordic_zigbee) |
+| Setup, build, flash, decoder and measured results | [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/nordic_zigbee) |
 
 The operations guide and its validation record own test results; local files can be ahead of the published repository.

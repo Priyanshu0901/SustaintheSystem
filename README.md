@@ -36,7 +36,7 @@ An acoustic anomaly is a prompt to inspect equipment; it does not establish a sp
 
 **The radio foundation is working. Acoustic performance remains to be demonstrated.**
 
-The XIAO ESP32-C6 USB coordinator and one XIAO nRF54LM20A Zigbee sleepy end device have passed build, programming and live simulated-report checks. The single-node test also verified retained pairing across resets and resumed reporting after a host restart.
+The Waveshare ESP32-C6-Touch-LCD-1.9 is the maintained USB coordinator, with a local status display and touch controls. Its firmware passed build, programming and host/network-resume checks. One XIAO nRF54LM20A Sense sleepy end device sends simulated observations; its original single-node test also verified retained pairing across resets and resumed reporting after a host restart with the earlier XIAO coordinator.
 
 Microphone integration, acoustic inference, routed mesh operation and the Android diagnostic workflow remain unverified. The planned acoustic demonstration will compare one microphone with the array using two simultaneous fans or motors, measuring detection, false alarms, direction estimates and power.
 

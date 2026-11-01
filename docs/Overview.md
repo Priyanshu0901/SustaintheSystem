@@ -4,7 +4,7 @@ A non-contact monitor that detects changes in machinery sounds and estimates whi
 
 The implemented transport stage is documented in the [Nordic firmware architecture](Firmware/Nordic%20Zigbee/Architecture.md) and [coordinator architecture](Firmware/ESP32-C6%20Coordinator/Architecture.md), each with an editable draw.io diagram.
 
-Status: the USB coordinator and one XIAO Zigbee sleepy node passed build, programming and live simulated-report checks. Sensing integration, routed mesh and acoustic performance remain unverified.
+Status: the Waveshare USB coordinator with its touch status display passed build, programming and host/network-resume checks. One XIAO Zigbee sleepy node has passed simulated-report validation. Sensing integration, routed mesh and acoustic performance remain unverified.
 
 ## Project documentation
 

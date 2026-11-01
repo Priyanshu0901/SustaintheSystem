@@ -11,8 +11,8 @@ Paths are relative to [the integration source](https://github.com/Priyanshu0901/
 | `Build-Firmware.ps1` | Enforce pinned/clean source, archive it and launch the single-board container |
 | `tools/build.py` | Hash inputs, invalidate stale success state, build with ESP-IDF, validate effective settings and export hashed images |
 | `ui/editor/coordinator.eez-project`, `ui/generated/` | Editable EEZ no-Flow design and generated LVGL widgets |
-| `ui/Generate-UI.ps1`, `tools/check_ui_generated.py` | Regenerate with EEZ0.29.0 and verify source/output/version provenance |
-| `ui/lvgl.lock.json`, `ui/lv_conf.h` | Exact LVGL9.5.0 source pin and shared runtime configuration |
+| `ui/Generate-UI.ps1`, `tools/check_ui_generated.py` | Regenerate with EEZ 0.29.0 and verify source/output/version provenance |
+| `ui/lvgl.lock.json`, `ui/lv_conf.h` | Exact LVGL 9.5.0 source pin and shared runtime configuration |
 | `ui/ui_model.c`, `ui/ui_model.h` | Host validation/expiry, stable page IDs, validated control values and idle/wake state |
 | `ui/ui_geometry.c`, `ui/ui_geometry.h` | Logical-to-panel tile packing and inverse touch transforms |
 | `ui/generate_splash.py`, `ui/assets/` | Replaceable original PNG/manifest and build-time LVGL ARGB8888 descriptors |
@@ -27,7 +27,7 @@ Paths are relative to [the integration source](https://github.com/Priyanshu0901/
 | `tools/generate_sbom.py` | Export the build-specific CycloneDX inventory and actual licence notices |
 | `ui/ui_runtime.c`, `ui/coordinator_ui.h` | Rendering/touch runtime, local NVS settings, panel sleep/wake and bounded vendor interface |
 | `boards/waveshare_touch_1_9/` | Board pins, LCD DMA lifecycle and CST816 I2C polling |
-| `boards/waveshare_touch_1_9/board_identity.c` | Bounded base-MAC read; reserve the SDK's full8-byte capacity on C6 |
+| `boards/waveshare_touch_1_9/board_identity.c` | Bounded base-MAC read; reserve the SDK's full 8-byte capacity on C6 |
 | `patches/waveshare-ui.patch` | Waveshare build-copy hooks; upstream dependency checkout remains clean |
 | `host/extensions/coordinator-display.cjs` | Send truthful registry/availability snapshots through the existing serial queue |
 | `Install-FlashTools.ps1` | Prepare the local pinned esptool environment |
@@ -41,6 +41,6 @@ Paths are relative to [the integration source](https://github.com/Priyanshu0901/
 
 ## Generated reference
 
-The shared [generator guide](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/tools/documentation) owns installation, generation commands, output locations and parser coverage. This maintained code map is included directly in its generated reference.
+The shared [generator guide](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/tools/documentation) owns installation, generation commands, output locations and parser coverage. This maintained code map is included directly in its generated reference.
 
 [Upstream and builds](https://github.com/Priyanshu0901/SustaintheSystem/blob/POC/zigbee_coordinator_dev/waveshare/docs/Firmware/ESP32-C6%20Coordinator/Upstream%20and%20Builds.md) explains the design; [operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/esp32c6_coordinator) owns commands, pins, dependency provenance and measured results.

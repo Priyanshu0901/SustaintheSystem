@@ -4,7 +4,7 @@ This describes the existing `firmware/nordic_zigbee` application: a deterministi
 
 ![Written Nordic firmware components](assets/architecture.png)
 
-[Editable draw.io source](assets/architecture.drawio). Function names match the current implementation. Source paths below are relative to [the firmware directory](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/nordic_zigbee); local files may precede publication.
+[Editable draw.io source](assets/architecture.drawio). Function names match the current implementation. Source paths below are relative to [the firmware directory](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/nordic_zigbee); local files may precede publication.
 
 ## Startup and producer thread
 
@@ -28,4 +28,4 @@ Only ZBOSS callbacks operate on packet buffers and `in_flight`. `zboss_signal_ha
 
 `src/board_status.c` selects device-tree PWM indicators when enabled, or no-op functions when disabled. It changes the blue/green indication from join state and makes no network decisions. [Board profiles](Board%20Profiles.md) owns pin/profile choices.
 
-[Report protocol](Report%20Protocol.md) owns endpoint identifiers, wire layout and units. [Code reference](Code%20Reference.md) points to API contracts. [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/nordic_zigbee) owns commands and measured validation; authored router/DK profiles do not imply corresponding hardware tests.
+[Report protocol](Report%20Protocol.md) owns endpoint identifiers, wire layout and units. [Code reference](Code%20Reference.md) points to API contracts. [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/nordic_zigbee) owns commands and measured validation; authored router/DK profiles do not imply corresponding hardware tests.

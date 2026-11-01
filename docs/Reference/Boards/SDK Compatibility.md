@@ -15,4 +15,4 @@ The Axon pages reviewed identify **Edge AI Add-on 2.3.0**; their `latest` links 
 
 Pin-documentation discrepancies come from the [Seeed guide](https://wiki.seeedstudio.com/xiao_nrf54lm20a_getting_started/) and [sensor examples](https://wiki.seeedstudio.com/xiao_nrf54lm20a_with_onboard/). Update this note when revision-specific pin details are verified.
 
-The application now uses its own [pinned inputs and validation](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/nordic_zigbee#inputs-and-provenance); the older vendor-guide version above is reference history, not the project build selection.
+The application now uses its own [pinned inputs and validation](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/nordic_zigbee#inputs-and-provenance); the older vendor-guide version above is reference history, not the project build selection.

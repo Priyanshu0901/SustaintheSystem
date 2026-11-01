@@ -1,6 +1,6 @@
 ---
 status: draft
-updated: 2026-10-25
+updated: 2026-11-01
 ---
 
 # Story
@@ -59,7 +59,7 @@ An anomaly score is a reason to inspect, not a diagnosis of bearing damage. Chan
 
 ## Wireless Monitoring and Diagnostics
 
-Once the node has an anomaly score and a source-direction estimate, it can report those results to the monitoring application. The XIAO ESP32C6 will coordinate the Zigbee network and connect to the monitoring computer over USB. Its firmware will form the network, commission nodes, receive reports and pass diagnostic requests to the selected node. The monitoring application will run locally without an internet dependency.
+Once the node has an anomaly score and a source-direction estimate, it can report those results to the monitoring application. I’m using the Waveshare ESP32-C6-Touch-LCD-1.9 as the USB Zigbee coordinator, replacing the earlier XIAO ESP32C6. Its ZBOSS network-coprocessor firmware handles the radio network, while Zigbee2MQTT on the local computer manages devices and decodes reports. The board’s touch display shows host-supplied network status and local display settings. The acoustic monitoring application and diagnostic-request path remain to be implemented.
 
 ![Monitoring network and maintenance access](assets/network-topology.png)
 
@@ -95,7 +95,9 @@ The same recordings and conditions will be evaluated with one microphone and the
 
 Embedded measurements will cover model size, RAM, feature-extraction time, inference latency and total processing time per audio window.
 
-Before connecting the acoustic detector to the network, I’ll use the available XIAO nRF54LM20A Sense boards to test the Zigbee firmware with the XIAO ESP32C6 coordinator. I’ll start with clearly labelled simulated measurements and check commissioning, periodic reports, anomaly alerts and diagnostic requests. Sequence numbers and timestamps will let me measure report delivery and request latency as I vary the reporting and parent-polling intervals. I’ll also restart individual nodes and the coordinator to check rejoining, stale-node detection and recovery of the application’s node registry.
+The transport test now sends clearly labelled simulated observations from one XIAO nRF54LM20A Sense sleepy end device. With the earlier XIAO coordinator, I recorded 61 distinct reports over 10 minutes 24.775 seconds, with no sequence gaps within each boot episode. Reflash/reset and a separate debug reset retained pairing with joining closed; a corrected host restart resumed fresh reports. The replacement Waveshare coordinator has also passed programming and host/network-resume checks. These results validate the transport stage; they do not measure acoustic detection or routed-mesh performance.
+
+Before connecting the acoustic detector, I’ll extend these checks to the other Sense boards. Sequence numbers and timestamps will let me compare delivery as I vary reporting and parent-polling intervals. Diagnostic requests and their latency still need an implemented request path. I’ll also test node/coordinator restart recovery and stale-node handling separately from the existing single-node results.
 
 For mesh testing, I’ll temporarily configure two Sense boards as continuously powered Zigbee routers and use the other two as sleepy end devices. The monitoring nodes will remain end devices; the router firmware is a separate test configuration. I’ll arrange the links so that reports travel through a router, verify the parent and routing information in the logs, then switch off one router and measure lost reports and the time taken to restore delivery through the remaining network. Moving the boards and introducing obstructions will show how delivery and recovery change with placement.
 
@@ -113,7 +115,7 @@ The field deployment will need its own enclosure, power budget and communication
 
 - [Nordic nRF54LM20 DK](https://www.nordicsemi.com/Products/Development-hardware/nRF54LM20-DK) and [nRF54LM20A/B specification](https://docs.nordicsemi.com/r/bundle/ps_nrf54lm20a/page/keyfeatures_html5.html) — development platform and A/B hardware differences.
 - [XIAO nRF54LM20A Sense documentation](https://github.com/Seeed-Studio/wiki-documents/blob/docusaurus-version/sites/en/docs/Sensor/SeeedStudio_XIAO/SeeedStudio_XIAO_nRF54LM20A-Sense/XIAO_nRF54LM20A-Sense_Getting_Started.md) — onboard microphone and board peripherals.
-- [Nordic Zigbee R23 architectures](https://nrfconnectdocs.nordicsemi.com/addons/zigbee-r23/latest/architectures.html) and [router template](https://nrfconnectdocs.nordicsemi.com/addons/ncs-zigbee/latest/samples/template/README.html) — end-device/router designs and the starting point for router test firmware; XIAO board integration will be checked during development.
+- [Nordic Zigbee R23 architectures](https://nrfconnectdocs.nordicsemi.com/addons/zigbee-r23/latest/architectures.html) and [router template](https://nrfconnectdocs.nordicsemi.com/addons/ncs-zigbee/latest/samples/template/README.html) — stack lifecycle and end-device/router references. The project’s original transport test firmware and measured scope are documented in the [Nordic firmware guide](https://github.com/Priyanshu0901/SustaintheSystem/blob/POC/zigbee_coordinator_dev/waveshare/docs/Firmware/Nordic%20Zigbee/Overview.md).
 - [Sipeed R6+1 microphone-array datasheet](https://dl.sipeed.com/MAIX/HDK/Sipeed-R6%2B1_MicArray/Specifications/Sipeed%20R6%2B1%20Microphone%20Array%20Datasheet%20V1.0.pdf) — array hardware reference.
 - [Acoustic beamforming using a microphone array](https://www.mathworks.com/help/audio/ug/acoustic-beamforming-using-a-microphone-array.html) — delay compensation, directional interference suppression and beamformer evaluation; the example uses speech, while this build will evaluate machinery sounds.
 - [ACS ACR1552U technical specification](https://www.acs.com.hk/download-manual/13248/TSP-ACR1552U-1.04.pdf) — USB reader capabilities and Android platform support.

@@ -4,7 +4,7 @@ The generated Doxygen reference indexes original C interfaces, internal function
 
 ## Code map
 
-Paths below are relative to [the integration source](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/nordic_zigbee). Published files may lag the local checkout.
+Paths below are relative to [the integration source](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/nordic_zigbee). Published files may lag the local checkout.
 
 | Source | Responsibility |
 | --- | --- |
@@ -23,6 +23,6 @@ Paths below are relative to [the integration source](https://github.com/Priyansh
 
 ## Generate and browse
 
-The [generator guide](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/tools/documentation) owns installation, generation commands, output locations and parser coverage. Doxygen generates searchable C/Python documentation from source; the CommonJS and PowerShell entries above are maintained code maps.
+The [generator guide](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/tools/documentation) owns installation, generation commands, output locations and parser coverage. Doxygen generates searchable C/Python documentation from source; the CommonJS and PowerShell entries above are maintained code maps.
 
-[Architecture](https://github.com/Priyanshu0901/SustaintheSystem/blob/master/docs/Firmware/Nordic%20Zigbee/Architecture.md) owns concurrency and data flow; [report protocol](https://github.com/Priyanshu0901/SustaintheSystem/blob/master/docs/Firmware/Nordic%20Zigbee/Report%20Protocol.md) owns wire fields. [Operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/nordic_zigbee) owns commands, prerequisites and actual validation.
+[Architecture](https://github.com/Priyanshu0901/SustaintheSystem/blob/POC/zigbee_coordinator_dev/waveshare/docs/Firmware/Nordic%20Zigbee/Architecture.md) owns concurrency and data flow; [report protocol](https://github.com/Priyanshu0901/SustaintheSystem/blob/POC/zigbee_coordinator_dev/waveshare/docs/Firmware/Nordic%20Zigbee/Report%20Protocol.md) owns wire fields. [Operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/nordic_zigbee) owns commands, prerequisites and actual validation.

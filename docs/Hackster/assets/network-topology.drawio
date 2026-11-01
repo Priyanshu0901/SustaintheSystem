@@ -22,7 +22,7 @@
         <mxCell id="xiao" value="&lt;b&gt;Microphone POC nodes&lt;/b&gt;&lt;br&gt;XIAO nRF54LM20A Sense&lt;br&gt;Onboard mic + CPU inference&lt;br&gt;Zigbee end devices" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
           <mxGeometry x="550" y="225" width="390" height="155" as="geometry" />
         </mxCell>
-        <mxCell id="coord" value="&lt;b&gt;XIAO ESP32C6&lt;/b&gt;&lt;br&gt;Zigbee coordinator&lt;br&gt;Commissioning + compact reports" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
+        <mxCell id="coord" value="&lt;b&gt;Waveshare ESP32-C6&lt;/b&gt;&lt;br&gt;USB Zigbee coordinator&lt;br&gt;Local touch status display" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e8f0fb;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">
           <mxGeometry x="310" y="475" width="390" height="120" as="geometry" />
         </mxCell>
         <mxCell id="app" value="&lt;b&gt;Local monitoring application&lt;/b&gt;&lt;br&gt;Node registry · events · report age&lt;br&gt;Computer connected over USB" style="rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#e6f5ef;strokeColor=#9eb1c3;fontColor=#173249;fontSize=19;spacing=12;" vertex="1" parent="1">

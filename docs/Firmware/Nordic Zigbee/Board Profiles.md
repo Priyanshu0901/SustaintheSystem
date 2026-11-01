@@ -11,6 +11,6 @@ Board and role choices are separate build inputs. Their authored files describe 
 
 `src/board_status.c` consumes the PWM aliases behind `CONFIG_SUSTAIN_STATUS_RGB`; transport and observation code contain no board pin assignments. No new antenna-switch behavior is implemented here.
 
-One XIAO sleepy image has measured single-node validation. Router and DK profiles existing in source do not establish routed-network or DK hardware results. [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/master/firmware/nordic_zigbee) owns SDK locks, build targets, direct-programming memory layout and actual validation.
+One XIAO sleepy image has measured single-node validation. Router and DK profiles existing in source do not establish routed-network or DK hardware results. [Firmware operations](https://github.com/Priyanshu0901/SustaintheSystem/tree/POC/zigbee_coordinator_dev/waveshare/firmware/nordic_zigbee) owns SDK locks, build targets, direct-programming memory layout and actual validation.
 
 [Architecture](Architecture.md) · [Code reference](Code%20Reference.md)

@@ -1,13 +1,13 @@
 ---
 status: draft
-updated: 2026-10-25
+updated: 2026-11-01
 ---
 
 # Things
 
 [Hackster Things editor](https://www.hackster.io/projects/0ce81d/edit#things) · [[Hackster/Basics|Basics]] · [[Hackster/Story|Story]]
 
-Bill of materials for the acoustic monitoring node, microphone-based POC nodes and Android maintenance interface. Quantities for the boards, array, reader and fans follow the current Hackster list.
+Local bill of materials for the acoustic monitoring node, microphone-based POC nodes and Android maintenance interface. This source includes the coordinator replacement; the published Hackster list may differ.
 
 ## Hardware components
 
@@ -17,7 +17,7 @@ Bill of materials for the acoustic monitoring node, microphone-based POC nodes a
 | Sipeed MAIX R6+1 microphone array | 1 | Seven-channel acoustic capture for beamforming and source-direction estimation |
 | Seeed Studio XIAO nRF54LM20A Sense | 4 | Microphone/CPU POC and Zigbee firmware testing while the DKs arrive; two temporarily serve as powered routers during mesh tests |
 | ACS ACR1552U USB NFC reader | 1 | USB-connected reader for the Android maintenance interface; reads the nRF tag’s identity and BLE commissioning details |
-| Seeed Studio XIAO ESP32C6 | 1 | Zigbee coordinator; connects the monitoring network to the local computer over USB |
+| Waveshare ESP32-C6-Touch-LCD-1.9 | 1 | Maintained USB Zigbee coordinator with a local touch status display; replaces the earlier XIAO ESP32C6 coordinator |
 | Low-voltage DC fans or motors | 2 | Simultaneous-source test setup for normal and abnormal operating conditions |
 | Android device | 1 | Hosts the companion application, reads tag data through the ACS reader and connects to the monitoring node over BLE |
 | Monitoring computer | 1 | Hosts the coordinator connection, report storage and local monitoring application |
@@ -26,7 +26,7 @@ Bill of materials for the acoustic monitoring node, microphone-based POC nodes a
 
 The XIAO Sense boards are already available. The nRF54LM20 DK is awaiting arrival. The ACS reader remains part of the final Android maintenance interface.
 
-Additional ordered hardware: [Waveshare ESP32-C6-LCD-1.9 touch development kit](../Firmware/ESP32-C6%20Coordinator/Board%20Profiles.md#hardware-status). Its status is kept with the coordinator board documentation.
+The [coordinator board guide](../Firmware/ESP32-C6%20Coordinator/Board%20Profiles.md#hardware-status) records the connected Waveshare hardware and retained XIAO version.
 
 ## Software OSs, Apps and online services
 
